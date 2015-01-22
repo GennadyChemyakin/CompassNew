@@ -1,8 +1,12 @@
 TEMPLATE = app
 
-QT += qml quick
+QT += qml quick widgets core gui
+QT += serialport
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    compass.cpp \
+    compassport.cpp \
+    coefdial.cpp
 
 RESOURCES += qml.qrc
 
@@ -11,3 +15,11 @@ QML_IMPORT_PATH =
 
 # Default rules for deployment.
 include(deployment.pri)
+
+HEADERS += \
+    compass.h \
+    compassport.h \
+    coefdial.h
+
+FORMS += \
+    coefdial.ui
