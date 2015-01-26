@@ -10,6 +10,8 @@
 #include "compassport.h"
 #include "QThread"
 #include "coefdial.h"
+#include "dialogcomp.h"
+#include "settings.h"
 
 class Compass : public QObject
 {
@@ -39,11 +41,19 @@ signals:
     void connectChanged();
 
     void menuRequest();
+    void compensationRequest();
 
 public slots:
     void setAngle(double);
     void setRoll(double);
     void setPitch(double);
+    void changeSkl();
+    void initComp();
+    void changeTrueMagneticCourse();
+    void changeBackground();
+    void changeInfoScreenVisibility();
+    void changeSettings();
+
 
 protected:
     QObject *qml;
@@ -62,7 +72,7 @@ private:
     double m_afterComma;
     int m_state;
     int m_connect;
-    QString m_background;
+    int m_background;
     double m_skl;
     double m_savedCourse;
     bool m_savedCourseVisibility;
@@ -84,6 +94,9 @@ private:
     QTimer *timer;
     CompassPort *compport;
     QThread *portThread;
+    DialogComp *dialComp;
+    Settings *settingsDialog;
+
 
 };
 

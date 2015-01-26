@@ -8,7 +8,9 @@
 CompassPort::CompassPort(QObject *parent) : QObject(parent)
 {
     m_angle = m_pitch = m_roll = m_state = 0;
-    port = new QSerialPort("ttyUSB0");
+    port = new QSerialPort();
+    m_compInProgress = false;
+    connect(this,SIGNAL(compFinished()),this,SLOT(stopCompensation()));
 }
 
 CompassPort::~CompassPort()
@@ -19,6 +21,7 @@ CompassPort::~CompassPort()
 void CompassPort::on()
 {
     emit timerStop();
+    //qDebug()<<QThread::currentThreadId();
     if(!port->isOpen())
     {       
         if (port->open(QIODevice::ReadWrite))
@@ -101,9 +104,11 @@ void CompassPort::on()
     emit timerStart(10);
 }
 
-/*void CompassPort::initComp()
+void CompassPort::initComp()
 {
+    emit timerStop();
     emit compStarted();
+    m_compInProgress = true;
     QByteArray dataForWrite;
     dataForWrite.insert(0,0x0d);
     dataForWrite.insert(1,0x0a);
@@ -120,16 +125,19 @@ void CompassPort::on()
         {
             qDebug()<<"Error while writing data";
         }
-        while(dial->isVisible())
+        while(m_compInProgress)
         {
 
+            //qDebug()<<"here";
+            //qDebug()<<QThread::currentThreadId();
+            qApp->processEvents();
             if(port->isOpen() && port->waitForReadyRead(1000))
             {
 
                 QString data;
                 QByteArray ByteArray;
                 qint64 byteAvail = port->bytesAvailable();
-                //qApp->processEvents();
+                qApp->processEvents();
                 if(byteAvail >=19)
                 {
                     ByteArray = port->readAll();
@@ -146,59 +154,75 @@ void CompassPort::on()
                                 break;
                         }
 
-                        for(int i=56,j=7;i<64,j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<toDecInt(one_byte)<<" "<<one_byte;
-                        dial->setBar(7,toDecInt(one_byte));
-                        for(int i=64,j=7;i<72,j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<toDecInt(one_byte)<<" "<<one_byte;
-                        dial->setBar(6,toDecInt(one_byte));
-                        for(int i=72,j=7;i<80,j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<toDecInt(one_byte)<<" "<<one_byte;
-                        dial->setBar(5,toDecInt(one_byte));
-                        for(int i=80,j=7;i<88,j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<toDecInt(one_byte)<<" "<<one_byte;
-                        dial->setBar(4,toDecInt(one_byte));
-                        for(int i=88,j=7;i<96,j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<toDecInt(one_byte)<<" "<<one_byte;
-                        dial->setBar(3,toDecInt(one_byte));
-                        for(int i=96,j=7;i<104,j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<toDecInt(one_byte)<<" "<<one_byte;
-                        dial->setBar(2,toDecInt(one_byte));
-                        for(int i=104,j=7;i<112,j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<toDecInt(one_byte)<<" "<<one_byte;
-                        dial->setBar(1,toDecInt(one_byte));
-                        for(int i=112,j=7;i<120,j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<toDecInt(one_byte)<<" "<<one_byte;
-                        dial->setBar(0,toDecInt(one_byte));
+                        for(int i=56,j=7;i<64 && j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<toDecInt(one_byte)<<" "<<one_byte;
+                        //dial->setBar(7,toDecInt(one_byte));
+                        emit dialCompProgressChanged(7,toDecInt(one_byte));
+                        for(int i=64,j=7;i<72 && j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<toDecInt(one_byte)<<" "<<one_byte;
+                        //dial->setBar(6,toDecInt(one_byte));
+                        emit dialCompProgressChanged(6,toDecInt(one_byte));
+                        for(int i=72,j=7;i<80 && j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<toDecInt(one_byte)<<" "<<one_byte;
+                        //dial->setBar(5,toDecInt(one_byte));
+                        emit dialCompProgressChanged(5,toDecInt(one_byte));
+                        for(int i=80,j=7;i<88 && j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<toDecInt(one_byte)<<" "<<one_byte;
+                        //dial->setBar(4,toDecInt(one_byte));
+                        emit dialCompProgressChanged(4,toDecInt(one_byte));
+                        for(int i=88,j=7;i<96 && j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<toDecInt(one_byte)<<" "<<one_byte;
+                        //dial->setBar(3,toDecInt(one_byte));
+                        emit dialCompProgressChanged(3,toDecInt(one_byte));
+                        for(int i=96,j=7;i<104 && j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<toDecInt(one_byte)<<" "<<one_byte;
+                        //dial->setBar(2,toDecInt(one_byte));
+                        emit dialCompProgressChanged(2,toDecInt(one_byte));
+                        for(int i=104,j=7;i<112 && j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<toDecInt(one_byte)<<" "<<one_byte;
+                        //dial->setBar(1,toDecInt(one_byte));
+                        emit dialCompProgressChanged(1,toDecInt(one_byte));
+                        for(int i=112,j=7;i<120 && j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<toDecInt(one_byte)<<" "<<one_byte;
+                        //dial->setBar(0,toDecInt(one_byte));
+                        emit dialCompProgressChanged(0,toDecInt(one_byte));
 
 
-                        for(int i=48,j=7;i<56,j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<"Status"<<toDecInt(one_byte)<<" "<<one_byte;
+                        for(int i=48,j=7;i<56 && j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<"Status"<<toDecInt(one_byte)<<" "<<one_byte;
                         if(toDecInt(one_byte)==1)
                         {
-                            dial->setLabel("Success");
+                            //dial->setLabel("Success");
+                            emit dialCompStatusChanged("Success");
                         }
                         else if(toDecInt(one_byte)==0)
                         {
-                            dial->setLabel("No error");
+                            //dial->setLabel("No error");
+                            emit dialCompStatusChanged("No error");
                         }
                         else if(toDecInt(one_byte)==2)
                         {
-                            dial->setLabel("Compensation Already Started");
+                            //dial->setLabel("Compensation Already Started");
+                            emit dialCompStatusChanged("Compensation Already Started");
                         }
                         else if(toDecInt(one_byte)==3)
                         {
-                            dial->setLabel("Compensation Not Started");
+                            //dial->setLabel("Compensation Not Started");
+                            emit dialCompStatusChanged("Compensation Not Started");
                         }
                         else if(toDecInt(one_byte)==4)
                         {
-                            dial->setLabel("Compensation Timeout");
+                            //dial->setLabel("Compensation Timeout");
+                            emit dialCompStatusChanged("Compensation Timeout");
                         }
                         else if(toDecInt(one_byte)==5)
                         {
-                            dial->setLabel("Compensation Computation Failure");
+                            //dial->setLabel("Compensation Computation Failure");
+                            emit dialCompStatusChanged("Compensation Computation Failure");
                         }
                         else if(toDecInt(one_byte)==6)
                         {
-                            dial->setLabel("New Computed Parameters No Better");
+                            //dial->setLabel("New Computed Parameters No Better");
+                            emit dialCompStatusChanged("New Computed Parameters No Better");
                         }
                         else if(toDecInt(one_byte)==7)
                         {
-                            dial->setLabel("Flash Write Fail");
+                            //dial->setLabel("Flash Write Fail");
+                            emit dialCompStatusChanged("Flash Write Fail");
                         }
 
-                        //qApp->processEvents();
+                        qApp->processEvents();
                     }
 
                 }
@@ -207,17 +231,27 @@ void CompassPort::on()
                 port->write(dataForWrite,7);
                 if(!port->waitForBytesWritten(1000))
                 {
-                    qDebug()<<"Error while writing data";
+                    qDebug()<<"Error while writing data during compensation";
                 }
             }
         }
     }
-    for(int i=0;i<8;i++)
-        dial->setBar(i,0);
-}*/
+    emit compFinished();
+    qDebug()<<"finished";
+    emit timerStart(10);
+}
 
-/*void CompassPort::revert()
+
+void CompassPort::stopCompensation()
 {
+    m_compInProgress = false;
+    qDebug()<<"stoped";
+}
+
+void CompassPort::revert()
+{
+    emit timerStop();
+    qDebug()<<"revert";
     QByteArray dataForWrite;
     dataForWrite.insert(0,0x0d);
     dataForWrite.insert(1,0x0a);
@@ -261,24 +295,28 @@ void CompassPort::on()
                             else
                                 break;
                         }
-                        for(int i=40,j=7;i<48,j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<"Status"<<toDecInt(one_byte)<<" "<<one_byte;
+                        for(int i=40,j=7;i<48 && j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<"Status"<<toDecInt(one_byte)<<" "<<one_byte;
                         if(toDecInt(one_byte)==0)
                         {
-                            settings->setLabel("Compass Compensation Off");
+                            //settings->setLabel("Compass Compensation Off");
+                            emit revertStatusChanged("Compass Compensation Off");
                         }
                         else if(toDecInt(one_byte)==1)
                         {
-                            settings->setLabel("Compass Compensation Data Collection");
+                            //settings->setLabel("Compass Compensation Data Collection");
+                            emit revertStatusChanged("Compass Compensation Data Collection");
                         }
                         else if(toDecInt(one_byte)==2)
                         {
-                            settings->setLabel("Compass Compensation Computation in Progress");
+                            //settings->setLabel("Compass Compensation Computation in Progress");
+                            emit revertStatusChanged("Compass Compensation Computation in Progress");
                         }
                         else if(toDecInt(one_byte)==3)
                         {
-                            settings->setLabel("Compass Compensation Procedure Abort");
+                            //settings->setLabel("Compass Compensation Procedure Abort");
+                            emit revertStatusChanged("Compass Compensation Procedure Abort");
                         }
-                        for(int i=48,j=7;i<56,j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<"Status"<<toDecInt(one_byte)<<" "<<one_byte;
+                        for(int i=48,j=7;i<56 && j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<"Status"<<toDecInt(one_byte)<<" "<<one_byte;
 //                        if(toDecInt(one_byte)==1)
 //                        {
 //                            settings->setLabel("Success");
@@ -327,7 +365,8 @@ void CompassPort::on()
             }
         }
     }
-}*/
+    emit timerStart(10);
+}
 
 void CompassPort::updateSettings(QStringList listOfSettings)
 {

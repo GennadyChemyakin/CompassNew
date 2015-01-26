@@ -8,6 +8,7 @@
 #include "QStringList"
 #include <QBitArray>
 #include <QtGui>
+#include "dialogcomp.h"
 
 class CompassPort : public QObject
 {
@@ -18,15 +19,22 @@ signals:
     void rollChanged(double);
 
     void finished();
+
     void compStarted();
+    void compFinished();
 
     void timerStart(int);
     void timerStop();
 
+    void dialCompProgressChanged(int,int);
+    void dialCompStatusChanged(QString);
+    void revertStatusChanged(QString);
+
 public slots:
     void on(); //work with port
-    //void initComp(); //initiation of compensation
-    //void revert();//reset
+    void initComp(); //initiation of compensation
+    void revert();//reset
+    void stopCompensation();
 public:
     explicit CompassPort(QObject *parent = 0);
     ~CompassPort();
@@ -36,6 +44,7 @@ private:
     QTimer *timer; //таймер для вызова основной функции для работы с портом
     double m_roll, m_pitch, m_angle;
     bool m_state;
+    bool m_compInProgress;
 private slots:
     void updateSettings(QStringList listOfSettings);
     double toDec(QBitArray,int);

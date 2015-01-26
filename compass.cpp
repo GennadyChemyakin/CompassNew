@@ -16,7 +16,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     m_fullangle=0;
     m_state=0;
     m_connect=0;
-    m_background="";
+    m_background=0;
     m_skl=0;
     m_savedCourse=0;
     m_roll=0;
@@ -31,8 +31,13 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     m_infoVisibility=false;
 
     context_m = context;
+    dialComp = new DialogComp();
     compport = new CompassPort();
     timer = new QTimer(this);
+    settingsDialog = new Settings();
+
+
+
     connect(timer, SIGNAL(timeout()),compport, SLOT(on()));
     connect(compport, SIGNAL(timerStart(int)),timer, SLOT(start(int)));
     connect(compport, SIGNAL(timerStop()),timer, SLOT(stop()));
@@ -40,8 +45,18 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     connect(compport,SIGNAL(angleChanged(double)),this,SLOT(setAngle(double)));
     connect(compport,SIGNAL(pitchChanged(double)),this,SLOT(setPitch(double)));
     connect(compport,SIGNAL(rollChanged(double)),this,SLOT(setRoll(double)));
-    //connect(dialog,SIGNAL(settingChanged(QStringList)),compport,SLOT(updateSettings(QStringList));
-    //connect(compport,SIGNAL(compStarted()),compdial,SLOT(show()));
+
+    connect(settingsDialog,SIGNAL(settingsChanged(QStringList)),compport,SLOT(updateSettings(QStringList)));
+    connect(settingsDialog,SIGNAL(revertRequest()),compport,SLOT(revert()));
+    connect(compport,SIGNAL(revertStatusChanged(QString)),settingsDialog,SLOT(setLable(QString)));
+
+    connect(this,SIGNAL(compensationRequest()),compport,SLOT(initComp()));
+    connect(compport,SIGNAL(compStarted()),dialComp,SLOT(show()));
+    connect(compport,SIGNAL(compFinished()),dialComp,SLOT(setBarstoDefault()));
+    connect(compport,SIGNAL(dialCompProgressChanged(int,int)),dialComp,SLOT(setBar(int,int)));
+    connect(compport,SIGNAL(dialCompStatusChanged(QString)),dialComp,SLOT(setLabel(QString)));
+    connect(dialComp,SIGNAL(dialClosed()),compport,SLOT(stopCompensation()));
+
 
     portThread = new QThread;
     compport->moveToThread(portThread);
@@ -51,23 +66,26 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     connect(portThread,SIGNAL(finished()),portThread,SLOT(deleteLater()));
 
     portThread->start();
+    settingsDialog->initSettigs();
     timer->start(10);
+    //qDebug()<<QThread::currentThreadId();
 
-    //dial = new CoefDial;
-    //dial->show();
+    context_m->setContextProperty("trueMagneticCourse",m_tmCourse);
+    context_m->setContextProperty("m_background",m_background);
+    context_m->setContextProperty("infoVisibility",m_infoVisibility);
+    context_m->setContextProperty("compass",this);
+    context_m->setContextProperty("angle_value",m_angle);
+    context_m->setContextProperty("fract_part",m_fractPart);
+    context_m->setContextProperty("full_angle",m_fullangle);
+
+
 
 }
-/*void Compass::showAngle()
-{
-    angle_m+=40;
-    angle2_m-=40;
-    context_m->setContextProperty("angle_valu",angle_m);
-    context_m->setContextProperty("angle_valu2",angle2_m);
-}*/
 
 Compass::~Compass()
 {
     delete compport;
+    //delete portThread;
     delete timer;
 }
 
@@ -129,13 +147,13 @@ void Compass::setAngle(double a)
 void Compass::setRoll(double st)
 {
     m_roll=Round(st,1);
-    emit rollChanged();
+    context_m->setContextProperty("m_roll",m_roll);
 }
 
 void Compass::setPitch(double st)
 {
     m_pitch=Round(st,1);
-    emit pitchChanged();
+    context_m->setContextProperty("m_pitch",m_pitch);
 }
 
 
@@ -167,4 +185,54 @@ double Compass::Round(double st,int count)
     }
     else return 0;
 
+}
+
+void Compass::changeSkl()
+{
+    dial = new CoefDial();
+    dial->show();
+}
+
+void Compass::initComp()
+{
+    emit compensationRequest();
+}
+
+void Compass::changeTrueMagneticCourse()
+{
+    if(!m_tmCourse)
+    {
+        m_tmCourse = true;
+    }
+    else
+    {
+        m_tmCourse = false;
+    }
+    context_m->setContextProperty("trueMagneticCourse",m_tmCourse);
+}
+
+void Compass::changeBackground()
+{
+    m_background++;
+    if(m_background == 4)
+        m_background=0;
+    context_m->setContextProperty("m_background",m_background);
+}
+
+void Compass::changeInfoScreenVisibility()
+{
+    if(!m_infoVisibility)
+    {
+        m_infoVisibility=true;
+    }
+    else
+    {
+        m_infoVisibility=false;
+    }
+    context_m->setContextProperty("infoVisibility",m_infoVisibility);
+}
+
+void Compass::changeSettings()
+{
+    settingsDialog->exec();
 }
