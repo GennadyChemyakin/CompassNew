@@ -67,7 +67,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
 
     portThread->start();
     settingsDialog->initSettigs();
-    timer->start(10);
+    timer->start(11);
     //qDebug()<<QThread::currentThreadId();
 
     context_m->setContextProperty("trueMagneticCourse",m_tmCourse);
@@ -77,6 +77,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     context_m->setContextProperty("angle_value",m_angle);
     context_m->setContextProperty("fract_part",m_fractPart);
     context_m->setContextProperty("full_angle",m_fullangle);
+    context_m->setContextProperty("afterComma",m_afterComma);
 
 
 
@@ -85,7 +86,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
 Compass::~Compass()
 {
     delete compport;
-    //delete portThread;
+    delete portThread;
     delete timer;
 }
 
@@ -142,6 +143,7 @@ void Compass::setAngle(double a)
     context_m->setContextProperty("angle_value",m_angle);
     context_m->setContextProperty("fract_part",m_fractPart);
     context_m->setContextProperty("full_angle",m_fullangle);
+    context_m->setContextProperty("afterComma",m_afterComma);
 }
 
 void Compass::setRoll(double st)

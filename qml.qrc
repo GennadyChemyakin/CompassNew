@@ -9,5 +9,6 @@
         <file>content/steel3.png</file>
         <file>content/button.png</file>
         <file>content/a_LCDNovaObl.ttf</file>
+        <file>SettingsQML.qml</file>
     </qresource>
 </RCC>

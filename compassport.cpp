@@ -15,6 +15,7 @@ CompassPort::CompassPort(QObject *parent) : QObject(parent)
 
 CompassPort::~CompassPort()
 {
+    port->close();
     emit finished();
 }
 
@@ -47,7 +48,7 @@ void CompassPort::on()
             qDebug()<<"Error while opening";
         }
     }
-    if(port->isOpen() && port->waitForReadyRead(1000))
+    if(port->isOpen() && port->waitForReadyRead(100))
     {
         QString data;
         QByteArray ByteArray;
@@ -55,7 +56,7 @@ void CompassPort::on()
 
         while(m_state)
         {
-            if(port->waitForReadyRead(1))
+            //if(port->waitForReadyRead(1))
             {
                 qint64 byteAvail = port->bytesAvailable();
                 qApp->processEvents();

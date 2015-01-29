@@ -1,7 +1,7 @@
 import QtQuick 2.2
 import QtQuick.Window 2.1
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
+//import QtQuick.Controls 1.1
+//import QtQuick.Controls.Styles 1.1
 
 Window {
     id: window1
@@ -14,40 +14,158 @@ Window {
     property string gradientcolor0: "#FF7C7C7C"
     property string gradientcolor1: "#FF4E4E4E"
 
+
     Rectangle
     {
         id: rectangle1
-        //anchors.fill: parent
-    anchors.fill: parent
+        anchors.fill: parent
+        //width: 1440
+        //height: 980
 
+        SettingsQML
+        {
+            id:settingsDisplay
+            property bool settingsSlided: false
+            width: window1.width
+            height: window1.height
+            anchors.right: parent.right
+            anchors.rightMargin: -window1.width
+            z:2
+        }
         Image {
             id: backgrnCompass
-            anchors.centerIn: parent
-            z: 2
+            width: 910
+            height: 910
+            property bool slided: false
+            anchors.top: parent.top
+            anchors.topMargin: 0
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.horizontalCenterOffset: 0
+            z: 1
             source: "content/baggraund.png"
             Image {
                 id: smallNeedle
-                x: 365
+                x: 454
                 y: 16
                 width: 7
+                anchors.horizontalCenterOffset: -3
+                anchors.verticalCenterOffset: -328
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent.verticalCenter
                 source: "content/needleSmall.png"
             }
         }
+        ParallelAnimation {
+            id: slideForward
+            PropertyAnimation {
+                target: backgrnCompass
+                properties: "slided"
+                to: true
+                duration: 0
+            }
+            PropertyAnimation {
+                target: backgrnCompass
+                properties: "anchors.horizontalCenterOffset"
+                to: -window1.width/4+100
+                duration: 300
+            }
+            PropertyAnimation {
+                target: settingsDisplay
+                properties: "anchors.rightMargin"
+                to: 0
+                duration: 300
+            }
+        }
+        ParallelAnimation {
+            id: slideBack
+            PropertyAnimation {
+                target: backgrnCompass
+                properties: "slided"
+                to: false
+                duration: 0
+            }
+            PropertyAnimation {
+                target: backgrnCompass
+                properties: "anchors.horizontalCenterOffset"
+                to: 0
+                duration: 300
+            }
+            PropertyAnimation {
+                target: settingsDisplay
+                properties: "anchors.rightMargin"
+                to: -settingsDisplay.width
+                duration: 300
+            }
+        }
 
+        ParallelAnimation {
+            id: slideLCDForward
+            PropertyAnimation {
+                target: settingsDisplay
+                properties: "settingsSlided"
+                to: true
+                duration: 0
+            }
+            PropertyAnimation {
+                target: lcdDisplay
+                properties: "anchors.horizontalCenterOffset"
+                to: -window1.width/2+200
+                duration: 300
+            }
+            PropertyAnimation {
+                target: lcdDisplay
+                properties: "anchors.verticalCenterOffset"
+                to: -window1.height/2+200
+                duration: 300
+            }
+            PropertyAnimation {
+                target: settingsDisplay
+                properties: "anchors.rightMargin"
+                to: 0
+                duration: 300
+            }
+        }
+        ParallelAnimation {
+            id: slideLCDBack
+            PropertyAnimation {
+                target: settingsDisplay
+                properties: "settingsSlided"
+                to: false
+                duration: 0
+            }
+            PropertyAnimation {
+                target: lcdDisplay
+                properties: "anchors.horizontalCenterOffset"
+                to: 0
+                duration: 300
+            }
+            PropertyAnimation {
+                target: lcdDisplay
+                properties: "anchors.verticalCenterOffset"
+                to: 0
+                duration: 300
+            }
+            PropertyAnimation {
+                target: settingsDisplay
+                properties: "anchors.rightMargin"
+                to: -window1.width
+                duration: 300
+            }
+        }
         Image {
             id: compass10
             x: 370
-            anchors.centerIn: parent
-            z: 3
-            width: 700
-            height: 700
+            anchors.centerIn: backgrnCompass
+            z: 1
+            width: backgrnCompass.width/1.3239
+            height: backgrnCompass.width/1.3239
             anchors.horizontalCenterOffset: -3
-            source: "content/kompasD12.png"
+            source: "content/compass10.png"
             transform: Rotation{
                 angle: -fract_part*3.6
                 axis.z: 1
-                origin.x: 350
-                origin.y: 350
+                origin.x: compass10.width/2
+                origin.y: compass10.height/2
                 Behavior on angle
                    {
                        SpringAnimation
@@ -61,16 +179,16 @@ Window {
 
         Image {
             id: compass360
-            anchors.centerIn: parent
-            z: 3
-            width: 700
-            height: 700
+            anchors.centerIn: backgrnCompass
+            z: 1
+            width: backgrnCompass.width/1.0217
+            height: backgrnCompass.width/1.0217
             source: "content/kompas1(720).png"
             transform: Rotation{
                 angle: -angle_value
                 axis.z: 1
-                origin.x: 350
-                origin.y: 350
+                origin.x: compass360.width/2
+                origin.y: compass360.height/2
                 Behavior on angle
                    {
                        SpringAnimation
@@ -84,8 +202,10 @@ Window {
 
         Image {
             id: border
+            clip: false
+            visible: false
             anchors.centerIn: parent
-            z: 3
+            z: 1
             source: "content/ramka.png"
         }
 
@@ -104,20 +224,23 @@ Window {
         Rectangle
         {
             id: lcdDisplay
-            z: 5
-            width: 177
-            height: 85
+            z: 3
+            width: 340
+            height: 160
             border.width: 3
-            border.color: "green"
+            border.color: "black"
             color: "#000000"
-            anchors.centerIn: parent
+            anchors.horizontalCenter: backgrnCompass.horizontalCenter
+            anchors.verticalCenter: backgrnCompass.verticalCenter
+            anchors.horizontalCenterOffset: 0
+            anchors.verticalCenterOffset: 0
             FontLoader { id: a_LCDNovaObl; source: "content/a_LCDNovaObl.ttf" }
             Text
             {
                 id: lcdNumbers
                 anchors.centerIn: parent
-                text: full_angle%360
-                font.pixelSize: 50
+                text: afterComma === 0 ? full_angle%360+".0" : full_angle%360
+                font.pixelSize: 150
                 font.family: a_LCDNovaObl.name
                 style: Text.Outline
                 styleColor: "blue"
@@ -254,6 +377,7 @@ Window {
             width: 200
             height: 100
             radius: 7
+            z: 3
             anchors.top: parent.top
             anchors.topMargin: 80
             anchors.right: parent.right
@@ -263,7 +387,9 @@ Window {
                 id: menuText
                 anchors.centerIn: parent;
                 text: "Настройки"
-                font.pixelSize: 15
+                style: Text.Normal
+                font.bold: true
+                font.pixelSize: 25
                 color: "#FFFFFF"
             }
             gradient: Gradient { // добавление градиента
@@ -317,7 +443,9 @@ Window {
                 hoverEnabled: true
                 onEntered: bmenuEnterAnim.start()
                 onExited: bmenuExitAnim.start()
-                onClicked: compass.changeSettings()
+                //onClicked: backgrnCompass.slided = !backgrnCompass.slided
+                //onClicked: backgrnCompass.slided === false ? slideForward.start():slideBack.start()
+                onClicked:settingsDisplay.settingsSlided === false ? slideLCDForward.start():slideLCDBack.start()
             }
 
         }
@@ -330,13 +458,15 @@ Window {
             anchors.topMargin: 25
             visible: true
             radius: 7
+            z: 0
             anchors.right: parent.right
             anchors.rightMargin: 8
             Text {
                 id: colotText
                 anchors.centerIn: parent;
                 text: "Изменить фон"
-                font.pixelSize: 15
+                font.bold: true
+                font.pixelSize: menuText.font.pixelSize
                 color: "#FFFFFF"
             }
             gradient: Gradient { // добавление градиента
@@ -402,11 +532,14 @@ Window {
             anchors.topMargin: 25
             visible: true
             radius: 7
+            z: 3
             Text {
                 id: tmcText
                 anchors.centerIn: parent
-                text: trueMagneticCourse === true ? "Истинный курс":"Магнитный курс"
-                font.pixelSize: 15
+                //text: trueMagneticCourse === true ? "Истинный курс":"Магнитный курс"
+                text: "animazciya #2"
+                font.bold: true
+                font.pixelSize: menuText.font.pixelSize
                 color: "#FFFFFF"
             }
             gradient: Gradient { // добавление градиента
@@ -459,7 +592,8 @@ Window {
                 hoverEnabled: true
                 onEntered: tmcEnterAnim.start()
                 onExited: tmcExitAnim.start()
-                onClicked: compass.changeTrueMagneticCourse();
+                //onClicked: compass.changeTrueMagneticCourse();
+                onClicked: backgrnCompass.slided === false ? slideForward.start():slideBack.start()
             }
         }
         Rectangle
@@ -473,11 +607,13 @@ Window {
             anchors.top: colorButton.bottom
             anchors.topMargin: 25
             radius: 7
+            z: 0
             Text {
                 id: compText
                 anchors.centerIn: parent
                 text: "Kомпенсация"
-                font.pixelSize: 15
+                font.bold: true
+                font.pixelSize: menuText.font.pixelSize
                 color: "#FFFFFF"
             }
             gradient: Gradient { // добавление градиента
@@ -545,11 +681,13 @@ Window {
             anchors.top: compButton.bottom
             anchors.topMargin: 25
             radius: 7
+            z: 0
             Text {
                 id:  infoButtonText
                 anchors.centerIn: parent;
                 text: "Доп. информация"
-                font.pixelSize: 15
+                font.bold: true
+                font.pixelSize: menuText.font.pixelSize-3
                 color: "#FFFFFF"
             }
             gradient: Gradient { // добавление градиента
@@ -617,13 +755,15 @@ Window {
             anchors.topMargin: 25
             visible: true
             radius: 7
+            z: 0
             anchors.right: parent.right
             anchors.rightMargin: 8
             Text {
                 id:  sklButtonText
                 anchors.centerIn: parent;
                 text: "Склонение"
-                font.pixelSize: 15
+                font.bold: true
+                font.pixelSize: menuText.font.pixelSize
                 color: "#FFFFFF"
             }
             gradient: Gradient { // добавление градиента

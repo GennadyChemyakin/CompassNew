@@ -16,7 +16,8 @@ Settings::Settings(QWidget *parent) :
     ui->bit_stop->setCurrentIndex(0);
     ui->parity_c->setCurrentIndex(0);
     ui->Com_n->setCurrentIndex(0);
-    m_name_COM=ui->Com_n->currentText();
+    //m_name_COM=ui->Com_n->currentText();
+    m_name_COM = "ttyUSB0";
     m_interface=0;
     m_Baud_rate=9600;
     m_Number_of_data_bits=8;
