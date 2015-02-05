@@ -6,7 +6,7 @@ import QtQuick.Window 2.1
 Window {
     id: window1
     width: 1440
-    height: 980
+    height: 900
     title: qsTr("Compass")
 
     visible: true
@@ -18,9 +18,9 @@ Window {
     Rectangle
     {
         id: rectangle1
-        anchors.fill: parent
-        //width: 1440
-        //height: 980
+        //anchors.fill: parent
+        width: 1440
+        height: 900
 
         SettingsQML
         {
@@ -109,13 +109,19 @@ Window {
             PropertyAnimation {
                 target: lcdDisplay
                 properties: "anchors.horizontalCenterOffset"
-                to: -window1.width/2+200
+                to: -window1.width/2+lcdDisplay.width/2+50
                 duration: 300
             }
             PropertyAnimation {
                 target: lcdDisplay
                 properties: "anchors.verticalCenterOffset"
-                to: -window1.height/2+200
+                to: -window1.height/2+lcdDisplay.height/2+50
+                duration: 300
+            }
+            PropertyAnimation {
+                target: lcdDisplay
+                properties: "border.color"
+                to: "white"
                 duration: 300
             }
             PropertyAnimation {
@@ -143,6 +149,12 @@ Window {
                 target: lcdDisplay
                 properties: "anchors.verticalCenterOffset"
                 to: 0
+                duration: 300
+            }
+            PropertyAnimation {
+                target: lcdDisplay
+                properties: "border.color"
+                to: "black"
                 duration: 300
             }
             PropertyAnimation {
@@ -374,14 +386,15 @@ Window {
         Rectangle
         {
             id: menuButton
+            x: 1208
             width: 200
             height: 100
             radius: 7
             z: 3
             anchors.top: parent.top
-            anchors.topMargin: 80
+            anchors.topMargin: 779
             anchors.right: parent.right
-            anchors.rightMargin: 8
+            anchors.rightMargin: 32
             visible: true
             Text {
                 id: menuText
@@ -532,12 +545,12 @@ Window {
             anchors.topMargin: 25
             visible: true
             radius: 7
-            z: 3
+            z: 0
             Text {
                 id: tmcText
                 anchors.centerIn: parent
                 //text: trueMagneticCourse === true ? "Истинный курс":"Магнитный курс"
-                text: "animazciya #2"
+                text: "True/Magnetic"
                 font.bold: true
                 font.pixelSize: menuText.font.pixelSize
                 color: "#FFFFFF"

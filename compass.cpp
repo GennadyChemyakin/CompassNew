@@ -4,7 +4,6 @@
 Compass::Compass(QQmlContext *context, QObject *parent) :
     QObject(parent)
 {
-
     m_comp_state=1;
     m_dempf=2;
     m_tmCourse = true;
@@ -192,6 +191,7 @@ double Compass::Round(double st,int count)
 void Compass::changeSkl()
 {
     dial = new CoefDial();
+    dial->setModal(true);
     dial->show();
 }
 
