@@ -4,78 +4,116 @@ import QtQuick.Controls.Styles 1.1
 
 Rectangle {
     id: comprect
-    width: 1028
-    height: 900
+    width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
+    height: window1.height
+    color: "#00000000"
     Image {
+
+
         id: compensationBackground
         anchors.rightMargin: 0
         anchors.bottomMargin: 0
         anchors.leftMargin: 0
         anchors.topMargin: 0
-        source: "content/steel4.png"
+        //source: "content/steel4.png"
         anchors.fill: parent
 
         ProgressBar {
+            Connections {
+                    target: compass
+                    onBinsChanged: progressBar1.value = compass.getBins(0)*16/100
+            }
             id: progressBar1
             x: 166
             width: 400
             height: 50
             anchors.top: parent.top
             anchors.topMargin: 166
+            value: compass.getBins(0)*16/100
         }
 
         ProgressBar {
+            Connections {
+                    target: compass
+                    onBinsChanged: progressBar1.value = compass.getBins(1)*16/100
+            }
             id: progressBar2
             x: 166
             width: 400
             height: 50
             anchors.top: progressBar1.bottom
             anchors.topMargin: 30
+            value: compass.getBins(1)*16/100
         }
 
         ProgressBar {
+            Connections {
+                    target: compass
+                    onBinsChanged: progressBar1.value = compass.getBins(2)*16/100
+            }
             id: progressBar3
             x: 166
             width: 400
             height: 50
             anchors.top: progressBar2.bottom
             anchors.topMargin: 30
+            value: compass.getBins(2)*16/100
         }
 
         ProgressBar {
+            Connections {
+                    target: compass
+                    onBinsChanged: progressBar1.value = compass.getBins(3)*16/100
+            }
             id: progressBar4
             x: 166
             width: 400
             height: 50
             anchors.top: progressBar3.bottom
             anchors.topMargin: 30
+            value: ompass.getBins(3)*16/100
         }
 
         ProgressBar {
+            Connections {
+                    target: compass
+                    onBinsChanged: progressBar1.value = compass.getBins(4)*16/100
+            }
             id: progressBar5
             x: 166
             width: 400
             height: 50
             anchors.top: progressBar4.bottom
             anchors.topMargin: 30
+            value: compass.getBins(4)*16/100
         }
 
         ProgressBar {
+            Connections {
+                    target: compass
+                    onBinsChanged: progressBar1.value = compass.getBins(5)*16/100
+            }
             id: progressBar6
             x: 166
             width: 400
             height: 50
             anchors.top: progressBar5.bottom
             anchors.topMargin: 30
+            value: compass.getBins(5)*16/100
         }
 
         ProgressBar {
+            Connections {
+                    target: compass
+                    onBinsChanged: progressBar1.value = compass.getBins(6)*16/100
+            }
             id: progressBar7
             x: 166
             width: 400
             height: 50
             anchors.top: progressBar6.bottom
             anchors.topMargin: 30
+            value: compass.getBins(6)*16/100
         }
 
         Button {
@@ -98,6 +136,7 @@ Rectangle {
                         text: control.text
                       }
             }
+            onClicked: compass.initComp();
         }
 
         Button {
@@ -120,6 +159,7 @@ Rectangle {
                         text: control.text
                       }
             }
+            onClicked: compass.stopComp();
         }
 
         Button {
@@ -256,6 +296,7 @@ Rectangle {
             height: 50
             anchors.top: progressBar7.bottom
             anchors.topMargin: 30
+            value: bin7Value/100
         }
     }
 }

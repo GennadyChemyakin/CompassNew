@@ -28,6 +28,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     m_con1=0;
     m_summ_ang=0;
     m_infoVisibility=false;
+    m_progress=0;
 
     context_m = context;
     dialComp = new DialogComp();
@@ -54,7 +55,10 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     connect(compport,SIGNAL(compFinished()),dialComp,SLOT(setBarstoDefault()));
     connect(compport,SIGNAL(dialCompProgressChanged(int,int)),dialComp,SLOT(setBar(int,int)));
     connect(compport,SIGNAL(dialCompStatusChanged(QString)),dialComp,SLOT(setLabel(QString)));
-    connect(dialComp,SIGNAL(dialClosed()),compport,SLOT(stopCompensation()));
+    connect(this,SIGNAL(compClosed()),compport,SLOT(stopCompensation()));
+    connect(compport,SIGNAL(dialCompProgressChanged(int,int)),this,SLOT(updateCompensationInfo(int,int)));
+    connect(compport,SIGNAL(compFinished()),this,SLOT(setBarstoDefault()));
+
 
 
     portThread = new QThread;
@@ -69,24 +73,88 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     timer->start(11);
     //qDebug()<<QThread::currentThreadId();
 
+    context_m->setContextProperty("compass",this);
+
     context_m->setContextProperty("trueMagneticCourse",m_tmCourse);
     context_m->setContextProperty("m_background",m_background);
     context_m->setContextProperty("infoVisibility",m_infoVisibility);
-    context_m->setContextProperty("compass",this);
-    context_m->setContextProperty("angle_value",m_angle);
+
+    //context_m->setContextProperty("angle_value",m_angle);
     context_m->setContextProperty("fract_part",m_fractPart);
     context_m->setContextProperty("full_angle",m_fullangle);
     context_m->setContextProperty("afterComma",m_afterComma);
 
+    //fignay
+    /*context_m->setContextProperty("bin0Value",m_progress);
+    context_m->setContextProperty("bin1Value",m_progress);
+    context_m->setContextProperty("bin2Value",m_progress);
+    context_m->setContextProperty("bin3Value",m_progress);
+    context_m->setContextProperty("bin4Value",m_progress);
+    context_m->setContextProperty("bin5Value",m_progress);
+    context_m->setContextProperty("bin6Value",m_progress);
+    context_m->setContextProperty("bin7Value",m_progress);*/
 
+    //m_bins.bin0=m_bins.bin4=56;
 
 }
 
 Compass::~Compass()
 {
     delete compport;
-    delete portThread;
+    //delete portThread;
     delete timer;
+}
+void Compass::updateCompensationInfo(int binNum, int progress)
+{
+    m_progress = progress;
+    switch(binNum)
+    {
+    case 0:
+        //context_m->setContextProperty("bin0Value",m_progress);
+        m_bins.bin0=progress;
+        break;
+    case 1:
+        //context_m->setContextProperty("bin1Value",m_progress);
+        m_bins.bin1=progress;
+        break;
+    case 2:
+        //context_m->setContextProperty("bin2Value",m_progress);
+        m_bins.bin2=progress;
+        break;
+    case 3:
+        //context_m->setContextProperty("bin3Value",m_progress);
+        m_bins.bin3=progress;
+        break;
+    case 4:
+        //context_m->setContextProperty("bin4Value",m_progress);
+        m_bins.bin4=progress;
+        break;
+    case 5:
+        //context_m->setContextProperty("bin5Value",m_progress);
+        m_bins.bin5=progress;
+        break;
+    case 6:
+        //context_m->setContextProperty("bin6Value",m_progress);
+        m_bins.bin6=progress;
+        break;
+    case 7:
+        //context_m->setContextProperty("bin7Value",m_progress);
+        m_bins.bin7=progress;
+        break;
+    }
+    emit binsChanged();
+}
+
+void Compass::setBarstoDefault()
+{
+    context_m->setContextProperty("bin0Value",0);
+    context_m->setContextProperty("bin1Value",0);
+    context_m->setContextProperty("bin2Value",0);
+    context_m->setContextProperty("bin3Value",0);
+    context_m->setContextProperty("bin4Value",0);
+    context_m->setContextProperty("bin5Value",0);
+    context_m->setContextProperty("bin6Value",0);
+    context_m->setContextProperty("bin7Value",0);
 }
 
 void Compass::setAngle(double a)
@@ -137,9 +205,9 @@ void Compass::setAngle(double a)
     m_fractPart=m_fractPart-(m_fractPart-m_last2)/(m_dempf*2);
     m_last2=m_fractPart;
     qApp->processEvents();
-    emit angleChanged();
 
-    context_m->setContextProperty("angle_value",m_angle);
+    //context_m->setContextProperty("angle_value",m_angle);
+    emit angleChanged();
     context_m->setContextProperty("fract_part",m_fractPart);
     context_m->setContextProperty("full_angle",m_fullangle);
     context_m->setContextProperty("afterComma",m_afterComma);
@@ -198,6 +266,7 @@ void Compass::changeSkl()
 void Compass::initComp()
 {
     emit compensationRequest();
+    //emit binsChanged();
 }
 
 void Compass::changeTrueMagneticCourse()

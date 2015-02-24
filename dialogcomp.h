@@ -22,6 +22,7 @@ public slots:
     void setBarstoDefault();
 signals:
     void dialClosed();
+    void barChanged(int,int);
 private:
     Ui::DialogComp *ui;
     void closeEvent(QCloseEvent *);

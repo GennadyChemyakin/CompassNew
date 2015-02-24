@@ -19,30 +19,39 @@ void DialogComp::setBar(int binNum, int progress)
     {
     case 0:
         ui->bin0->setValue(progress);
+        emit barChanged(binNum,progress);
         break;
     case 1:
         ui->bin1->setValue(progress);
+        emit barChanged(binNum,progress);
         break;
     case 2:
         ui->bin2->setValue(progress);
+        emit barChanged(binNum,progress);
         break;
     case 3:
         ui->bin3->setValue(progress);
+        emit barChanged(binNum,progress);
         break;
     case 4:
         ui->bin4->setValue(progress);
+        emit barChanged(binNum,progress);
         break;
     case 5:
         ui->bin5->setValue(progress);
+        emit barChanged(binNum,progress);
         break;
     case 6:
         ui->bin6->setValue(progress);
+        emit barChanged(binNum,progress);
         break;
     case 7:
         ui->bin7->setValue(progress);
+        emit barChanged(binNum,progress);
         break;
     }
 }
+
 
 void DialogComp::setLabel(QString msg)
 {
@@ -51,14 +60,14 @@ void DialogComp::setLabel(QString msg)
 
 void DialogComp::setBarstoDefault()
 {
-    ui->bin0->setValue(0);
-    ui->bin1->setValue(0);
-    ui->bin2->setValue(0);
-    ui->bin3->setValue(0);
-    ui->bin4->setValue(0);
-    ui->bin5->setValue(0);
-    ui->bin6->setValue(0);
-    ui->bin7->setValue(0);
+    this->setBar(0,0);
+    this->setBar(1,0);
+    this->setBar(2,0);
+    this->setBar(3,0);
+    this->setBar(4,0);
+    this->setBar(5,0);
+    this->setBar(6,0);
+    this->setBar(7,0);
 }
 
 void DialogComp::closeEvent(QCloseEvent *event)

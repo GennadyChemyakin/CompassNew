@@ -5,11 +5,12 @@ import QtQuick.Window 2.1
 
 Window {
     id: window1
-    width: 1440
-    height: 900
+    //width: 1980
+    //height: 1020
     title: qsTr("Compass")
+    visibility: "Maximized"
 
-    visible: true
+    //visible: true
 
     property string gradientcolor0: "#FF7C7C7C"
     property string gradientcolor1: "#FF4E4E4E"
@@ -18,9 +19,9 @@ Window {
     Rectangle
     {
         id: rectangle1
-        //anchors.fill: parent
-        width: 1440
-        height: 900
+        anchors.fill: parent
+        //width: 1440
+        //height: 900
 
         SettingsQML
         {
@@ -115,7 +116,7 @@ Window {
             PropertyAnimation {
                 target: lcdDisplay
                 properties: "anchors.verticalCenterOffset"
-                to: -window1.height/2+lcdDisplay.height/2+50
+                to: -window1.height/2+lcdDisplay.height+50
                 duration: 300
             }
             PropertyAnimation {
@@ -191,13 +192,18 @@ Window {
 
         Image {
             id: compass360
+            /*Connections {
+                    target: compass
+                    onAngleChanged: rotation1.angle = -compass.angle()
+            }*/
             anchors.centerIn: backgrnCompass
             z: 1
             width: backgrnCompass.width/1.0217
             height: backgrnCompass.width/1.0217
             source: "content/kompas1(720).png"
             transform: Rotation{
-                angle: -angle_value
+                id: rotation1
+                angle: -compass.angle
                 axis.z: 1
                 origin.x: compass360.width/2
                 origin.y: compass360.height/2
@@ -237,8 +243,8 @@ Window {
         {
             id: lcdDisplay
             z: 3
-            width: 340
-            height: 160
+            width: 360
+            height: 170
             border.width: 3
             border.color: "black"
             color: "#000000"
@@ -390,16 +396,16 @@ Window {
             width: 200
             height: 100
             radius: 7
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 20
             z: 3
-            anchors.top: parent.top
-            anchors.topMargin: 779
             anchors.right: parent.right
             anchors.rightMargin: 32
             visible: true
             Text {
                 id: menuText
                 anchors.centerIn: parent;
-                text: "Настройки"
+                text: settingsDisplay.settingsSlided === false ? "Настройки":"Компас"
                 style: Text.Normal
                 font.bold: true
                 font.pixelSize: 25

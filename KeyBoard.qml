@@ -3,16 +3,18 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 
 Rectangle {
-    width: 1028
-    height: 900
+    width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
+    height: window1.height
+    color: "#00000000"
     Image {
         id: compensationBackground
+        visible: true
         anchors.rightMargin: 0
         anchors.bottomMargin: 0
         anchors.leftMargin: 0
         anchors.topMargin: 0
         anchors.fill: parent
-        source: "content/steel4.png"
+        //source: "content/steel4.png"
 
         Button {
             id: but7

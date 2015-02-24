@@ -4,8 +4,8 @@ import QtQuick.Controls.Styles 1.1
 
 Rectangle {
     id: settings
-    width: 1440
-    height: 900
+    width: window1.width
+    height: window1.height
     property int buttonWidth:340
     property int buttonHeight:100
     property int buttonNum:0
@@ -16,8 +16,8 @@ Rectangle {
     {
         id:compensationDisplay
         x: 1440
-        width: 1010
-        height: 900
+        width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
+        height: settings.height
         anchors.rightMargin: -compensationDisplay.width
         anchors.right: parent.right
         z:2
@@ -26,8 +26,8 @@ Rectangle {
     {
         id:keyboardDisplay
         x: 1440
-        width: 1010
-        height: 900
+        width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
+        height: settings.height
         anchors.rightMargin: -keyboardDisplay.width
         anchors.right: parent.right
         z:2
