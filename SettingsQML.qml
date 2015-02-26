@@ -409,11 +409,14 @@ Rectangle {
             }
         }
 
-        Button {
+        Button
+        {
             id: button5
             width: settings.buttonWidth
             height:settings.buttonHeight
-            text: qsTr("Истинный/Магнитный курс")
+            text: trueMagneticCourse === 1 ? qsTr("Магнитный курс") : qsTr("Истинный курс")
+            checked: false
+            checkable: true
             anchors.left: parent.left
             anchors.leftMargin: 50
             anchors.top: button4.bottom
@@ -427,22 +430,9 @@ Rectangle {
                         font.pointSize: 18
                         color: "black"
                         text: control.text
-                      }
-                    background: Rectangle {
-                        implicitWidth: 100
-                        implicitHeight: 25
-                        border.width: control.activeFocus ? 2 : 1
-                        border.color: "#888"
-                        radius: 4
-                        color: buttonNum === 5 ? "#3960f0":"white"
-
                     }
-                }
-            onClicked:
-            {
-                slideCompBack.start()
-                buttonNum = 5
-            }
+                  }
+            onClicked:compass.changeTrueMagneticCourse()
         }
 
         Rectangle {

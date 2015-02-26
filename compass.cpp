@@ -6,7 +6,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
 {
     m_comp_state=1;
     m_dempf=2;
-    m_tmCourse = true;
+    m_tmCourse = 0;
     m_coef_A=0;
     m_last=0;
     m_last2=0;
@@ -200,6 +200,7 @@ void Compass::setAngle(double a)
     m_lastAngle=m_angle;
     m_angle=m_angle+360*m_con;
     //m_angle=m_angle-(m_angle-m_last)/(m_dempf*2);
+    m_angle=m_last+(m_angle-m_last)*0.2;
     m_last=m_angle;
 
     if(m_fractPart-m_lastAngle1 > 50)
@@ -212,7 +213,7 @@ void Compass::setAngle(double a)
     }
     m_lastAngle1=m_fractPart;
     m_fractPart=m_fractPart+100*m_con1;
-    //m_fractPart=m_fractPart-(m_fractPart-m_last2)/(m_dempf*2);
+    m_fractPart=m_last2+(m_fractPart-m_last2)*0.2;
     m_last2=m_fractPart;
     qApp->processEvents();
 
@@ -344,13 +345,14 @@ void Compass::changeTrueMagneticCourse()
 {
     if(!m_tmCourse)
     {
+        context_m->setContextProperty("trueMagneticCourse",1);
         m_tmCourse = true;
     }
     else
     {
+        context_m->setContextProperty("trueMagneticCourse",0);
         m_tmCourse = false;
     }
-    context_m->setContextProperty("trueMagneticCourse",m_tmCourse);
 }
 
 void Compass::changeBackground(int num)

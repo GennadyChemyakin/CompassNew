@@ -6,6 +6,8 @@ Rectangle {
     id: comprect
     width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
     height: window1.height
+    //width: 1980
+    //height: 1020
     color: "#00000000"
     Image {
 
@@ -26,7 +28,7 @@ Rectangle {
             id: progressBar1
             x: 166
             width: 400
-            height: 50
+            height: 70
             anchors.top: parent.top
             anchors.topMargin: 166
             value: compass.getBins(0)/100
@@ -40,7 +42,7 @@ Rectangle {
             id: progressBar2
             x: 166
             width: 400
-            height: 50
+            height: 70
             anchors.top: progressBar1.bottom
             anchors.topMargin: 30
             value: compass.getBins(1)/100
@@ -54,7 +56,7 @@ Rectangle {
             id: progressBar3
             x: 166
             width: 400
-            height: 50
+            height: 70
             anchors.top: progressBar2.bottom
             anchors.topMargin: 30
             value: compass.getBins(2)/100
@@ -68,7 +70,7 @@ Rectangle {
             id: progressBar4
             x: 166
             width: 400
-            height: 50
+            height: 70
             anchors.top: progressBar3.bottom
             anchors.topMargin: 30
             value: compass.getBins(3)/100
@@ -82,7 +84,7 @@ Rectangle {
             id: progressBar5
             x: 166
             width: 400
-            height: 50
+            height: 70
             anchors.top: progressBar4.bottom
             anchors.topMargin: 30
             value: compass.getBins(4)/100
@@ -96,7 +98,7 @@ Rectangle {
             id: progressBar6
             x: 166
             width: 400
-            height: 50
+            height: 70
             anchors.top: progressBar5.bottom
             anchors.topMargin: 30
             value: compass.getBins(5)/100
@@ -110,7 +112,7 @@ Rectangle {
             id: progressBar7
             x: 166
             width: 400
-            height: 50
+            height: 70
             anchors.top: progressBar6.bottom
             anchors.topMargin: 30
             value: compass.getBins(6)/100
@@ -123,7 +125,7 @@ Rectangle {
             id: progressBar8
             x: 166
             width: 400
-            height: 50
+            height: 70
             anchors.top: progressBar7.bottom
             anchors.topMargin: 30
             value: compass.getBins(7)/100
@@ -132,8 +134,8 @@ Rectangle {
         Button {
             id: button1
             x: 662
-            width: 308
-            height: 84
+            width: 400
+            height: 130
             text: qsTr("Начать компенсацию")
             anchors.top: parent.top
             anchors.topMargin: 166
@@ -143,7 +145,7 @@ Rectangle {
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: 17
+                        font.pointSize: 20
                         font.bold: true
                         color: "black"
                         text: control.text
@@ -155,8 +157,8 @@ Rectangle {
         Button {
             id: button2
             x: 662
-            width: 308
-            height: 84
+            width: 400
+            height: 130
             text: qsTr("Остановить компенсацию")
             anchors.top: button1.bottom
             anchors.topMargin: 30
@@ -166,7 +168,7 @@ Rectangle {
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: 14
+                        font.pointSize: 17
                         font.bold: true
                         color: "black"
                         text: control.text
@@ -178,8 +180,8 @@ Rectangle {
         Button {
             id: button3
             x: 662
-            width: 308
-            height: 84
+            width: 400
+            height: 130
             text: qsTr("Сбросить датчик")
             anchors.top: button2.bottom
             anchors.topMargin: 30
@@ -190,7 +192,7 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
                         font.bold: true
-                        font.pointSize: 17
+                        font.pointSize: 20
                         color: "black"
                         text: control.text
                       }
@@ -205,6 +207,8 @@ Rectangle {
             height: 50
             color: "#1d00b6"
             text: qsTr("N")
+            anchors.horizontalCenter: progressBar1.horizontalCenter
+            anchors.verticalCenter: progressBar1.verticalCenter
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: 27
@@ -218,6 +222,8 @@ Rectangle {
             height: 50
             color: "#1d00b8"
             text: qsTr("NE")
+            anchors.horizontalCenter: progressBar2.horizontalCenter
+            anchors.verticalCenter: progressBar2.verticalCenter
             font.pixelSize: 27
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
@@ -231,6 +237,8 @@ Rectangle {
             height: 50
             color: "#1d00b8"
             text: qsTr("E")
+            anchors.horizontalCenter: progressBar3.horizontalCenter
+            anchors.verticalCenter: progressBar3.verticalCenter
             font.pixelSize: 27
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
@@ -244,6 +252,8 @@ Rectangle {
             height: 50
             color: "#1d00b8"
             text: qsTr("SE")
+            anchors.horizontalCenter: progressBar4.horizontalCenter
+            anchors.verticalCenter: progressBar4.verticalCenter
             font.pixelSize: 27
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
@@ -257,6 +267,8 @@ Rectangle {
             height: 50
             color: "#1d00b8"
             text: qsTr("S")
+            anchors.horizontalCenter: progressBar5.horizontalCenter
+            anchors.verticalCenter: progressBar5.verticalCenter
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: 27
             verticalAlignment: Text.AlignVCenter
@@ -270,6 +282,8 @@ Rectangle {
             height: 50
             color: "#1d00b8"
             text: qsTr("SW")
+            anchors.horizontalCenter: progressBar6.horizontalCenter
+            anchors.verticalCenter: progressBar6.verticalCenter
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: 27
             verticalAlignment: Text.AlignVCenter
@@ -283,6 +297,8 @@ Rectangle {
             height: 50
             color: "#1d00b8"
             text: qsTr("W")
+            anchors.horizontalCenter: progressBar7.horizontalCenter
+            anchors.verticalCenter: progressBar7.verticalCenter
             font.pixelSize: 27
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
@@ -296,6 +312,8 @@ Rectangle {
             height: 50
             color: "#1d00b8"
             text: qsTr("NW")
+            anchors.horizontalCenter: progressBar8.horizontalCenter
+            anchors.verticalCenter: progressBar8.verticalCenter
             z: 1
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: 27
@@ -303,5 +321,16 @@ Rectangle {
         }
 
 
+    }
+
+    TextField
+    {
+        id:compensationStatus
+        width: 400
+        height: 130
+        x: 662
+        text: qsTr("Сбросить датчик")
+        anchors.top: button3.bottom
+        anchors.topMargin: 30
     }
 }
