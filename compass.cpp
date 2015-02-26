@@ -29,6 +29,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     m_summ_ang=0;
     m_infoVisibility=false;
     m_progress=0;
+    skl_str="0";
 
     context_m = context;
     dialComp = new DialogComp();
@@ -58,10 +59,10 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     //compensation signals
     connect(this,SIGNAL(compensationRequest()),compport,SLOT(initComp()));
 
-    connect(compport,SIGNAL(compStarted()),dialComp,SLOT(show()));
-    connect(compport,SIGNAL(compFinished()),dialComp,SLOT(setBarstoDefault()));    
-    connect(compport,SIGNAL(dialCompProgressChanged(int,int)),dialComp,SLOT(setBar(int,int)));
-    connect(compport,SIGNAL(dialCompStatusChanged(QString)),dialComp,SLOT(setLabel(QString)));
+    //connect(compport,SIGNAL(compStarted()),dialComp,SLOT(show()));
+    //connect(compport,SIGNAL(compFinished()),dialComp,SLOT(setBarstoDefault()));
+    //connect(compport,SIGNAL(dialCompProgressChanged(int,int)),dialComp,SLOT(setBar(int,int)));
+    //connect(compport,SIGNAL(dialCompStatusChanged(QString)),dialComp,SLOT(setLabel(QString)));
 
     connect(this,SIGNAL(compClosed()),compport,SLOT(stopCompensation()));
     connect(compport,SIGNAL(dialCompProgressChanged(int,int)),this,SLOT(updateCompensationInfo(int,int)));
@@ -92,6 +93,9 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     context_m->setContextProperty("full_angle",m_fullangle);
     context_m->setContextProperty("afterComma",m_afterComma);
 
+    context_m->setContextProperty("skl_str",skl_str);
+
+
     //fignay
     /*context_m->setContextProperty("bin0Value",m_progress);
     context_m->setContextProperty("bin1Value",m_progress);
@@ -101,8 +105,6 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     context_m->setContextProperty("bin5Value",m_progress);
     context_m->setContextProperty("bin6Value",m_progress);
     context_m->setContextProperty("bin7Value",m_progress);*/
-
-    //m_bins.bin0=m_bins.bin4=56;
 
 }
 
@@ -197,7 +199,7 @@ void Compass::setAngle(double a)
     }
     m_lastAngle=m_angle;
     m_angle=m_angle+360*m_con;
-    m_angle=m_angle-(m_angle-m_last)/(m_dempf*2);
+    //m_angle=m_angle-(m_angle-m_last)/(m_dempf*2);
     m_last=m_angle;
 
     if(m_fractPart-m_lastAngle1 > 50)
@@ -210,7 +212,7 @@ void Compass::setAngle(double a)
     }
     m_lastAngle1=m_fractPart;
     m_fractPart=m_fractPart+100*m_con1;
-    m_fractPart=m_fractPart-(m_fractPart-m_last2)/(m_dempf*2);
+    //m_fractPart=m_fractPart-(m_fractPart-m_last2)/(m_dempf*2);
     m_last2=m_fractPart;
     qApp->processEvents();
 
@@ -219,6 +221,68 @@ void Compass::setAngle(double a)
     context_m->setContextProperty("fract_part",m_fractPart);
     context_m->setContextProperty("full_angle",m_fullangle);
     context_m->setContextProperty("afterComma",m_afterComma);
+}
+
+
+void Compass::addSKL(QString str)
+{
+    if(skl_str=="0" && (str=="<-" || str=="+/-" || str=="save"))
+    {
+        m_skl=skl_str.toDouble();
+        emit sklChanged();
+        return;
+    }
+    else if(str=="<-" || (skl_str=="0" && (str!="+0.1" || str!="-0.1")))
+    {
+        skl_str.remove(skl_str.size()-1,1);
+        if(str=="<-" && (skl_str.isEmpty() || skl_str=="-"))
+            skl_str="0";
+    }
+    else if(str=="save")
+    {
+        m_skl=skl_str.toDouble();
+        emit sklChanged();
+        return;
+    }
+    else if(str=="+0.1")
+    {
+        skl_str=QString::number(skl_str.toDouble()+0.1);
+        if(skl_str.toDouble()<-180.0)
+            skl_str="-180";
+        else if(skl_str.toDouble()>180.0)
+            skl_str="180";
+        context_m->setContextProperty("skl_str",skl_str);
+        return;
+    }
+    else if(str=="-0.1")
+    {
+        skl_str=QString::number(skl_str.toDouble()-0.1);
+        if(skl_str.toDouble()<-180.0)
+                skl_str="-180";
+            else if(skl_str.toDouble()>180.0)
+                skl_str="180";
+        context_m->setContextProperty("skl_str",skl_str);
+        return;
+    }
+    else if(str=="+/-")
+    {
+        skl_str=QString::number(skl_str.toDouble()*-1);
+        context_m->setContextProperty("skl_str",skl_str);
+        return;
+    }
+
+    if((str.toInt()>=0 || str.toInt()<=9) && str!= "<-")
+    {
+        if(skl_str.indexOf(".")!=-1 && skl_str.indexOf(".")!=skl_str.size()-1)
+            skl_str.remove(skl_str.size()-1,1);
+        skl_str+=str;
+        if(skl_str.toInt()<-180)
+            skl_str="-180";
+        else if(skl_str.toInt()>180)
+            skl_str="180";
+    }
+    context_m->setContextProperty("skl_str",skl_str);
+
 }
 
 void Compass::setRoll(double st)
@@ -274,7 +338,6 @@ void Compass::changeSkl()
 void Compass::initComp()
 {
     emit compensationRequest();
-    //emit binsChanged();
 }
 
 void Compass::changeTrueMagneticCourse()

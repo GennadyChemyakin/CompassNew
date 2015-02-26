@@ -55,6 +55,7 @@ signals:
 
     void binsChanged();
 
+
 public slots:
     void setAngle(double);
     double angle() const {return m_angle;}
@@ -102,6 +103,7 @@ public slots:
     void updateCompensationInfo(int,int);
     void setBarstoDefault();
     void stopComp(){emit compClosed();}
+    void addSKL(QString str);
 
 
 protected:
@@ -136,6 +138,7 @@ private:
     bool m_infoVisibility;
     double m_summ_ang;
     int m_progress;
+    QString skl_str;
 
 
     Bins m_bins;

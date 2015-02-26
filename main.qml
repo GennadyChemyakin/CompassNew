@@ -116,7 +116,7 @@ Window {
             PropertyAnimation {
                 target: lcdDisplay
                 properties: "anchors.verticalCenterOffset"
-                to: -window1.height/2+lcdDisplay.height+10
+                to: -window1.height/2+lcdDisplay.height
                 duration: 300
             }
             PropertyAnimation {

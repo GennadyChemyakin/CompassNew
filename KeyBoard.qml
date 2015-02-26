@@ -35,6 +35,28 @@ Rectangle {
                         text: control.text
                       }
             }
+            onClicked: compass.addSKL("7")
+        }
+        Button {
+            id: butPLUSMINUS
+            x: 718
+            width: 166
+            height: 107
+            text: qsTr("+/-")
+            anchors.top: textField1.bottom
+            anchors.topMargin: -106
+            style: ButtonStyle {
+                    label: Text {
+                        renderType: Text.NativeRendering
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        font.family: "Helvetica"
+                        font.pointSize: 27
+                        color: "black"
+                        text: control.text
+                      }
+            }
+            onClicked: compass.addSKL("+/-")
         }
 
         Button {
@@ -56,6 +78,7 @@ Rectangle {
                         text: control.text
                       }
             }
+            onClicked: compass.addSKL("8")
         }
 
         Button {
@@ -77,6 +100,7 @@ Rectangle {
                         text: control.text
                       }
             }
+            onClicked: compass.addSKL("9")
         }
 
         Button {
@@ -98,6 +122,7 @@ Rectangle {
                         text: control.text
                       }
             }
+            onClicked: compass.addSKL("4")
         }
 
         Button {
@@ -119,6 +144,7 @@ Rectangle {
                         text: control.text
                       }
             }
+            onClicked: compass.addSKL("5")
         }
 
         Button {
@@ -140,6 +166,7 @@ Rectangle {
                         text: control.text
                       }
             }
+            onClicked: compass.addSKL("6")
         }
 
         Button {
@@ -161,6 +188,7 @@ Rectangle {
                         text: control.text
                       }
             }
+            onClicked: compass.addSKL("1")
         }
 
         Button {
@@ -182,6 +210,7 @@ Rectangle {
                         text: control.text
                       }
             }
+            onClicked: compass.addSKL("2")
         }
 
         Button {
@@ -203,6 +232,7 @@ Rectangle {
                         text: control.text
                       }
             }
+            onClicked: compass.addSKL("3")
         }
 
         Button {
@@ -224,6 +254,7 @@ Rectangle {
                         text: control.text
                       }
             }
+            onClicked: compass.addSKL("save")
         }
 
         Button {
@@ -245,6 +276,7 @@ Rectangle {
                         text: control.text
                       }
             }
+            onClicked: compass.addSKL("0")
         }
 
         TextField {
@@ -255,6 +287,8 @@ Rectangle {
             height: 106
             z: 1
             placeholderText: qsTr("Text Field")
+            text: skl_str
+            font.pixelSize: 88
         }
 
         Button {
@@ -275,6 +309,7 @@ Rectangle {
                         text: control.text
                       }
             }
+            onClicked: compass.addSKL("<-")
         }
 
         Button {
@@ -283,7 +318,7 @@ Rectangle {
             y: 365
             width: 166
             height: 107
-            text: qsTr("+")
+            text: qsTr("+0.1")
             anchors.top: textField1.bottom
             anchors.topMargin: 79
             style: ButtonStyle {
@@ -297,6 +332,7 @@ Rectangle {
                         text: control.text
                       }
             }
+            onClicked: compass.addSKL("+0.1")
         }
 
         Button {
@@ -305,7 +341,7 @@ Rectangle {
             y: 495
             width: 166
             height: 107
-            text: qsTr("-")
+            text: qsTr("-0.1")
             anchors.top: textField1.bottom
             anchors.topMargin: 213
             style: ButtonStyle {
@@ -319,6 +355,7 @@ Rectangle {
                         text: control.text
                       }
             }
+            onClicked: compass.addSKL("-0.1")
         }
     }
 
