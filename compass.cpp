@@ -353,11 +353,9 @@ void Compass::changeTrueMagneticCourse()
     context_m->setContextProperty("trueMagneticCourse",m_tmCourse);
 }
 
-void Compass::changeBackground()
+void Compass::changeBackground(int num)
 {
-    m_background++;
-    if(m_background == 4)
-        m_background=0;
+    m_background=num;
     context_m->setContextProperty("m_background",m_background);
 }
 

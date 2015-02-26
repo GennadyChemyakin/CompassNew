@@ -97,7 +97,7 @@ public slots:
     void changeSkl();
     void initComp();
     void changeTrueMagneticCourse();
-    void changeBackground();
+    void changeBackground(int);
     void changeInfoScreenVisibility();
     void changeSettings();
     void updateCompensationInfo(int,int);

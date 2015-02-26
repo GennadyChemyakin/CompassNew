@@ -32,6 +32,190 @@ Rectangle {
         anchors.right: parent.right
         z:2
     }
+    Rectangle
+    {
+        id: backgroundviewer
+        x: 0
+        y: 0
+        width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
+        height: settings.height
+        //width: 1980
+        //height: 1020
+        color: "#00000000"
+        anchors.rightMargin: -backgroundviewer.width
+        anchors.right: parent.right
+        z:2
+
+        Rectangle
+        {
+            id: image1rect
+            width: 306
+            height: 306
+            color: "#00000000"
+            anchors.left: parent.left
+            anchors.leftMargin: 100
+            anchors.top: parent.top
+            anchors.topMargin: 100
+            Image {
+                id: image1
+                source: "content/steel4.png"
+                anchors.horizontalCenter: image1rect.horizontalCenter
+                anchors.verticalCenter: image1rect.verticalCenter
+                width: 300
+                height: 300
+            }
+            border.width: 3
+            border.color: (m_background===0 ? "green": "#00000000")
+            MouseArea
+            {
+                anchors.fill: parent
+                onClicked: compass.changeBackground(0)
+            }
+        }
+
+        Rectangle
+        {
+            id: image2rect
+            width: 306
+            height: 306
+            color: "#00000000"
+            anchors.left: image1rect.right
+            anchors.leftMargin: 100
+            anchors.top: parent.top
+            anchors.topMargin: 100
+            Image {
+                id: image2
+                source: "content/steel3.png"
+                anchors.horizontalCenter: image2rect.horizontalCenter
+                anchors.verticalCenter: image2rect.verticalCenter
+                width: 300
+                height: 300
+            }
+            border.width: 3
+            border.color: (m_background===1 ? "green": "#00000000")
+            MouseArea
+            {
+                anchors.fill: parent
+                onClicked: compass.changeBackground(1)
+            }
+        }
+
+        Rectangle
+        {
+            id: image3rect
+            width: 306
+            height: 306
+            color: "#00000000"
+            anchors.left: image2rect.right
+            anchors.leftMargin: 100
+            anchors.top: parent.top
+            anchors.topMargin: 100
+            Image {
+                id: image3
+                source: "content/steel2.png"
+                anchors.horizontalCenter: image3rect.horizontalCenter
+                anchors.verticalCenter: image3rect.verticalCenter
+                width: 300
+                height: 300
+            }
+            border.width: 3
+            border.color: m_background===2 ? "green": "#00000000"
+            MouseArea
+            {
+                anchors.fill: parent
+                onClicked: compass.changeBackground(2)
+            }
+        }
+        Rectangle
+        {
+            id: image4rect
+            width: 306
+            height: 306
+            color: "#00000000"
+            anchors.left: parent.left
+            anchors.leftMargin: 100
+            anchors.top: image1rect.bottom
+            anchors.topMargin: 150
+            Image {
+                id: image4
+                source: "content/wood.png"
+                anchors.horizontalCenter: image4rect.horizontalCenter
+                anchors.verticalCenter: image4rect.verticalCenter
+                width: 300
+                height: 300
+            }
+            border.width: 3
+            border.color: m_background===3 ? "green": "#00000000"
+            MouseArea
+            {
+                anchors.fill: parent
+                onClicked: compass.changeBackground(3)
+            }
+        }
+        Rectangle
+        {
+            id: image5rect
+            width: 306
+            height: 306
+            color: "#00000000"
+            anchors.left: image4rect.right
+            anchors.leftMargin: 100
+            anchors.top: image2rect.bottom
+            anchors.topMargin: 150
+            Image {
+                id: image5
+                source: "content/steel.png"
+                anchors.horizontalCenter: image5rect.horizontalCenter
+                anchors.verticalCenter: image5rect.verticalCenter
+                width: 300
+                height: 300
+            }
+            border.width: 3
+            border.color: m_background===4 ? "green": "#00000000"
+            MouseArea
+            {
+                anchors.fill: parent
+                onClicked: compass.changeBackground(4)
+            }
+        }
+        Rectangle
+        {
+            id: image6rect
+            width: 300
+            height: 300
+            color: "#00000000"
+            anchors.left: image5rect.right
+            anchors.leftMargin: 100
+            anchors.top: image3rect.bottom
+            anchors.topMargin: 150
+            Image {
+                id: image6
+                source: "qrc:/qtquickplugin/images/template_image.png"
+                anchors.horizontalCenter: image6rect.horizontalCenter
+                anchors.verticalCenter: image6rect.verticalCenter
+                width: 300
+                height: 300
+            }
+            border.width: 3
+            border.color: m_background===5 ? "green": "#00000000"
+            MouseArea
+            {
+                anchors.fill: parent
+                onClicked: compass.changeBackground(5)
+            }
+        }
+
+
+    }
+    ParallelAnimation {
+        id: slideBackgroundForward
+        PropertyAnimation {
+            target: backgroundviewer
+            properties: "anchors.rightMargin"
+            to: 0
+            duration: 300
+        }
+    }
     ParallelAnimation {
         id: slideKeybordForward
         PropertyAnimation {
@@ -64,12 +248,18 @@ Rectangle {
             to: -compensationDisplay.width
             duration: 0
         }
+        PropertyAnimation {
+            target: backgroundviewer
+            properties: "anchors.rightMargin"
+            to: -compensationDisplay.width
+            duration: 0
+        }
     }
     Image {
         id: settingsBackground
         z: 1
         anchors.fill: parent
-        source: "content/steel4.png"
+        source: (m_background === 0 ? "content/steel4.png" :( m_background === 1 ? "content/steel3.png":(m_background === 2 ? "content/steel2.png":(m_background === 3 ? "content/wood.png":(m_background === 4 ? "content/steel.png":"content/steel4.png")))))
 
         Button {
             id: button1
@@ -141,6 +331,7 @@ Rectangle {
             onClicked:
             {
                 slideCompBack.start()
+                slideBackgroundForward.start()
                 buttonNum = 2
             }
         }
@@ -279,5 +470,6 @@ Rectangle {
             anchors.left: parent.left
             anchors.leftMargin: 0
         }
+
     }
 }
