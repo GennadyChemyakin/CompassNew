@@ -37,28 +37,36 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     settingsDialog = new Settings();
 
 
-
+    //timer signals
     connect(timer, SIGNAL(timeout()),compport, SLOT(on()));
     connect(compport, SIGNAL(timerStart(int)),timer, SLOT(start(int)));
     connect(compport, SIGNAL(timerStop()),timer, SLOT(stop()));
+    /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
+    //angle signals
     connect(compport,SIGNAL(angleChanged(double)),this,SLOT(setAngle(double)));
     connect(compport,SIGNAL(pitchChanged(double)),this,SLOT(setPitch(double)));
     connect(compport,SIGNAL(rollChanged(double)),this,SLOT(setRoll(double)));
+    /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
+    //settings signals
     connect(settingsDialog,SIGNAL(settingsChanged(QStringList)),compport,SLOT(updateSettings(QStringList)));
     connect(settingsDialog,SIGNAL(revertRequest()),compport,SLOT(revert()));
     connect(compport,SIGNAL(revertStatusChanged(QString)),settingsDialog,SLOT(setLable(QString)));
+    /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
+    //compensation signals
     connect(this,SIGNAL(compensationRequest()),compport,SLOT(initComp()));
+
     connect(compport,SIGNAL(compStarted()),dialComp,SLOT(show()));
-    connect(compport,SIGNAL(compFinished()),dialComp,SLOT(setBarstoDefault()));
+    connect(compport,SIGNAL(compFinished()),dialComp,SLOT(setBarstoDefault()));    
     connect(compport,SIGNAL(dialCompProgressChanged(int,int)),dialComp,SLOT(setBar(int,int)));
     connect(compport,SIGNAL(dialCompStatusChanged(QString)),dialComp,SLOT(setLabel(QString)));
+
     connect(this,SIGNAL(compClosed()),compport,SLOT(stopCompensation()));
     connect(compport,SIGNAL(dialCompProgressChanged(int,int)),this,SLOT(updateCompensationInfo(int,int)));
     connect(compport,SIGNAL(compFinished()),this,SLOT(setBarstoDefault()));
-
+    /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
 
     portThread = new QThread;
@@ -70,7 +78,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
 
     portThread->start();
     settingsDialog->initSettigs();
-    timer->start(11);
+    timer->start(10);
     //qDebug()<<QThread::currentThreadId();
 
     context_m->setContextProperty("compass",this);

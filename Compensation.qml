@@ -153,7 +153,7 @@ Rectangle {
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: 16
+                        font.pointSize: 14
                         font.bold: true
                         color: "black"
                         text: control.text
