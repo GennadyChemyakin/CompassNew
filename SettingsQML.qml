@@ -32,6 +32,25 @@ Rectangle {
         anchors.right: parent.right
         z:2
     }
+    MoreInfo
+       {
+           id:moreInfoDisp
+           x: 1440
+           width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
+           height: settings.height
+           anchors.rightMargin: -compensationDisplay.width
+           anchors.right: parent.right
+           z:2
+       }
+       ParallelAnimation {
+           id: slideMoreInfoForward
+           PropertyAnimation {
+               target: moreInfoDisp
+               properties: "anchors.rightMargin"
+               to: 0
+               duration: 300
+           }
+       }
     Rectangle
     {
         id: backgroundviewer
@@ -45,6 +64,8 @@ Rectangle {
         anchors.rightMargin: -backgroundviewer.width
         anchors.right: parent.right
         z:2
+
+
 
         Rectangle
         {
@@ -249,6 +270,12 @@ Rectangle {
             duration: 0
         }
         PropertyAnimation {
+            target: moreInfoDisp
+            properties: "anchors.rightMargin"
+            to: -moreInfoDisp.width
+            duration: 0
+        }
+        PropertyAnimation {
             target: backgroundviewer
             properties: "anchors.rightMargin"
             to: -compensationDisplay.width
@@ -405,6 +432,7 @@ Rectangle {
             onClicked:
             {
                 slideCompBack.start()
+                slideMoreInfoForward.start()
                 buttonNum = 4
             }
         }
@@ -414,7 +442,7 @@ Rectangle {
             id: button5
             width: settings.buttonWidth
             height:settings.buttonHeight
-            text: trueMagneticCourse === 1 ? qsTr("Магнитный курс") : qsTr("Истинный курс")
+            text: trueMagneticCourse === 1 ?   qsTr("Истинный курс") : qsTr("Магнитный курс")
             checked: false
             checkable: true
             anchors.left: parent.left

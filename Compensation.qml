@@ -320,17 +320,18 @@ Rectangle {
             verticalAlignment: Text.AlignVCenter
         }
 
-
+        TextField
+        {
+            id:compensationStatus
+            width: 400
+            height: 130
+            x: 662
+            y: 666
+            text: qsTr("")
+            anchors.top: button3.bottom
+            anchors.topMargin: 30
     }
 
-    TextField
-    {
-        id:compensationStatus
-        width: 400
-        height: 130
-        x: 662
-        text: qsTr("Сбросить датчик")
-        anchors.top: button3.bottom
-        anchors.topMargin: 30
+
     }
 }
