@@ -5,8 +5,8 @@ import QtQuick.Window 2.1
 
 Window {
     id: window1
-    width: 1440
-    height: 980
+    //width: 1440
+    //height: 980
     title: qsTr("Compass")
     visibility: "Maximized"
 
@@ -19,9 +19,9 @@ Window {
     Rectangle
     {
         id: rectangle1
-        //anchors.fill: parent
-        width: 1440
-        height: 980
+        anchors.fill: parent
+        //width: 1440
+        //height: 980
 
         SettingsQML
         {
@@ -261,7 +261,7 @@ Window {
                 font.pixelSize: 150
                 font.family: a_LCDNovaObl.name
                 style: Text.Outline
-                styleColor: "blue"
+                styleColor: "black"
                 color: "white"
             }
         }

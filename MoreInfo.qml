@@ -4,23 +4,25 @@ import QtQuick.Controls.Styles 1.1
 
 Rectangle {
     id: moreInfoRect
-    width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
-    height: window1.height
+//    width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
+//    height: window1.height
+    width: 1440
+    height: 980
     color: "#00000000"
+    visible: true
     FontLoader { id: a_LCDNovaObl; source: "content/a_LCDNovaObl.ttf" }
     //--------roll and pitch
     //-----roll
     Rectangle
     {
         id: lcdRollRect
+        y: 72
         z: 3
         width: 360
         height: 170
         border.width: 3
         border.color: "white"
         color: "#000000"
-        anchors.top: textRoll.bottom
-        anchors.topMargin: -150
         anchors.left: textRoll.right
         anchors.leftMargin: 0
         anchors.horizontalCenter: backgrnCompass.horizontalCenter
@@ -43,11 +45,13 @@ Rectangle {
 
     Text {
         id: textRoll
-        x: 122
-        y: 56
         width: 474
-        height: 130
+        height: 170
         text: qsTr("Крен")
+        anchors.top: parent.top
+        anchors.topMargin: 70
+        anchors.left: parent.left
+        anchors.leftMargin: 40
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
         font.pixelSize: 79
@@ -59,6 +63,7 @@ Rectangle {
     Rectangle
     {
         id: lcdPitchRect
+        y: 290
         z: 3
         width: 360
         height: 170
@@ -67,8 +72,6 @@ Rectangle {
         color: "#000000"
         anchors.left: textPitch.right
         anchors.leftMargin: 0
-        anchors.top: lcdRollRect.bottom
-        anchors.topMargin: 46
 
         Text
         {
@@ -85,12 +88,13 @@ Rectangle {
 
     Text {
         id: textPitch
-        x: 122
         width: 474
-        height: 126
+        height: 170
         text: qsTr("Дифферент")
         anchors.top: textRoll.bottom
-        anchors.topMargin: 88
+        anchors.topMargin: 50
+        anchors.left: parent.left
+        anchors.leftMargin: 40
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
         font.pixelSize: 79
@@ -102,14 +106,15 @@ Rectangle {
     Rectangle
     {
         id: lcdCoefBRect
-        x: 237
         y: 640
         z: 3
-        width: 260
+        width: 170
         height: 120
         border.width: 3
         border.color: "white"
         color: "#000000"
+        anchors.left: textB.right
+        anchors.leftMargin: 0
         anchors.horizontalCenter: backgrnCompass.horizontalCenter
         anchors.verticalCenter: backgrnCompass.verticalCenter
         anchors.horizontalCenterOffset: 0
@@ -130,11 +135,12 @@ Rectangle {
 
     Text {
         id: textB
-        x: 89
         y: 640
-        width: 150
+        width: 120
         height: 120
         text: qsTr("B")
+        anchors.left: parent.left
+        anchors.leftMargin: 40
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
         font.pixelSize: 79
@@ -147,14 +153,15 @@ Rectangle {
     Rectangle
     {
         id: lcdCoefCRect
-        x: 646
         y: 640
         z: 3
-        width: 260
+        width: 170
         height: 120
         border.width: 3
         border.color: "white"
         color: "#000000"
+        anchors.left: textC.right
+        anchors.leftMargin: 0
         anchors.horizontalCenter: backgrnCompass.horizontalCenter
         anchors.verticalCenter: backgrnCompass.verticalCenter
         anchors.horizontalCenterOffset: 0
@@ -175,11 +182,12 @@ Rectangle {
 
     Text {
         id: textC
-        x: 496
         y: 640
-        width: 150
+        width: 120
         height: 120
         text: qsTr("C")
+        anchors.left: lcdCoefBRect.right
+        anchors.leftMargin: 0
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
         font.pixelSize: 79
@@ -190,14 +198,15 @@ Rectangle {
     Rectangle
     {
         id: lcdCoefZRect
-        x: 1057
         y: 640
         z: 3
-        width: 260
+        width: 170
         height: 120
         border.width: 3
         border.color: "white"
         color: "#000000"
+        anchors.left: textZ.right
+        anchors.leftMargin: 0
         anchors.horizontalCenter: backgrnCompass.horizontalCenter
         anchors.verticalCenter: backgrnCompass.verticalCenter
         anchors.horizontalCenterOffset: 0
@@ -218,11 +227,12 @@ Rectangle {
 
     Text {
         id: textZ
-        x: 906
         y: 640
-        width: 150
+        width: 120
         height: 120
         text: qsTr("Z")
+        anchors.left: lcdCoefCRect.right
+        anchors.leftMargin: 0
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
         font.pixelSize: 79
