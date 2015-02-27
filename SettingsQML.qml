@@ -4,8 +4,10 @@ import QtQuick.Controls.Styles 1.1
 
 Rectangle {
     id: settings
-    width: window1.width
-    height: window1.height
+    //width: window1.width
+    //height: window1.height
+    width: 1440
+    height: 980
     property int buttonWidth:340
     property int buttonHeight:100
     property int buttonNum:0
@@ -70,11 +72,11 @@ Rectangle {
         Rectangle
         {
             id: image1rect
-            width: 306
-            height: 306
+            width: 226
+            height: 226
             color: "#00000000"
             anchors.left: parent.left
-            anchors.leftMargin: 100
+            anchors.leftMargin: 70
             anchors.top: parent.top
             anchors.topMargin: 100
             Image {
@@ -82,8 +84,8 @@ Rectangle {
                 source: "content/steel4.png"
                 anchors.horizontalCenter: image1rect.horizontalCenter
                 anchors.verticalCenter: image1rect.verticalCenter
-                width: 300
-                height: 300
+                width: 220
+                height: 220
             }
             border.width: 3
             border.color: (m_background===0 ? "green": "#00000000")
@@ -97,8 +99,8 @@ Rectangle {
         Rectangle
         {
             id: image2rect
-            width: 306
-            height: 306
+            width: image1rect.width
+            height: image1rect.height
             color: "#00000000"
             anchors.left: image1rect.right
             anchors.leftMargin: 100
@@ -109,8 +111,8 @@ Rectangle {
                 source: "content/steel3.png"
                 anchors.horizontalCenter: image2rect.horizontalCenter
                 anchors.verticalCenter: image2rect.verticalCenter
-                width: 300
-                height: 300
+                width: image1.width
+                height: image1.height
             }
             border.width: 3
             border.color: (m_background===1 ? "green": "#00000000")
@@ -124,8 +126,8 @@ Rectangle {
         Rectangle
         {
             id: image3rect
-            width: 306
-            height: 306
+            width: image1rect.width
+            height: image1rect.height
             color: "#00000000"
             anchors.left: image2rect.right
             anchors.leftMargin: 100
@@ -136,8 +138,8 @@ Rectangle {
                 source: "content/steel2.png"
                 anchors.horizontalCenter: image3rect.horizontalCenter
                 anchors.verticalCenter: image3rect.verticalCenter
-                width: 300
-                height: 300
+                width: image1.width
+                height: image1.height
             }
             border.width: 3
             border.color: m_background===2 ? "green": "#00000000"
@@ -150,11 +152,11 @@ Rectangle {
         Rectangle
         {
             id: image4rect
-            width: 306
-            height: 306
+            width: image1rect.width
+            height: image1rect.height
             color: "#00000000"
             anchors.left: parent.left
-            anchors.leftMargin: 100
+            anchors.leftMargin: 70
             anchors.top: image1rect.bottom
             anchors.topMargin: 150
             Image {
@@ -162,8 +164,8 @@ Rectangle {
                 source: "content/wood.png"
                 anchors.horizontalCenter: image4rect.horizontalCenter
                 anchors.verticalCenter: image4rect.verticalCenter
-                width: 300
-                height: 300
+                width: image1.width
+                height: image1.height
             }
             border.width: 3
             border.color: m_background===3 ? "green": "#00000000"
@@ -176,8 +178,8 @@ Rectangle {
         Rectangle
         {
             id: image5rect
-            width: 306
-            height: 306
+            width: image1rect.width
+            height: image1rect.height
             color: "#00000000"
             anchors.left: image4rect.right
             anchors.leftMargin: 100
@@ -188,8 +190,8 @@ Rectangle {
                 source: "content/steel.png"
                 anchors.horizontalCenter: image5rect.horizontalCenter
                 anchors.verticalCenter: image5rect.verticalCenter
-                width: 300
-                height: 300
+                width: image1.width
+                height: image1.height
             }
             border.width: 3
             border.color: m_background===4 ? "green": "#00000000"
@@ -202,8 +204,8 @@ Rectangle {
         Rectangle
         {
             id: image6rect
-            width: 300
-            height: 300
+            width: image1rect.width
+            height: image1rect.height
             color: "#00000000"
             anchors.left: image5rect.right
             anchors.leftMargin: 100
@@ -214,8 +216,8 @@ Rectangle {
                 source: "qrc:/qtquickplugin/images/template_image.png"
                 anchors.horizontalCenter: image6rect.horizontalCenter
                 anchors.verticalCenter: image6rect.verticalCenter
-                width: 300
-                height: 300
+                width: image1.width
+                height: image1.height
             }
             border.width: 3
             border.color: m_background===5 ? "green": "#00000000"
