@@ -10,8 +10,6 @@ Window {
     title: qsTr("Compass")
     visibility: "Maximized"
 
-    //visible: true
-
     property string gradientcolor0: "#FF7C7C7C"
     property string gradientcolor1: "#FF4E4E4E"
 
@@ -212,7 +210,7 @@ Window {
                        SpringAnimation
                        {
                            spring: 1.4
-                           damping: 0.5
+                           damping: 0.4
                        }
                    }
             }

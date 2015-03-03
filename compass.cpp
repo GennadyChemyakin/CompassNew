@@ -92,6 +92,8 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     context_m->setContextProperty("fract_part",m_fractPart);
     context_m->setContextProperty("full_angle",m_fullangle);
     context_m->setContextProperty("afterComma",m_afterComma);
+    context_m->setContextProperty("m_pitch",m_pitch);
+    context_m->setContextProperty("m_roll",m_roll);
 
     context_m->setContextProperty("skl_str",skl_str);
 

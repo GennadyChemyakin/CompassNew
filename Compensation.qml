@@ -8,7 +8,7 @@ Rectangle {
     //height: window1.height
     width: 1440
     height: 980
-    //color: "#00000000"
+    color: "#00000000"
     Image {
 
 
@@ -17,7 +17,7 @@ Rectangle {
         anchors.bottomMargin: 0
         anchors.leftMargin: 0
         anchors.topMargin: 0
-        source: "content/steel4.png"
+        //source: "content/steel4.png"
         anchors.fill: parent
 
         ProgressBar {

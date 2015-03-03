@@ -45,6 +45,8 @@ private:
     double m_roll, m_pitch, m_angle;
     bool m_state;
     bool m_compInProgress;
+    QTextStream *out;
+    QFile *file;
 private slots:
     void updateSettings(QStringList listOfSettings);
     double toDec(QBitArray,int);

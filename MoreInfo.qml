@@ -25,8 +25,6 @@ Rectangle {
         color: "#000000"
         anchors.left: textRoll.right
         anchors.leftMargin: 0
-        anchors.horizontalCenter: backgrnCompass.horizontalCenter
-        anchors.verticalCenter: backgrnCompass.verticalCenter
         anchors.horizontalCenterOffset: 0
         anchors.verticalCenterOffset: 0
         //FontLoader { id: a_LCDNovaOblRoll; source: "content/a_LCDNovaObl.ttf" }
@@ -115,8 +113,6 @@ Rectangle {
         color: "#000000"
         anchors.left: textB.right
         anchors.leftMargin: 0
-        anchors.horizontalCenter: backgrnCompass.horizontalCenter
-        anchors.verticalCenter: backgrnCompass.verticalCenter
         anchors.horizontalCenterOffset: 0
         anchors.verticalCenterOffset: 0
         //FontLoader { id: a_LCDNovaOblRoll; source: "content/a_LCDNovaObl.ttf" }
@@ -162,8 +158,6 @@ Rectangle {
         color: "#000000"
         anchors.left: textC.right
         anchors.leftMargin: 0
-        anchors.horizontalCenter: backgrnCompass.horizontalCenter
-        anchors.verticalCenter: backgrnCompass.verticalCenter
         anchors.horizontalCenterOffset: 0
         anchors.verticalCenterOffset: 0
         //FontLoader { id: a_LCDNovaOblRoll; source: "content/a_LCDNovaObl.ttf" }
@@ -207,8 +201,6 @@ Rectangle {
         color: "#000000"
         anchors.left: textZ.right
         anchors.leftMargin: 0
-        anchors.horizontalCenter: backgrnCompass.horizontalCenter
-        anchors.verticalCenter: backgrnCompass.verticalCenter
         anchors.horizontalCenterOffset: 0
         anchors.verticalCenterOffset: 0
         //FontLoader { id: a_LCDNovaOblRoll; source: "content/a_LCDNovaObl.ttf" }

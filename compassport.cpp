@@ -1,5 +1,6 @@
 #include "compassport.h"
 #include "QDebug"
+#include <QThread>
 
 #include "math.h"
 
@@ -11,11 +12,15 @@ CompassPort::CompassPort(QObject *parent) : QObject(parent)
     port = new QSerialPort();
     m_compInProgress = false;
     connect(this,SIGNAL(compFinished()),this,SLOT(stopCompensation()));
+    file = new QFile("/home/gennady/angles");
+    file->open(QFile::ReadWrite);
+    out = new QTextStream(file);
 }
 
 CompassPort::~CompassPort()
 {
     port->close();
+    file->close();
     emit finished();
 }
 
@@ -51,7 +56,9 @@ void CompassPort::on()
     if(port->isOpen() && port->waitForReadyRead(100))
     {
         QString data;
-        QByteArray ByteArray;
+        QByteArray ByteArray,ByteArrayStart,ByteArrayFinish;
+        bool startFinded = false;
+
         m_state = 1;
 
         while(m_state)
@@ -61,6 +68,7 @@ void CompassPort::on()
                 qint64 byteAvail = port->bytesAvailable();
                 qApp->processEvents();
                 //qDebug()<<byteAvail;
+                QThread::msleep(9);
                 if(byteAvail >=13)
                 {
                     ByteArray = port->readAll();
@@ -89,10 +97,56 @@ void CompassPort::on()
 
                         m_angle = Round(toDec(two_bytes,0)*1.41,1);
                         emit angleChanged(m_angle);
-                        // qDebug()<<m_angle;
+                        *out << m_angle <<" "<< m_roll<<" "<<m_pitch<<" "<<"1"<<"\n";
                         m_state=0;
-                        //qApp->processEvents();
+                        qApp->processEvents();
                     }
+                }
+                else if(byteAvail >=4 && byteAvail <=13)
+                {
+                    ByteArray= port->readAll();
+                    data = data.fromLocal8Bit(ByteArray).trimmed();
+                    if(ByteArray[3]=='p' && startFinded == false)
+                    {
+                        ByteArrayStart = ByteArray;
+                        startFinded = true;
+
+                    }
+                    else if(startFinded == true)
+                    {
+                        ByteArrayFinish += ByteArray;
+                        ByteArray = ByteArrayStart + ByteArrayFinish;
+                        if(ByteArray.size() >= 13)
+                        {
+                            QBitArray bitdata(104),two_bytes(16);
+                            for(int i = 0,j; i < 104; ++i)
+                            {
+                                j=i/8;
+                                if(j<=13)
+                                    bitdata[i] = ByteArray[j] & (1 << i%8);
+                                else
+                                    break;
+                            }
+
+                            for(int i=40,j=15;i<56&&j>=0;i++,j--){two_bytes[j]=bitdata[i];} //Roll
+
+                            m_roll = Round(toDec(two_bytes,1)*1.41,1);
+                            emit rollChanged(m_roll);
+                            for(int i=56,j=15;i<72&&j>=0;i++,j--){two_bytes[j]=bitdata[i];} //Pitch
+
+                            m_pitch = Round(toDec(two_bytes,1)*1.41,1);
+                            emit pitchChanged(m_pitch);
+                            for(int i=72,j=15;i<88&&j>=0;i++,j--){two_bytes[j]=bitdata[i];} //Azimuth
+
+                            m_angle = Round(toDec(two_bytes,0)*1.41,1);
+                            emit angleChanged(m_angle);
+                            *out << m_angle <<" "<< m_roll<<" "<<m_pitch<<" "<<"2"<<"\n";
+                            m_state=0;
+                            startFinded = false;
+                        }
+                    }
+                    //ByteArrayStart="";
+
                 }
             }
         }
