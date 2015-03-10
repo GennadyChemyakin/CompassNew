@@ -343,7 +343,7 @@ Rectangle {
             height: 130
             x: 560
             y: 666
-            text: qsTr("")
+            text: m_complable
             anchors.top: button3.bottom
             anchors.topMargin: 19
     }

@@ -103,6 +103,8 @@ public slots:
     void updateCompensationInfo(int,int);
     void setBarstoDefault();
     void stopComp(){emit compClosed();}
+    void setCompensationLabel(QString);
+    void setCompensationLabeltoDeafault();
     void addSKL(QString str);
 
 
@@ -139,6 +141,7 @@ private:
     double m_summ_ang;
     int m_progress;
     QString skl_str;
+    QString m_complable;
 
 
     Bins m_bins;

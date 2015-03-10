@@ -30,6 +30,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     m_infoVisibility=false;
     m_progress=0;
     skl_str="0";
+    m_complable="";
 
     context_m = context;
     dialComp = new DialogComp();
@@ -58,6 +59,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
 
     //compensation signals
     connect(this,SIGNAL(compensationRequest()),compport,SLOT(initComp()));
+    connect(this,SIGNAL(compensationRequest()),this,SLOT(setCompensationLabeltoDeafault()));
 
     //connect(compport,SIGNAL(compStarted()),dialComp,SLOT(show()));
     //connect(compport,SIGNAL(compFinished()),dialComp,SLOT(setBarstoDefault()));
@@ -66,7 +68,9 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
 
     connect(this,SIGNAL(compClosed()),compport,SLOT(stopCompensation()));
     connect(compport,SIGNAL(dialCompProgressChanged(int,int)),this,SLOT(updateCompensationInfo(int,int)));
+    connect(compport,SIGNAL(dialCompStatusChanged(QString)),this,SLOT(setCompensationLabel(QString)));
     connect(compport,SIGNAL(compFinished()),this,SLOT(setBarstoDefault()));
+    connect(this,SIGNAL(compClosed()),this,SLOT(setCompensationLabeltoDeafault()));
     /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
 
@@ -96,6 +100,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     context_m->setContextProperty("m_roll",m_roll);
 
     context_m->setContextProperty("skl_str",skl_str);
+    context_m->setContextProperty("m_complable",m_complable);
 
 
     //fignay
@@ -159,14 +164,26 @@ void Compass::updateCompensationInfo(int binNum, int progress)
 
 void Compass::setBarstoDefault()
 {
-    context_m->setContextProperty("bin0Value",0);
-    context_m->setContextProperty("bin1Value",0);
-    context_m->setContextProperty("bin2Value",0);
-    context_m->setContextProperty("bin3Value",0);
-    context_m->setContextProperty("bin4Value",0);
-    context_m->setContextProperty("bin5Value",0);
-    context_m->setContextProperty("bin6Value",0);
-    context_m->setContextProperty("bin7Value",0);
+    m_bins.bin0=0;
+    m_bins.bin1=0;
+    m_bins.bin2=0;
+    m_bins.bin3=0;
+    m_bins.bin4=0;
+    m_bins.bin5=0;
+    m_bins.bin6=0;
+    m_bins.bin7=0;
+    emit binsChanged();
+}
+
+void Compass::setCompensationLabel(QString msg)
+{
+    m_complable = msg;
+    context_m->setContextProperty("m_complable",m_complable);
+}
+void Compass::setCompensationLabeltoDeafault()
+{
+    m_complable = "";
+    context_m->setContextProperty("m_complable",m_complable);
 }
 
 void Compass::setAngle(double a)
