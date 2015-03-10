@@ -332,6 +332,7 @@ Rectangle {
             id: button2
             width: settings.buttonWidth
             height: 100
+            visible: false
             text: qsTr("Изменить фон")
             anchors.left: parent.left
             anchors.leftMargin: 50
@@ -372,7 +373,7 @@ Rectangle {
             text: qsTr("Склонение")
             anchors.left: parent.left
             anchors.leftMargin: 50
-            anchors.top: button2.bottom
+            anchors.top: button1.bottom
             anchors.topMargin: 20
             style: ButtonStyle {
                     label: Text {
