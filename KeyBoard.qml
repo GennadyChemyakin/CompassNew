@@ -287,7 +287,7 @@ Rectangle {
             height: 106
             z: 1
             placeholderText: qsTr("Text Field")
-            text: skl_str
+            text: skl_str > 0.1 ? "+" + skl_str : skl_str
             font.pixelSize: 88
         }
 
