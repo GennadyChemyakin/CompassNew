@@ -143,6 +143,11 @@ private:
     QString skl_str;
     QString m_complable;
 
+    int index;
+
+    QTextStream *out;
+    QFile *file;
+
 
     Bins m_bins;
 

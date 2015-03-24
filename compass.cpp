@@ -113,11 +113,17 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     context_m->setContextProperty("bin6Value",m_progress);
     context_m->setContextProperty("bin7Value",m_progress);*/
 
+    file = new QFile("/home/gennady/anglesAfterSet");
+    file->open(QFile::ReadWrite);
+    out = new QTextStream(file);
+    index = 0;
+
 }
 
 Compass::~Compass()
 {
     delete compport;
+    file->close();
     //delete portThread;
     delete timer;
 }
@@ -188,8 +194,12 @@ void Compass::setCompensationLabeltoDeafault()
 
 void Compass::setAngle(double a)
 {
+    if(index == 0)
+        m_last = a;
+    a=m_last+(a-m_last)*0.5;
     m_last=a;
-    a=m_last+(a-m_last)*0.7;
+
+    *out << index++ <<". "<< a <<"\n";
 
     a = a + m_coef_A;
     if(m_tmCourse)

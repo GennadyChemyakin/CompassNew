@@ -15,6 +15,7 @@ CompassPort::CompassPort(QObject *parent) : QObject(parent)
     file = new QFile("/home/gennady/angles");
     file->open(QFile::ReadWrite);
     out = new QTextStream(file);
+    index = 0;
 }
 
 CompassPort::~CompassPort()
@@ -97,7 +98,8 @@ void CompassPort::on()
 
                         m_angle = Round(toDec(two_bytes,0)*1.41,1);
                         emit angleChanged(m_angle);
-                        *out << m_angle <<" "<< m_roll<<" "<<m_pitch<<" "<<"1"<<"\n";
+                        //*out << m_angle <<" "<< m_roll<<" "<<m_pitch<<" "<<"1"<<"\n";
+                        *out << index++ <<". "<<m_angle <<"\n";
                         m_state=0;
                         qApp->processEvents();
                     }
@@ -140,7 +142,8 @@ void CompassPort::on()
 
                             m_angle = Round(toDec(two_bytes,0)*1.41,1);
                             emit angleChanged(m_angle);
-                            *out << m_angle <<" "<< m_roll<<" "<<m_pitch<<" "<<"2"<<"\n";
+                            //*out << m_angle <<" "<< m_roll<<" "<<m_pitch<<" "<<"2"<<"\n";
+                            *out << index++ <<". "<< m_angle <<"\n";
                             m_state=0;
                             startFinded = false;
                         }

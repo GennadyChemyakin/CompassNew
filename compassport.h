@@ -47,6 +47,7 @@ private:
     bool m_compInProgress;
     QTextStream *out;
     QFile *file;
+    int index;
 private slots:
     void updateSettings(QStringList listOfSettings);
     double toDec(QBitArray,int);
