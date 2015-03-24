@@ -188,6 +188,9 @@ void Compass::setCompensationLabeltoDeafault()
 
 void Compass::setAngle(double a)
 {
+    m_last=a;
+    a=m_last+(a-m_last)*0.7;
+
     a = a + m_coef_A;
     if(m_tmCourse)
         a=m_skl+a;
@@ -216,10 +219,11 @@ void Compass::setAngle(double a)
     {
          m_con++;
     }
+
     m_lastAngle=m_angle;
     m_angle=m_angle+360*m_con;
-    //m_angle=m_angle-(m_angle-m_last)/(m_dempf*2);
-    m_angle=m_last+(m_angle-m_last)*0.7;
+
+    //m_angle=m_last+(m_angle-m_last)*0.7;
 
 
     if(m_fractPart-m_lastAngle1 > 50)
@@ -230,19 +234,21 @@ void Compass::setAngle(double a)
     {
          m_con1++;
     }
+
     m_lastAngle1=m_fractPart;
     m_fractPart=m_fractPart+100*m_con1;
+
     m_fractPart=m_last2+(m_fractPart-m_last2)*0.7;
 
     qApp->processEvents();
 
     //context_m->setContextProperty("angle_value",m_angle);
-    if(!((m_last-m_angle>100) || (m_angle-m_last>100)))
-        emit angleChanged();
+    //if(!((m_last-m_angle>100) || (m_angle-m_last>100)))
+    emit angleChanged();
     context_m->setContextProperty("fract_part",m_fractPart);
     context_m->setContextProperty("full_angle",m_fullangle);
     context_m->setContextProperty("afterComma",m_afterComma);
-    m_last=m_angle;
+    //m_last=m_angle;
     m_last2=m_fractPart;
 }
 
