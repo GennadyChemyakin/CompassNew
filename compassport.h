@@ -17,7 +17,10 @@ signals:
     void angleChanged(double);
     void pitchChanged(double);
     void rollChanged(double);
-
+    void BChanged(double);
+    void CChanged(double);
+    void ZChanged(double);
+    void readyWriteToLog();
     void finished();
 
     void compStarted();
@@ -43,6 +46,9 @@ private:
     QSerialPort *port; //порт
     QTimer *timer; //таймер для вызова основной функции для работы с портом
     double m_roll, m_pitch, m_angle;
+    double m_B;
+    double m_C;
+    double m_Z;
     bool m_state;
     bool m_compInProgress;
     QTextStream *out;

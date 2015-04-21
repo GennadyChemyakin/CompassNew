@@ -120,8 +120,8 @@ Rectangle {
         {
             id: lcdB
             anchors.centerIn: parent
-            text: ""//m_coefB
-            font.pixelSize: 150
+            text: coef_B
+            font.pixelSize: 50
             font.family: a_LCDNovaObl.name
             style: Text.Outline
             styleColor: "white"
@@ -144,7 +144,6 @@ Rectangle {
         font.family: a_LCDNovaObl.name
     }
     //--------C coef
-    //-----B coef
 
     Rectangle
     {
@@ -165,8 +164,8 @@ Rectangle {
         {
             id: lcdC
             anchors.centerIn: parent
-            text: ""//m_coefC
-            font.pixelSize: 150
+            text: coef_C
+            font.pixelSize: 50
             font.family: a_LCDNovaObl.name
             style: Text.Outline
             styleColor: "white"
@@ -191,6 +190,7 @@ Rectangle {
     //----Z coef
     Rectangle
     {
+
         id: lcdCoefZRect
         y: 640
         z: 3
@@ -208,8 +208,8 @@ Rectangle {
         {
             id: lcdZ
             anchors.centerIn: parent
-            text: ""//m_coefZ
-            font.pixelSize: 150
+            text: coef_Z
+            font.pixelSize: 50
             font.family: a_LCDNovaObl.name
             style: Text.Outline
             styleColor: "white"
@@ -230,5 +230,26 @@ Rectangle {
         font.pixelSize: 79
         color: "white"
         font.family: a_LCDNovaObl.name
+    }
+
+    Button {
+        id: button1
+        x: 330
+        y: 781
+        width: 410
+        height: 93
+        text: logMsg
+        style: ButtonStyle {
+                label: Text {
+                    renderType: Text.NativeRendering
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.family: "Helvetica"
+                    font.pointSize: 27
+                    color: "black"
+                    text: control.text
+                }
+              }
+        onClicked: compass.startWriteLog();
     }
 }

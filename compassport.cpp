@@ -68,21 +68,22 @@ void CompassPort::on()
             {
                 qint64 byteAvail = port->bytesAvailable();
                 qApp->processEvents();
-                //qDebug()<<byteAvail;
                 QThread::msleep(9);
-                if(byteAvail >=13)
+                if(byteAvail >=23)
                 {
                     ByteArray = port->readAll();
                     data = data.fromLocal8Bit(ByteArray).trimmed();
                     if(ByteArray[3]=='p')
                     {
-                        QBitArray bitdata(104),two_bytes(16);
-                        for(int i = 0,j; i < 104; ++i)
+
+                        QBitArray bitdata(184),two_bytes(16);
+                        for(int i = 0,j; i < 184; ++i)
                         {
                             j=i/8;
-                            if(j<=13)
+                            if(j<=18)
                                 bitdata[i] = ByteArray[j] & (1 << i%8);
                             else
+
                                 break;
                         }
 
@@ -98,13 +99,29 @@ void CompassPort::on()
 
                         m_angle = Round(toDec(two_bytes,0)*1.41,1);
                         emit angleChanged(m_angle);
+
+                        for(int i=136,j=15;i<1526&&j>=0;i++,j--){two_bytes[j]=bitdata[i];} //coef B
+                        m_B = Round(toDec(two_bytes,0)*1.41,1);
+                        qDebug()<<"B: "<<m_B;
+                        emit BChanged(m_B);
+
+                        for(int i=152,j=15;i<168&&j>=0;i++,j--){two_bytes[j]=bitdata[i];} //coef C
+                        m_C = Round(toDec(two_bytes,0)*1.41,1);
+                        qDebug()<<"C: "<<m_C;
+                        emit CChanged(m_C);
+
+                        for(int i=168,j=15;i<184&&j>=0;i++,j--){two_bytes[j]=bitdata[i];} //coef Z
+                        m_Z = Round(toDec(two_bytes,0)*1.41,1);
+                        qDebug()<<"Z: "<<m_Z;
+                        emit ZChanged(m_Z);
+
                         //*out << m_angle <<" "<< m_roll<<" "<<m_pitch<<" "<<"1"<<"\n";
                         //*out << index++ <<". "<<m_angle <<"\n";
                         m_state=0;
                         qApp->processEvents();
                     }
                 }
-                else if(byteAvail >=4 && byteAvail <=13)
+                else if(byteAvail >=4 && byteAvail <=23)
                 {
                     ByteArray= port->readAll();
                     data = data.fromLocal8Bit(ByteArray).trimmed();
@@ -118,18 +135,17 @@ void CompassPort::on()
                     {
                         ByteArrayFinish += ByteArray;
                         ByteArray = ByteArrayStart + ByteArrayFinish;
-                        if(ByteArray.size() >= 13)
+                        if(ByteArray.size() >= 23)
                         {
-                            QBitArray bitdata(104),two_bytes(16);
-                            for(int i = 0,j; i < 104; ++i)
+                            QBitArray bitdata(184),two_bytes(16);
+                            for(int i = 0,j; i < 184; ++i)
                             {
                                 j=i/8;
-                                if(j<=13)
+                                if(j<=23)
                                     bitdata[i] = ByteArray[j] & (1 << i%8);
                                 else
                                     break;
                             }
-
                             for(int i=40,j=15;i<56&&j>=0;i++,j--){two_bytes[j]=bitdata[i];} //Roll
 
                             m_roll = Round(toDec(two_bytes,1)*1.41,1);
@@ -142,8 +158,22 @@ void CompassPort::on()
 
                             m_angle = Round(toDec(two_bytes,0)*1.41,1);
                             emit angleChanged(m_angle);
+
+                            for(int i=136,j=15;i<1526&&j>=0;i++,j--){two_bytes[j]=bitdata[i];} //coef B
+                            m_B = Round(toDec(two_bytes,1)*1.41,1);
+                            emit BChanged(m_B);
+
+                            for(int i=152,j=15;i<168&&j>=0;i++,j--){two_bytes[j]=bitdata[i];} //coef C
+                            m_C = Round(toDec(two_bytes,1)*1.41,1);
+                            emit CChanged(m_C);
+
+                            for(int i=168,j=15;i<184&&j>=0;i++,j--){two_bytes[j]=bitdata[i];} //coef Z
+                            m_Z = Round(toDec(two_bytes,1)*1.41,1);
+                            emit ZChanged(m_Z);
+                            emit readyWriteToLog();
                             //*out << m_angle <<" "<< m_roll<<" "<<m_pitch<<" "<<"2"<<"\n";
                             //*out << index++ <<". "<< m_angle <<"\n";
+
                             m_state=0;
                             startFinded = false;
                         }

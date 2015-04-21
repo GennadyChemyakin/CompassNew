@@ -37,6 +37,7 @@ signals:
     void rollChanged();
 
     void sklChanged();
+    void coef_AChanged();
     void compStarted();
     void afterCommaChanged();
     void trueMagneticCourseChanged();
@@ -58,6 +59,10 @@ signals:
 
 public slots:
     void setAngle(double);
+    void setB(double);
+    void setC(double);
+    void setZ(double);
+
     double angle() const {return m_angle;}
     void setBins(Bins bins){m_bins=bins;}
     int getBins(int binNum)
@@ -107,13 +112,16 @@ public slots:
     void setCompensationLabeltoDeafault();
     void addSKL(QString str);
     void addA(QString str);
-
+    void startWriteLog();
+    void writeTolog();
 
 protected:
     QObject *qml;
 
 
 private:
+    double m_B,m_C,m_Z;
+    bool m_writeLog;
     bool m_comp_state;
     bool m_tmCourse;
     double m_dempf;
@@ -141,6 +149,8 @@ private:
     bool m_infoVisibility;
     double m_summ_ang;
     int m_progress;
+    int k;
+    QTime m_oldTime;
     QString skl_str;
     QString a_str;
     QString m_complable;

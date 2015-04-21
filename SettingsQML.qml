@@ -460,7 +460,7 @@ Rectangle {
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: 18
+                        font.pointSize: 27
                         color: "black"
                         text: control.text
                     }

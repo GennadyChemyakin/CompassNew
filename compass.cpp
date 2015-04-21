@@ -4,6 +4,7 @@
 Compass::Compass(QQmlContext *context, QObject *parent) :
     QObject(parent)
 {
+    k=0;
     m_comp_state=1;
     m_dempf=2;
     m_tmCourse = 0;
@@ -50,6 +51,10 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     connect(compport,SIGNAL(angleChanged(double)),this,SLOT(setAngle(double)));
     connect(compport,SIGNAL(pitchChanged(double)),this,SLOT(setPitch(double)));
     connect(compport,SIGNAL(rollChanged(double)),this,SLOT(setRoll(double)));
+    connect(compport,SIGNAL(BChanged(double)),this,SLOT(setB(double)));
+    connect(compport,SIGNAL(CChanged(double)),this,SLOT(setC(double)));
+    connect(compport,SIGNAL(ZChanged(double)),this,SLOT(setZ(double)));
+    connect(compport,SIGNAL(readyWriteToLog()),this,SLOT(writeTolog()));
     /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
     //settings signals
@@ -86,8 +91,13 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     settingsDialog->initSettigs();
     timer->start(10);
     //qDebug()<<QThread::currentThreadId();
+    context_m->setContextProperty("logMsg","Start write to log");
 
     context_m->setContextProperty("compass",this);
+
+    context_m->setContextProperty("coef_B","0.0");
+    context_m->setContextProperty("coef_C","0.0");
+    context_m->setContextProperty("coef_Z","0.0");
 
     context_m->setContextProperty("trueMagneticCourse",m_tmCourse);
     context_m->setContextProperty("m_background",m_background);
@@ -115,9 +125,10 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     context_m->setContextProperty("bin6Value",m_progress);
     context_m->setContextProperty("bin7Value",m_progress);*/
 
-    file = new QFile("/home/gennady/anglesAfterSet");
-    file->open(QFile::ReadWrite);
+    file = new QFile("Log, time:"+QTime::currentTime().toString());
+    //file->open(QFile::ReadWrite);
     out = new QTextStream(file);
+    *out<<"angle  '"<<"roll  '"<<"pitch  '"<<"B  '"<<"C  '"<<"Z  '"<<"Time '\n";
     index = 0;
 
 }
@@ -129,6 +140,11 @@ Compass::~Compass()
     //delete portThread;
     delete timer;
 }
+void Compass::writeTolog()
+{
+    *out<<m_fullangle<<"  '"<<m_roll<<"  '"<<m_pitch<<"  '"<<m_B<<"  '"<<m_C<<"  '"<<m_Z<<"  '"<<QTime::currentTime().toString()<<"\n";
+}
+
 void Compass::updateCompensationInfo(int binNum, int progress)
 {
     m_progress = progress;
@@ -264,6 +280,40 @@ void Compass::setAngle(double a)
     m_last2=m_fractPart;
 }
 
+void Compass::setB(double B)
+{
+    m_B = B;
+    QString str;
+    if(B-(int)B==0)
+        str = QString::number(B) + ".0";
+    else
+        str = QString::number(B);
+    context_m->setContextProperty("coef_B",str);
+    return;
+}
+void Compass::setC(double C)
+{
+    m_C = C;
+    QString str;
+    if(C-(int)C==0)
+        str = QString::number(C) + ".0";
+    else
+        str = QString::number(C);
+
+    context_m->setContextProperty("coef_C",str);
+    return;
+}
+void Compass::setZ(double Z)
+{
+    m_Z = Z;
+    QString str;
+    if(Z-(int)Z==0)
+        str = QString::number(Z) + ".0";
+    else
+        str = QString::number(Z);
+    context_m->setContextProperty("coef_Z",str);
+    return;
+}
 
 void Compass::addSKL(QString str)
 {
@@ -330,8 +380,8 @@ void Compass::addA(QString str)
 {
     if(a_str=="0" && (str=="<-" || str=="+/-" || str=="save"))
     {
-        m_skl=a_str.toDouble();
-        emit sklChanged();
+        m_coef_A=a_str.toDouble();
+        emit coef_AChanged();
         return;
     }
     else if(str=="<-" || (a_str=="0" && (str!="+0.1" || str!="-0.1")))
@@ -342,27 +392,27 @@ void Compass::addA(QString str)
     }
     else if(str=="save")
     {
-        m_skl=a_str.toDouble();
-        emit sklChanged();
+        m_coef_A=a_str.toDouble();
+        emit coef_AChanged();
         return;
     }
     else if(str=="+0.1")
     {
         a_str=QString::number(a_str.toDouble()+0.1);
-        if(a_str.toDouble()<-180.0)
-            a_str="-180";
-        else if(a_str.toDouble()>180.0)
-            a_str="180";
+        if(a_str.toDouble()<-10.0)
+            a_str="-10";
+        else if(a_str.toDouble()>10.0)
+            a_str="10";
         context_m->setContextProperty("a_str",a_str);
         return;
     }
     else if(str=="-0.1")
     {
         a_str=QString::number(a_str.toDouble()-0.1);
-        if(a_str.toDouble()<-180.0)
-                a_str="-180";
-            else if(a_str.toDouble()>180.0)
-                a_str="180";
+        if(a_str.toDouble()<-10.0)
+                a_str="-10";
+            else if(a_str.toDouble()>10.0)
+                a_str="10";
         context_m->setContextProperty("a_str",a_str);
         return;
     }
@@ -378,10 +428,10 @@ void Compass::addA(QString str)
         if(a_str.indexOf(".")!=-1 && a_str.indexOf(".")!=a_str.size()-1)
             a_str.remove(a_str.size()-1,1);
         a_str+=str;
-        if(a_str.toInt()<-180)
-            a_str="-180";
-        else if(a_str.toInt()>180)
-            a_str="180";
+        if(a_str.toInt()<-10)
+            a_str="-10";
+        else if(a_str.toInt()>10)
+            a_str="10";
     }
     context_m->setContextProperty("a_str",a_str);
 
@@ -390,13 +440,23 @@ void Compass::addA(QString str)
 void Compass::setRoll(double st)
 {
     m_roll=Round(st,1);
-    context_m->setContextProperty("m_roll",m_roll);
+    QString str;
+    if(m_roll-(int)m_roll==0)
+        str = QString::number(m_roll) + ".0";
+    else
+        str = QString::number(m_roll);
+    context_m->setContextProperty("m_roll",str);
 }
 
 void Compass::setPitch(double st)
 {
     m_pitch=Round(st,1);
-    context_m->setContextProperty("m_pitch",m_pitch);
+    QString str;
+    if(m_pitch-(int)m_pitch==0)
+        str = QString::number(m_pitch) + ".0";
+    else
+        str = QString::number(m_pitch);
+    context_m->setContextProperty("m_pitch",str);
 }
 
 
@@ -478,4 +538,31 @@ void Compass::changeInfoScreenVisibility()
 void Compass::changeSettings()
 {
     settingsDialog->exec();
+}
+
+void Compass::startWriteLog()
+{
+
+    if(m_writeLog==0)
+    {
+        context_m->setContextProperty("logMsg","Stop write to log");
+        m_oldTime = QTime::currentTime();
+        file->open(QFile::ReadWrite);
+        m_writeLog = 1;
+    }
+    else if(m_writeLog == 1)
+    {
+        context_m->setContextProperty("logMsg","Start write to log");
+        m_writeLog = 0;
+        file->close();
+        file->rename("Log"+QString::number(k)+ " time:"+m_oldTime.toString());
+        delete(file);
+        delete(out);
+        file = new QFile("Log, time:"+QTime::currentTime().toString());
+
+        out = new QTextStream(file);
+        *out<<"angle  '"<<"roll  '"<<"pitch  '"<<"B  '"<<"C  '"<<"Z  '"<<"Time '\n";
+        k++;
+
+    }
 }
