@@ -30,6 +30,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     m_infoVisibility=false;
     m_progress=0;
     skl_str="0";
+    a_str="0";
     m_complable="";
 
     context_m = context;
@@ -100,6 +101,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     context_m->setContextProperty("m_roll",m_roll);
 
     context_m->setContextProperty("skl_str",skl_str);
+    context_m->setContextProperty("a_str",a_str);
     context_m->setContextProperty("m_complable",m_complable);
 
 
@@ -199,7 +201,7 @@ void Compass::setAngle(double a)
     a=m_last+(a-m_last)*0.5;
     m_last=a;
 
-    *out << index++ <<". "<< a <<"\n";
+    //*out << index++ <<". "<< a <<"\n";
 
     a = a + m_coef_A;
     if(m_tmCourse)
@@ -248,7 +250,7 @@ void Compass::setAngle(double a)
     m_lastAngle1=m_fractPart;
     m_fractPart=m_fractPart+100*m_con1;
 
-    m_fractPart=m_last2+(m_fractPart-m_last2)*0.7;
+    m_fractPart=m_last2+(m_fractPart-m_last2)*0.5;
 
     qApp->processEvents();
 
@@ -321,6 +323,67 @@ void Compass::addSKL(QString str)
             skl_str="180";
     }
     context_m->setContextProperty("skl_str",skl_str);
+
+}
+
+void Compass::addA(QString str)
+{
+    if(a_str=="0" && (str=="<-" || str=="+/-" || str=="save"))
+    {
+        m_skl=a_str.toDouble();
+        emit sklChanged();
+        return;
+    }
+    else if(str=="<-" || (a_str=="0" && (str!="+0.1" || str!="-0.1")))
+    {
+        a_str.remove(a_str.size()-1,1);
+        if(str=="<-" && (a_str.isEmpty() || a_str=="-"))
+            a_str="0";
+    }
+    else if(str=="save")
+    {
+        m_skl=a_str.toDouble();
+        emit sklChanged();
+        return;
+    }
+    else if(str=="+0.1")
+    {
+        a_str=QString::number(a_str.toDouble()+0.1);
+        if(a_str.toDouble()<-180.0)
+            a_str="-180";
+        else if(a_str.toDouble()>180.0)
+            a_str="180";
+        context_m->setContextProperty("a_str",a_str);
+        return;
+    }
+    else if(str=="-0.1")
+    {
+        a_str=QString::number(a_str.toDouble()-0.1);
+        if(a_str.toDouble()<-180.0)
+                a_str="-180";
+            else if(a_str.toDouble()>180.0)
+                a_str="180";
+        context_m->setContextProperty("a_str",a_str);
+        return;
+    }
+    else if(str=="+/-")
+    {
+        a_str=QString::number(a_str.toDouble()*-1);
+        context_m->setContextProperty("a_str",a_str);
+        return;
+    }
+
+    if((str.toInt()>=0 || str.toInt()<=9) && str!= "<-")
+    {
+        if(a_str.indexOf(".")!=-1 && a_str.indexOf(".")!=a_str.size()-1)
+            a_str.remove(a_str.size()-1,1);
+        a_str+=str;
+        if(a_str.toInt()<-180)
+            a_str="-180";
+        else if(a_str.toInt()>180)
+            a_str="180";
+    }
+    context_m->setContextProperty("a_str",a_str);
 
 }
 

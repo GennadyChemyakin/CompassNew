@@ -206,6 +206,7 @@ Rectangle {
             id: image6rect
             width: image1rect.width
             height: image1rect.height
+            visible: false
             color: "#00000000"
             anchors.left: image5rect.right
             anchors.leftMargin: 100
@@ -213,7 +214,7 @@ Rectangle {
             anchors.topMargin: 150
             Image {
                 id: image6
-                source: "qrc:/qtquickplugin/images/template_image.png"
+                //source: "qrc:/qtquickplugin/images/template_image.png"
                 anchors.horizontalCenter: image6rect.horizontalCenter
                 anchors.verticalCenter: image6rect.verticalCenter
                 width: image1.width
@@ -397,6 +398,7 @@ Rectangle {
                 }
             onClicked:
             {
+                keyboardDisplay.setMod(true)
                 slideCompBack.start()
                 slideKeybordForward.start()
                 buttonNum = 3
@@ -464,6 +466,44 @@ Rectangle {
                     }
                   }
             onClicked:compass.changeTrueMagneticCourse()
+        }
+
+        Button {
+            id: button6
+            width: settings.buttonWidth
+            height:settings.buttonHeight
+            text: qsTr("Коэффициент A")
+            anchors.left: parent.left
+            anchors.leftMargin: 50
+            anchors.top: button5.bottom
+            anchors.topMargin: 20
+            style: ButtonStyle {
+                    label: Text {
+                        renderType: Text.NativeRendering
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        font.family: "Helvetica"
+                        font.pointSize: 27
+                        color: "black"
+                        text: control.text
+                      }
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 25
+                        border.width: control.activeFocus ? 2 : 1
+                        border.color: "#888"
+                        radius: 4
+                        color: buttonNum === 6 ? "#3960f0":"white"
+
+                    }
+                }
+            onClicked:
+            {
+                keyboardDisplay.setMod(false)
+                slideCompBack.start()
+                slideKeybordForward.start()
+                buttonNum = 6
+            }
         }
 
         Rectangle {

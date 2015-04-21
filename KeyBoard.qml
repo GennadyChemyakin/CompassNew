@@ -6,6 +6,11 @@ Rectangle {
     width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
     height: window1.height
     color: "#00000000"
+    property bool modeSKL : true
+    function setMod(arg){
+        modeSKL = arg
+    }
+
     Image {
         id: compensationBackground
         visible: true
@@ -35,7 +40,7 @@ Rectangle {
                         text: control.text
                       }
             }
-            onClicked: compass.addSKL("7")
+            onClicked: modeSKL===true ? compass.addSKL("7") : compass.addA("7")
         }
         Button {
             id: butPLUSMINUS
@@ -56,7 +61,7 @@ Rectangle {
                         text: control.text
                       }
             }
-            onClicked: compass.addSKL("+/-")
+            onClicked: modeSKL===true ? compass.addSKL("+/-") : compass.addA("+/-")
         }
 
         Button {
@@ -78,7 +83,7 @@ Rectangle {
                         text: control.text
                       }
             }
-            onClicked: compass.addSKL("8")
+            onClicked: modeSKL===true ? compass.addSKL("8") : compass.addA("8")
         }
 
         Button {
@@ -100,7 +105,7 @@ Rectangle {
                         text: control.text
                       }
             }
-            onClicked: compass.addSKL("9")
+            onClicked: modeSKL===true ? compass.addSKL("9") : compass.addA("9")
         }
 
         Button {
@@ -122,7 +127,7 @@ Rectangle {
                         text: control.text
                       }
             }
-            onClicked: compass.addSKL("4")
+            onClicked: modeSKL===true ? compass.addSKL("4") : compass.addA("4")
         }
 
         Button {
@@ -144,7 +149,7 @@ Rectangle {
                         text: control.text
                       }
             }
-            onClicked: compass.addSKL("5")
+            onClicked: modeSKL===true ? compass.addSKL("5") : compass.addA("5")
         }
 
         Button {
@@ -166,7 +171,7 @@ Rectangle {
                         text: control.text
                       }
             }
-            onClicked: compass.addSKL("6")
+            onClicked: modeSKL===true ? compass.addSKL("6") : compass.addA("6")
         }
 
         Button {
@@ -188,7 +193,7 @@ Rectangle {
                         text: control.text
                       }
             }
-            onClicked: compass.addSKL("1")
+            onClicked: modeSKL===true ? compass.addSKL("1") : compass.addA("1")
         }
 
         Button {
@@ -210,7 +215,7 @@ Rectangle {
                         text: control.text
                       }
             }
-            onClicked: compass.addSKL("2")
+            onClicked: modeSKL===true ? compass.addSKL("2") : compass.addA("2")
         }
 
         Button {
@@ -232,7 +237,7 @@ Rectangle {
                         text: control.text
                       }
             }
-            onClicked: compass.addSKL("3")
+            onClicked: modeSKL===true ? compass.addSKL("3") : compass.addA("3")
         }
 
         Button {
@@ -254,7 +259,7 @@ Rectangle {
                         text: control.text
                       }
             }
-            onClicked: compass.addSKL("save")
+            onClicked: modeSKL===true ? compass.addSKL("save") : compass.addA("save")
         }
 
         Button {
@@ -276,7 +281,7 @@ Rectangle {
                         text: control.text
                       }
             }
-            onClicked: compass.addSKL("0")
+            onClicked: modeSKL===true ? compass.addSKL("0") : compass.addA("0")
         }
 
         TextField {
@@ -287,7 +292,7 @@ Rectangle {
             height: 106
             z: 1
             placeholderText: qsTr("Text Field")
-            text: skl_str > 0.1 ? "+" + skl_str : skl_str
+            text: modeSKL===true ? (skl_str > 0.1 ? "+" + skl_str : skl_str ): (a_str > 0.1 ? "+" + a_str : a_str)
             font.pixelSize: 88
         }
 
@@ -309,7 +314,7 @@ Rectangle {
                         text: control.text
                       }
             }
-            onClicked: compass.addSKL("<-")
+            onClicked: modeSKL===true ? compass.addSKL("<-") : compass.addA("<-")
         }
 
         Button {
@@ -332,7 +337,7 @@ Rectangle {
                         text: control.text
                       }
             }
-            onClicked: compass.addSKL("+0.1")
+            onClicked: modeSKL===true ? compass.addSKL("+0.1") : compass.addA("+0.1")
         }
 
         Button {
@@ -355,7 +360,7 @@ Rectangle {
                         text: control.text
                       }
             }
-            onClicked: compass.addSKL("-0.1")
+            onClicked: modeSKL===true ? compass.addSKL("-0.1") : compass.addA("-0.1")
         }
     }
 

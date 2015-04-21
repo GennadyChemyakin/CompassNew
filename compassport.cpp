@@ -51,7 +51,7 @@ void CompassPort::on()
         {
             if(port->isOpen())
                 port->close();
-            qDebug()<<"Error while opening";
+            //qDebug()<<"Error while opening";
         }
     }
     if(port->isOpen() && port->waitForReadyRead(100))
@@ -99,7 +99,7 @@ void CompassPort::on()
                         m_angle = Round(toDec(two_bytes,0)*1.41,1);
                         emit angleChanged(m_angle);
                         //*out << m_angle <<" "<< m_roll<<" "<<m_pitch<<" "<<"1"<<"\n";
-                        *out << index++ <<". "<<m_angle <<"\n";
+                        //*out << index++ <<". "<<m_angle <<"\n";
                         m_state=0;
                         qApp->processEvents();
                     }
@@ -143,7 +143,7 @@ void CompassPort::on()
                             m_angle = Round(toDec(two_bytes,0)*1.41,1);
                             emit angleChanged(m_angle);
                             //*out << m_angle <<" "<< m_roll<<" "<<m_pitch<<" "<<"2"<<"\n";
-                            *out << index++ <<". "<< m_angle <<"\n";
+                            //*out << index++ <<". "<< m_angle <<"\n";
                             m_state=0;
                             startFinded = false;
                         }
@@ -156,8 +156,8 @@ void CompassPort::on()
     }
     else
     {
-        qDebug()<<"WaitForReadyRead failed";
-        qDebug()<<port->error();
+        //qDebug()<<"WaitForReadyRead failed";
+        //qDebug()<<port->error();
     }
     emit timerStart(10);
 }

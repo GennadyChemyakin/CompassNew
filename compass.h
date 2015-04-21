@@ -106,6 +106,7 @@ public slots:
     void setCompensationLabel(QString);
     void setCompensationLabeltoDeafault();
     void addSKL(QString str);
+    void addA(QString str);
 
 
 protected:
@@ -141,6 +142,7 @@ private:
     double m_summ_ang;
     int m_progress;
     QString skl_str;
+    QString a_str;
     QString m_complable;
 
     int index;
