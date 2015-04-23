@@ -9,10 +9,10 @@
 CompassPort::CompassPort(QObject *parent) : QObject(parent)
 {
     m_angle = m_pitch = m_roll = m_state = 0;
-    port = new QSerialPort();
+    port = new QSerialPort(this);
     m_compInProgress = false;
     connect(this,SIGNAL(compFinished()),this,SLOT(stopCompensation()));
-    file = new QFile("/home/gennady/angles");
+    file = new QFile("angles");
     file->open(QFile::ReadWrite);
     out = new QTextStream(file);
     index = 0;
@@ -27,12 +27,14 @@ CompassPort::~CompassPort()
 
 void CompassPort::on()
 {
+
     emit timerStop();
     //qDebug()<<QThread::currentThreadId();
     if(!port->isOpen())
     {       
         if (port->open(QIODevice::ReadWrite))
         {
+
             QSerialPortInfo *info = new QSerialPortInfo(*port);
             qDebug() << "Name        : " << info->portName();
             qDebug() << "Description : " << info->description();

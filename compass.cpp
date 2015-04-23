@@ -40,7 +40,6 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     timer = new QTimer(this);
     settingsDialog = new Settings();
 
-
     //timer signals
     connect(timer, SIGNAL(timeout()),compport, SLOT(on()));
     connect(compport, SIGNAL(timerStart(int)),timer, SLOT(start(int)));
@@ -82,6 +81,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
 
     portThread = new QThread;
     compport->moveToThread(portThread);
+    //compport->getPort()->moveToThread(portThread);
     //connect(portThread,SIGNAL(started()),compport,SLOT(on()));
     connect(compport,SIGNAL(finished()),portThread,SLOT(quit()));
     //connect(compport,SIGNAL(finished()),compport,SLOT(deleteLater()));
@@ -269,12 +269,20 @@ void Compass::setAngle(double a)
     m_fractPart=m_last2+(m_fractPart-m_last2)*0.5;
 
     qApp->processEvents();
+    QString strAngle =QString::number(m_fullangle);
+    if(m_fullangle - (int)m_fullangle == 0)
+        strAngle +=".0";
+    if(m_fullangle/10<=1)
+       strAngle="0"+strAngle;
+    if(m_fullangle/100<=1)
+        strAngle="0"+strAngle;
 
     //context_m->setContextProperty("angle_value",m_angle);
     //if(!((m_last-m_angle>100) || (m_angle-m_last>100)))
     emit angleChanged();
     context_m->setContextProperty("fract_part",m_fractPart);
-    context_m->setContextProperty("full_angle",m_fullangle);
+
+    context_m->setContextProperty("full_angle",strAngle);
     context_m->setContextProperty("afterComma",m_afterComma);
     //m_last=m_angle;
     m_last2=m_fractPart;

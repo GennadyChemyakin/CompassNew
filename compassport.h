@@ -38,6 +38,11 @@ public slots:
     void initComp(); //initiation of compensation
     void revert();//reset
     void stopCompensation();
+    QSerialPort* getPort()
+    {
+        return port;
+    }
+
 public:
     explicit CompassPort(QObject *parent = 0);
     ~CompassPort();

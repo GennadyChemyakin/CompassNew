@@ -7,6 +7,7 @@
 #include <QApplication>
 #include <QDebug>
 #include <QQmlContext>
+#include <QWinEventNotifier>
 #include "compassport.h"
 #include "QThread"
 #include "coefdial.h"

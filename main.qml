@@ -255,7 +255,8 @@ Window {
             {
                 id: lcdNumbers
                 anchors.centerIn: parent
-                text: afterComma === 0 ? full_angle%360+".0" : full_angle%360
+                //text: afterComma === 0 ? full_angle%360+".0" : full_angle%360
+                text: full_angle
                 font.pixelSize: 150
                 font.family: a_LCDNovaObl.name
                 style: Text.Outline
@@ -463,6 +464,7 @@ Window {
                 //onClicked: backgrnCompass.slided = !backgrnCompass.slided
                 //onClicked: backgrnCompass.slided === false ? slideForward.start():slideBack.start()
                 onClicked:settingsDisplay.settingsSlided === false ? slideLCDForward.start():slideLCDBack.start()
+                //onClicked:compass.changeSettings()
             }
 
         }
