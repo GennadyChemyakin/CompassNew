@@ -115,6 +115,8 @@ public slots:
     void addA(QString str);
     void startWriteLog();
     void writeTolog();
+    void addDelta(QString,int);
+    void addDeltaDegaus(QString,int);
 
 protected:
     QObject *qml;
@@ -151,8 +153,12 @@ private:
     double m_summ_ang;
     int m_progress;
     int k;
+    double delta[8];
+    double deltaDegaus[8];
     QTime m_oldTime;
     QString skl_str;
+    QString delta_str;
+    QString deltaDegaus_str;
     QString a_str;
     QString m_complable;
 

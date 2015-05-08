@@ -33,6 +33,13 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     skl_str="0";
     a_str="0";
     m_complable="";
+    delta_str = "0";
+    deltaDegaus_str = "0";
+    for(int i=0;i<8;i++)
+    {
+        delta[i]=0;
+        deltaDegaus[i]=0;
+    }
 
     context_m = context;
     dialComp = new DialogComp();
@@ -112,6 +119,8 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
 
     context_m->setContextProperty("skl_str",skl_str);
     context_m->setContextProperty("a_str",a_str);
+    context_m->setContextProperty("delta_str",delta_str);
+    context_m->setContextProperty("deltaDegaus_str",deltaDegaus_str);
     context_m->setContextProperty("m_complable",m_complable);
 
 
@@ -381,6 +390,162 @@ void Compass::addSKL(QString str)
             skl_str="180";
     }
     context_m->setContextProperty("skl_str",skl_str);
+
+}
+
+void Compass::addDelta(QString str,int course)
+{
+    if(str=="reset")
+    {
+        if(delta[course-1]==0)
+        {
+            delta_str="0";
+            context_m->setContextProperty("delta_str",delta_str);
+            return;
+        }
+        if(delta[course-1]<0)
+            delta_str=QString::number(delta[course-1]);
+        else
+            delta_str=QString::number(delta[course-1]);
+       context_m->setContextProperty("delta_str",delta_str);
+       return;
+    }
+    if(delta_str=="0" && (str=="<-" || str=="+/-" || str=="save"))
+    {
+        delta[course-1]=delta_str.toDouble();
+        //m_skl=delta_str.toDouble();
+        //emit sklChanged();
+
+        return;
+    }
+    else if(str=="<-" || (delta_str=="0" && (str!="+0.1" || str!="-0.1")))
+    {
+        delta_str.remove(delta_str.size()-1,1);
+        if(str=="<-" && (delta_str.isEmpty() || delta_str=="-"))
+            delta_str="0";
+    }
+    else if(str=="save")
+    {
+       delta[course-1]=delta_str.toDouble();
+        //emit sklChanged();
+        return;
+    }
+    else if(str=="+0.1")
+    {
+        delta_str=QString::number(delta_str.toDouble()+0.1);
+        if(delta_str.toDouble()<-180.0)
+            delta_str="-180";
+        else if(delta_str.toDouble()>180.0)
+            delta_str="180";
+        context_m->setContextProperty("delta_str",delta_str);
+        return;
+    }
+    else if(str=="-0.1")
+    {
+        delta_str=QString::number(delta_str.toDouble()-0.1);
+        if(delta_str.toDouble()<-180.0)
+                delta_str="-180";
+            else if(delta_str.toDouble()>180.0)
+                delta_str="180";
+        context_m->setContextProperty("delta_str",delta_str);
+        return;
+    }
+    else if(str=="+/-")
+    {
+        delta_str=QString::number(delta_str.toDouble()*-1);
+        context_m->setContextProperty("delta_str",delta_str);
+        return;
+    }
+
+    if((str.toInt()>=0 || str.toInt()<=9) && str!= "<-")
+    {
+        if(delta_str.indexOf(".")!=-1 && delta_str.indexOf(".")!=delta_str.size()-1)
+            delta_str.remove(delta_str.size()-1,1);
+        delta_str+=str;
+        if(delta_str.toInt()<-180)
+            delta_str="-180";
+        else if(delta_str.toInt()>180)
+            delta_str="180";
+    }
+    context_m->setContextProperty("delta_str",delta_str);
+
+}
+
+void Compass::addDeltaDegaus(QString str,int course)
+{
+    if(str=="reset")
+    {
+        if(deltaDegaus[course-1]==0)
+        {
+            deltaDegaus_str="0";
+            context_m->setContextProperty("deltaDegaus_str",deltaDegaus_str);
+            return;
+        }
+        if(deltaDegaus[course-1]<0)
+            deltaDegaus_str=QString::number(deltaDegaus[course-1]);
+        else
+            deltaDegaus_str=QString::number(deltaDegaus[course-1]);
+       context_m->setContextProperty("deltaDegaus_str",deltaDegaus_str);
+       return;
+    }
+    if(deltaDegaus_str=="0" && (str=="<-" || str=="+/-" || str=="save"))
+    {
+        deltaDegaus[course-1]=deltaDegaus_str.toDouble();
+        //m_skl=deltaDegaus_str.toDouble();
+        //emit sklChanged();
+
+        return;
+    }
+    else if(str=="<-" || (deltaDegaus_str=="0" && (str!="+0.1" || str!="-0.1")))
+    {
+        deltaDegaus_str.remove(deltaDegaus_str.size()-1,1);
+        if(str=="<-" && (deltaDegaus_str.isEmpty() || deltaDegaus_str=="-"))
+            deltaDegaus_str="0";
+    }
+    else if(str=="save")
+    {
+       deltaDegaus[course-1]=deltaDegaus_str.toDouble();
+        //emit sklChanged();
+        return;
+    }
+    else if(str=="+0.1")
+    {
+        deltaDegaus_str=QString::number(deltaDegaus_str.toDouble()+0.1);
+        if(deltaDegaus_str.toDouble()<-180.0)
+            deltaDegaus_str="-180";
+        else if(deltaDegaus_str.toDouble()>180.0)
+            deltaDegaus_str="180";
+        context_m->setContextProperty("deltaDegaus_str",deltaDegaus_str);
+        return;
+    }
+    else if(str=="-0.1")
+    {
+        deltaDegaus_str=QString::number(deltaDegaus_str.toDouble()-0.1);
+        if(deltaDegaus_str.toDouble()<-180.0)
+                deltaDegaus_str="-180";
+            else if(deltaDegaus_str.toDouble()>180.0)
+                deltaDegaus_str="180";
+        context_m->setContextProperty("deltaDegaus_str",deltaDegaus_str);
+        return;
+    }
+    else if(str=="+/-")
+    {
+        deltaDegaus_str=QString::number(deltaDegaus_str.toDouble()*-1);
+        context_m->setContextProperty("deltaDegaus_str",deltaDegaus_str);
+        return;
+    }
+
+    if((str.toInt()>=0 || str.toInt()<=9) && str!= "<-")
+    {
+        if(deltaDegaus_str.indexOf(".")!=-1 && deltaDegaus_str.indexOf(".")!=deltaDegaus_str.size()-1)
+            deltaDegaus_str.remove(deltaDegaus_str.size()-1,1);
+        deltaDegaus_str+=str;
+        if(deltaDegaus_str.toInt()<-180)
+            deltaDegaus_str="-180";
+        else if(deltaDegaus_str.toInt()>180)
+            deltaDegaus_str="180";
+    }
+    context_m->setContextProperty("deltaDegaus_str",deltaDegaus_str);
 
 }
 

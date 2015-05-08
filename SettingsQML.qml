@@ -34,6 +34,16 @@ Rectangle {
         anchors.right: parent.right
         z:2
     }
+    Deviation
+    {
+        id:deviationDisplay
+        x: 1440
+        width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
+        height: settings.height
+        anchors.rightMargin: -deviationDisplay.width
+        anchors.right: parent.right
+        z:2
+    }
     MoreInfo
        {
            id:moreInfoDisp
@@ -250,6 +260,15 @@ Rectangle {
         }
     }
     ParallelAnimation {
+        id: slideDeviationForward
+        PropertyAnimation {
+            target: deviationDisplay
+            properties: "anchors.rightMargin"
+            to: 0
+            duration: 300
+        }
+    }
+    ParallelAnimation {
         id: slideCompForward
         PropertyAnimation {
             target: compensationDisplay
@@ -268,6 +287,12 @@ Rectangle {
         }
         PropertyAnimation {
             target: keyboardDisplay
+            properties: "anchors.rightMargin"
+            to: -compensationDisplay.width
+            duration: 0
+        }
+        PropertyAnimation {
+            target: deviationDisplay
             properties: "anchors.rightMargin"
             to: -compensationDisplay.width
             duration: 0
@@ -317,7 +342,7 @@ Rectangle {
                         border.width: control.activeFocus ? 2 : 1
                         border.color: "#888"
                         radius: 4
-                        color: buttonNum === 1 ? "#3960f0":"white"
+                        color: buttonNum === 1 ? "#42e73a":"white"
 
                     }
                 }
@@ -355,7 +380,7 @@ Rectangle {
                         border.width: control.activeFocus ? 2 : 1
                         border.color: "#888"
                         radius: 4
-                        color: buttonNum === 2 ? "#3960f0":"white"
+                        color: buttonNum === 2 ? "#42e73a":"white"
 
                     }
                 }
@@ -392,8 +417,7 @@ Rectangle {
                         border.width: control.activeFocus ? 2 : 1
                         border.color: "#888"
                         radius: 4
-                        color: buttonNum === 3 ? "#3960f0":"white"
-
+                        color: buttonNum === 3 ? "#42e73a":"white"
                     }
                 }
             onClicked:
@@ -430,7 +454,7 @@ Rectangle {
                         border.width: control.activeFocus ? 2 : 1
                         border.color: "#888"
                         radius: 4
-                        color: buttonNum === 4 ? "#3960f0":"white"
+                        color: buttonNum === 4 ? "#42e73a":"white"
 
                     }
                 }
@@ -460,7 +484,7 @@ Rectangle {
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: 27
+                        font.pointSize: 18
                         color: "black"
                         text: control.text
                     }
@@ -493,7 +517,7 @@ Rectangle {
                         border.width: control.activeFocus ? 2 : 1
                         border.color: "#888"
                         radius: 4
-                        color: buttonNum === 6 ? "#3960f0":"white"
+                        color: buttonNum === 6 ? "#42e73a":"white"
 
                     }
                 }
@@ -505,7 +529,43 @@ Rectangle {
                 buttonNum = 6
             }
         }
+        Button {
+            id: button7
+            width: settings.buttonWidth
+            height:settings.buttonHeight
+            text: qsTr("Девиация")
+            anchors.left: parent.left
+            anchors.leftMargin: 50
+            anchors.top: button6.bottom
+            anchors.topMargin: 20
+            style: ButtonStyle {
+                    label: Text {
+                        renderType: Text.NativeRendering
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        font.family: "Helvetica"
+                        font.pointSize: 27
+                        color: "black"
+                        text: control.text
+                      }
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 25
+                        border.width: control.activeFocus ? 2 : 1
+                        border.color: "#888"
+                        radius: 4
+                        color: buttonNum === 7 ? "#42e73a":"white"
 
+                    }
+                }
+            onClicked:
+            {
+                //deviationDisplay.setMod(false)
+                slideCompBack.start()
+                slideDeviationForward.start()
+                buttonNum = 7
+            }
+        }
         Rectangle {
             id: rectangle1
             width: 1

@@ -12,5 +12,6 @@
         <file>KeyBoard.qml</file>
         <file>Compensation.qml</file>
         <file>MoreInfo.qml</file>
+        <file>Deviation.qml</file>
     </qresource>
 </RCC>
