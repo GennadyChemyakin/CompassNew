@@ -45,7 +45,14 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
         m_points[i+16] = 0;
 
     }
-
+    delta[0] = -0.8;
+    delta[1] = 0.8;
+    delta[2] = 0.9;
+    delta[3] = 0.5;
+    delta[4] = 0.0;
+    delta[5] = -0.2;
+    delta[6] = -0.2;
+    delta[7] = -0.8;
 
     context_m = context;
     dialComp = new DialogComp();
@@ -229,7 +236,7 @@ void Compass::setAngle(double a)
 {
     qDebug()<<"a "<<a;
     a = a - spline->f(a);
-    qDebug()<<"a-delta "<<a;
+
     if(index == 0)
         m_last = a;
     a=m_last+(a-m_last)*0.5;
@@ -246,6 +253,7 @@ void Compass::setAngle(double a)
         a-=360;
     if (a!=0)
     {
+        qDebug()<<"a-delta "<<a;
         double temp;
         double *pt=new double;
         temp=QString::number(modf(a,pt)).left(3).toDouble();
@@ -265,7 +273,6 @@ void Compass::setAngle(double a)
     {
          m_con++;
     }
-
     m_lastAngle=m_angle;
     m_angle=m_angle+360*m_con;
 
@@ -290,9 +297,9 @@ void Compass::setAngle(double a)
     QString strAngle =QString::number(m_fullangle);
     if(m_fullangle - (int)m_fullangle == 0)
         strAngle +=".0";
-    if(m_fullangle/10<=1)
+    if(m_fullangle/10<1)
        strAngle="0"+strAngle;
-    if(m_fullangle/100<=1)
+    if(m_fullangle/100<1)
         strAngle="0"+strAngle;
 
     //context_m->setContextProperty("angle_value",m_angle);
@@ -308,14 +315,7 @@ void Compass::setAngle(double a)
 
 void Compass::getDevCoef()
 {
-    delta[0] = -0.8;
-    delta[1] = 0.8;
-    delta[2] = 0.9;
-    delta[3] = 0.5;
-    delta[4] = 0.0;
-    delta[5] = -0.2;
-    delta[6] = -0.2;
-    delta[7] = -0.8;
+
     for(int i = 0; i < 8; i++)
         m_coef_Dev.A+=delta[i];
     m_coef_Dev.A /= 8;
