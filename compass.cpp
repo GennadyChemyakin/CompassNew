@@ -35,11 +35,17 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     m_complable="";
     delta_str = "0";
     deltaDegaus_str = "0";
+    spline = new cubic_spline();
     for(int i=0;i<8;i++)
     {
         delta[i]=0;
         deltaDegaus[i]=0;
+        m_points[i] = 0;
+        m_points[i+8] = 0;
+        m_points[i+16] = 0;
+
     }
+
 
     context_m = context;
     dialComp = new DialogComp();
@@ -221,6 +227,9 @@ void Compass::setCompensationLabeltoDeafault()
 
 void Compass::setAngle(double a)
 {
+    qDebug()<<"a "<<a;
+    a = a - spline->f(a);
+    qDebug()<<"a-delta "<<a;
     if(index == 0)
         m_last = a;
     a=m_last+(a-m_last)*0.5;
@@ -295,6 +304,49 @@ void Compass::setAngle(double a)
     context_m->setContextProperty("afterComma",m_afterComma);
     //m_last=m_angle;
     m_last2=m_fractPart;
+}
+
+void Compass::getDevCoef()
+{
+    delta[0] = -0.8;
+    delta[1] = 0.8;
+    delta[2] = 0.9;
+    delta[3] = 0.5;
+    delta[4] = 0.0;
+    delta[5] = -0.2;
+    delta[6] = -0.2;
+    delta[7] = -0.8;
+    for(int i = 0; i < 8; i++)
+        m_coef_Dev.A+=delta[i];
+    m_coef_Dev.A /= 8;
+    m_coef_Dev.B = ((delta[2]-delta[6])/2 + (delta[1]-delta[5])/2 * sqrt(2)/2 + ((delta[3]-delta[7]) * sqrt(2)/2)/2)/2;
+    m_coef_Dev.C = ((delta[0]-delta[4])/2 + (delta[1]-delta[5])/2 * sqrt(2)/2 + (delta[3]-delta[7]) * (-sqrt(2)/2)/2)/2;
+    m_coef_Dev.D = ((delta[1]+delta[5])/2 - (delta[3]+delta[7])/2)/2;
+    m_coef_Dev.E = ((delta[0]+delta[4])/2 - (delta[2]+delta[6])/2)/2;
+    calcPoints();
+}
+
+void Compass::calcPoints()
+{
+    double mass[4][12] = {{0.0,0.5,0.87,1.0,0.87,0.5,0.0,-0.5, -0.87,-1.0,-0.87,-0.5},
+                         {1.0, 0.87,0.5, 0.0, -0.5,-0.87, -1.0,-0.87,-0.5,0.0, 0.5, 0.87},
+                         {0.0,0.26,0.5, 0.71, 0.87, 0.96, 1.0,0.96, 0.87,0.71,0.5, 0.26},
+                         {1.0,0.96, 0.87, 0.71,0.5,0.26,0.0,-0.26,-0.5,-0.71,-0.87,-0.96}};
+
+    for(int i = 0; i < 12; i++)
+    {
+        m_points[i] = m_coef_Dev.D * mass[0][i] + m_coef_Dev.E * mass[1][i] + m_coef_Dev.A + m_coef_Dev.B * mass[2][i] + m_coef_Dev.C * mass[3][i];
+        m_points[i+12] = m_coef_Dev.D * mass[0][i] + m_coef_Dev.E * mass[1][i] + m_coef_Dev.A - (m_coef_Dev.B * mass[2][i] + m_coef_Dev.C * mass[3][i]);
+    }
+
+    double x[25];
+    for(int i = 0; i < 25; i++)
+    {
+        x[i] = 15 * i;
+    }
+
+    m_points[24] = m_points[0];
+    spline->build_spline(x,m_points,25);
 }
 
 void Compass::setB(double B)

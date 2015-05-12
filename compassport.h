@@ -10,6 +10,7 @@
 #include <QtGui>
 #include "dialogcomp.h"
 
+
 class CompassPort : public QObject
 {
     Q_OBJECT
@@ -59,6 +60,7 @@ private:
     QTextStream *out;
     QFile *file;
     int index;
+
 private slots:
     void updateSettings(QStringList listOfSettings);
     double toDec(QBitArray,int);

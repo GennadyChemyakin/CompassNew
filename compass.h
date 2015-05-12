@@ -13,6 +13,7 @@
 #include "coefdial.h"
 #include "dialogcomp.h"
 #include "settings.h"
+#include "cubic_spline.h"
 
 class Compass : public QObject
 {
@@ -29,6 +30,12 @@ public:
     {
         int bin0,bin1,bin2,bin3,bin4,bin5,bin6,bin7;
         Bins(){bin0=bin1=bin2=bin3=bin4=bin5=bin6=bin7=0;}
+    };
+
+    struct DevCoef
+    {
+        double A,B,C,D,E;
+        DevCoef(){A=B=C=D=E=0;}
     };
 
 
@@ -98,6 +105,7 @@ public slots:
             return 0;
         }
     }
+    void getDevCoef();
     void setRoll(double);
     void setPitch(double);
     void changeSkl();
@@ -125,6 +133,7 @@ protected:
 private:
     double m_B,m_C,m_Z;
     bool m_writeLog;
+    double m_points[25];
     bool m_comp_state;
     bool m_tmCourse;
     double m_dempf;
@@ -153,14 +162,19 @@ private:
     double m_summ_ang;
     int m_progress;
     int k;
+
+
     double delta[8];
     double deltaDegaus[8];
+
     QTime m_oldTime;
     QString skl_str;
     QString delta_str;
     QString deltaDegaus_str;
     QString a_str;
     QString m_complable;
+
+    cubic_spline *spline;
 
     int index;
 
@@ -169,9 +183,12 @@ private:
 
 
     Bins m_bins;
+    DevCoef m_coef_Dev;
 
 
     double Round(double,int);
+    void calcPoints();
+
 
     CoefDial* dial;
     QTimer *timer;

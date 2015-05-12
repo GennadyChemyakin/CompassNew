@@ -684,6 +684,29 @@ Rectangle {
             }
         }
 
+        Button {
+            id: buttonDo
+            width: 166
+            height: 107
+            text: qsTr("Расчитать")
+            anchors.left: button0.right
+            anchors.leftMargin: 127
+            anchors.top: butMinus.bottom
+            anchors.topMargin: 81
+            style: ButtonStyle {
+                    label: Text {
+                        renderType: Text.NativeRendering
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        font.family: "Helvetica"
+                        font.pointSize: 24
+                        color: "black"
+                        text: control.text
+                      }
+            }
+            onClicked: compass.getDevCoef()
+        }
+
     }
 
 
