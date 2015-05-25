@@ -8,8 +8,8 @@ Rectangle {
     //height: window1.height
     width: 1440
     height: 980
-    property int buttonWidth:340
-    property int buttonHeight:100
+    property int buttonWidth:360
+    property int buttonHeight:75
     property int buttonNum:0
     //color: "#028000"
 

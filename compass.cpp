@@ -58,12 +58,16 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     dialComp = new DialogComp();
     compport = new CompassPort();
     timer = new QTimer(this);
+    settingsViewControlTimer = new QTimer(this);
     settingsDialog = new Settings();
 
     //timer signals
     connect(timer, SIGNAL(timeout()),compport, SLOT(on()));
     connect(compport, SIGNAL(timerStart(int)),timer, SLOT(start(int)));
     connect(compport, SIGNAL(timerStop()),timer, SLOT(stop()));
+
+    connect(settingsViewControlTimer,SIGNAL(timeout()),this,SLOT(closeSettingsView()));
+    connect(settingsViewControlTimer,SIGNAL(timeout()),settingsViewControlTimer,SLOT(stop()));
     /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
     //angle signals
@@ -79,7 +83,9 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     //settings signals
     connect(settingsDialog,SIGNAL(settingsChanged(QStringList)),compport,SLOT(updateSettings(QStringList)));
     connect(settingsDialog,SIGNAL(revertRequest()),compport,SLOT(revert()));
+    connect(this,SIGNAL(revertRequest()),compport,SLOT(revert()));
     connect(compport,SIGNAL(revertStatusChanged(QString)),settingsDialog,SLOT(setLable(QString)));
+    connect(compport,SIGNAL(revertStatusChanged(QString)),settingsDialog,SLOT(setCompensationLabel(QString)));
     /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
     //compensation signals
@@ -324,6 +330,11 @@ void Compass::getDevCoef()
     m_coef_Dev.D = ((delta[1]+delta[5])/2 - (delta[3]+delta[7])/2)/2;
     m_coef_Dev.E = ((delta[0]+delta[4])/2 - (delta[2]+delta[6])/2)/2;
     calcPoints();
+}
+
+void Compass::startSettingsViewControlTimer(int msec)
+{
+    settingsViewControlTimer->start(msec);
 }
 
 void Compass::calcPoints()
@@ -725,6 +736,11 @@ void Compass::changeSkl()
 void Compass::initComp()
 {
     emit compensationRequest();
+}
+
+void Compass::revert()
+{
+    emit revertRequest();
 }
 
 void Compass::changeTrueMagneticCourse()

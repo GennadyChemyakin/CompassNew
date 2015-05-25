@@ -102,7 +102,7 @@ void CompassPort::on()
                         m_angle = Round(toDec(two_bytes,0)*1.41,1);
                         emit angleChanged(m_angle);
 
-                        for(int i=136,j=15;i<1526&&j>=0;i++,j--){two_bytes[j]=bitdata[i];} //coef B
+                        for(int i=136,j=15;i<152&&j>=0;i++,j--){two_bytes[j]=bitdata[i];} //coef B
                         m_B = Round(toDec(two_bytes,0)*1.41,1);
                         qDebug()<<"B: "<<m_B;
                         emit BChanged(m_B);

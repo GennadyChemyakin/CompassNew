@@ -258,7 +258,7 @@ Rectangle {
             height: 107
             text: qsTr("Сохранить")
             anchors.left: parent.left
-            anchors.leftMargin: 227
+            anchors.leftMargin: 132
             anchors.top: but1.bottom
             anchors.topMargin: 20
             style: ButtonStyle {
@@ -277,7 +277,7 @@ Rectangle {
 
         Button {
             id: button0
-            x: 425
+            x: 329
             width: 166
             height: 107
             text: qsTr("0")
@@ -690,7 +690,7 @@ Rectangle {
             height: 107
             text: qsTr("Расчитать")
             anchors.left: button0.right
-            anchors.leftMargin: 127
+            anchors.leftMargin: 26
             anchors.top: butMinus.bottom
             anchors.topMargin: 81
             style: ButtonStyle {

@@ -197,6 +197,7 @@ Rectangle {
                         text: control.text
                       }
             }
+            onClicked: compass.revert()
         }
 
         Text {

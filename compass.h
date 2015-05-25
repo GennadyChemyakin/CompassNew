@@ -63,6 +63,9 @@ signals:
     void compClosed();
 
     void binsChanged();
+    void closeSettingsViewSignal();
+
+    void revertRequest();
 
 
 public slots:
@@ -71,6 +74,13 @@ public slots:
     void setC(double);
     void setZ(double);
 
+    void closeSettingsView()
+    {
+        emit closeSettingsViewSignal();
+        qDebug()<<"timeout";
+    }
+
+    void revert();
     double angle() const {return m_angle;}
     void setBins(Bins bins){m_bins=bins;}
     int getBins(int binNum)
@@ -125,6 +135,7 @@ public slots:
     void writeTolog();
     void addDelta(QString,int);
     void addDeltaDegaus(QString,int);
+    void startSettingsViewControlTimer(int msec);
 
 protected:
     QObject *qml;
@@ -192,6 +203,7 @@ private:
 
     CoefDial* dial;
     QTimer *timer;
+    QTimer *settingsViewControlTimer;
     CompassPort *compport;
     QThread *portThread;
     DialogComp *dialComp;

@@ -5,13 +5,14 @@ import QtQuick.Window 2.1
 
 Window {
     id: window1
-    //width: 1440
-    //height: 980
+    width: 1440
+    height: 980
     title: qsTr("Compass")
-    visibility: "Maximized"
+    visibility: "Windowed"
 
     property string gradientcolor0: "#FF7C7C7C"
     property string gradientcolor1: "#FF4E4E4E"
+
 
 
     Rectangle
@@ -20,6 +21,20 @@ Window {
         anchors.fill: parent
         //width: 1440
         //height: 980
+
+        function closeSettingsDisplay(){
+            //settingsDisplay.settingsSlided = false;
+            if(settingsDisplay.settingsSlided === true)
+                slideLCDBack.start();
+        }
+
+        Connections {
+            target: compass
+            onCloseSettingsViewSignal: {
+              rectangle1.closeSettingsDisplay()
+            }
+        }
+
 
         SettingsQML
         {
@@ -461,10 +476,9 @@ Window {
                 hoverEnabled: true
                 onEntered: bmenuEnterAnim.start()
                 onExited: bmenuExitAnim.start()
-                //onClicked: backgrnCompass.slided = !backgrnCompass.slided
-                //onClicked: backgrnCompass.slided === false ? slideForward.start():slideBack.start()
-                onClicked:settingsDisplay.settingsSlided === false ? slideLCDForward.start():slideLCDBack.start()
-                //onClicked:compass.changeSettings()
+                onClicked:{settingsDisplay.settingsSlided === false ? slideLCDForward.start():slideLCDBack.start();
+                    compass.startSettingsViewControlTimer(300000);
+                }
             }
 
         }
