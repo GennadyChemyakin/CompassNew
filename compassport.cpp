@@ -274,37 +274,37 @@ void CompassPort::initComp()
                         if(toDecInt(one_byte)==1)
                         {
                             //dial->setLabel("Success");
-                            emit dialCompStatusChanged("Success");
+                            emit dialCompStatusChanged("Успех");
                         }
                         else if(toDecInt(one_byte)==0)
                         {
                             //dial->setLabel("No error");
-                            emit dialCompStatusChanged("No error");
+                            emit dialCompStatusChanged("Ошибок нет");
                         }
                         else if(toDecInt(one_byte)==2)
                         {
                             //dial->setLabel("Compensation Already Started");
-                            emit dialCompStatusChanged("Compensation Already Started");
+                            emit dialCompStatusChanged("Компенсация уже начата");
                         }
                         else if(toDecInt(one_byte)==3)
                         {
                             //dial->setLabel("Compensation Not Started");
-                            emit dialCompStatusChanged("Compensation Not Started");
+                            emit dialCompStatusChanged("Компенсация не начата");
                         }
                         else if(toDecInt(one_byte)==4)
                         {
                             //dial->setLabel("Compensation Timeout");
-                            emit dialCompStatusChanged("Compensation Timeout");
+                            emit dialCompStatusChanged("Время вышло");
                         }
                         else if(toDecInt(one_byte)==5)
                         {
                             //dial->setLabel("Compensation Computation Failure");
-                            emit dialCompStatusChanged("Compensation Computation Failure");
+                            emit dialCompStatusChanged("Провал");
                         }
                         else if(toDecInt(one_byte)==6)
                         {
                             //dial->setLabel("New Computed Parameters No Better");
-                            emit dialCompStatusChanged("New Computed Parameters No Better");
+                            emit dialCompStatusChanged("Новые параметры не лучше");
                         }
                         else if(toDecInt(one_byte)==7)
                         {
@@ -389,22 +389,22 @@ void CompassPort::revert()
                         if(toDecInt(one_byte)==0)
                         {
                             //settings->setLabel("Compass Compensation Off");
-                            emit revertStatusChanged("Compass Compensation Off");
+                            emit revertStatusChanged("Датчик сброшен");
                         }
                         else if(toDecInt(one_byte)==1)
                         {
                             //settings->setLabel("Compass Compensation Data Collection");
-                            emit revertStatusChanged("Compass Compensation Data Collection");
+                            emit revertStatusChanged("Сбор данных...");
                         }
                         else if(toDecInt(one_byte)==2)
                         {
                             //settings->setLabel("Compass Compensation Computation in Progress");
-                            emit revertStatusChanged("Compass Compensation Computation in Progress");
+                            emit revertStatusChanged("Вычисление...");
                         }
                         else if(toDecInt(one_byte)==3)
                         {
                             //settings->setLabel("Compass Compensation Procedure Abort");
-                            emit revertStatusChanged("Compass Compensation Procedure Abort");
+                            emit revertStatusChanged("Процедура прервана");
                         }
                         for(int i=48,j=7;i<56 && j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<"Status"<<toDecInt(one_byte)<<" "<<one_byte;
 //                        if(toDecInt(one_byte)==1)

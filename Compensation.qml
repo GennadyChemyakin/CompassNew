@@ -23,21 +23,23 @@ Rectangle {
         ProgressBar {
             Connections {
                     target: compass
-                    onBinsChanged: progressBar1.value = compass.getBins(0)*16/100
+                    onBinsChanged: progressBar1.value = compass.getBins(0)
             }
             id: progressBar1
             x: 64
             width: 400
             height: 70
+
             anchors.top: parent.top
             anchors.topMargin: 155
-            value: compass.getBins(0)/100
+            value: compass.getBins(0)
+            maximumValue: 16.0
         }
 
         ProgressBar {
             Connections {
                     target: compass
-                    onBinsChanged: progressBar2.value = compass.getBins(1)*16/100
+                    onBinsChanged: progressBar2.value = compass.getBins(1)
             }
             id: progressBar2
             x: 64
@@ -45,13 +47,14 @@ Rectangle {
             height: 70
             anchors.top: progressBar1.bottom
             anchors.topMargin: 19
-            value: compass.getBins(1)/100
+            value: compass.getBins(1)
+            maximumValue: 16.0
         }
 
         ProgressBar {
             Connections {
                     target: compass
-                    onBinsChanged: progressBar3.value = compass.getBins(2)*16/100
+                    onBinsChanged: progressBar3.value = compass.getBins(2)
             }
             id: progressBar3
             x: 64
@@ -59,13 +62,14 @@ Rectangle {
             height: 70
             anchors.top: progressBar2.bottom
             anchors.topMargin: 19
-            value: compass.getBins(2)/100
+            value: compass.getBins(2)
+            maximumValue: 16.0
         }
 
         ProgressBar {
             Connections {
                     target: compass
-                    onBinsChanged: progressBar4.value = compass.getBins(3)*16/100
+                    onBinsChanged: progressBar4.value = compass.getBins(3)
             }
             id: progressBar4
             x: 64
@@ -73,13 +77,14 @@ Rectangle {
             height: 70
             anchors.top: progressBar3.bottom
             anchors.topMargin: 19
-            value: compass.getBins(3)/100
+            value: compass.getBins(3)
+            maximumValue: 16.0
         }
 
         ProgressBar {
             Connections {
                     target: compass
-                    onBinsChanged: progressBar5.value = compass.getBins(4)*16/100
+                    onBinsChanged: progressBar5.value = compass.getBins(4)
             }
             id: progressBar5
             x: 64
@@ -87,13 +92,14 @@ Rectangle {
             height: 70
             anchors.top: progressBar4.bottom
             anchors.topMargin: 19
-            value: compass.getBins(4)/100
+            value: compass.getBins(4)
+            maximumValue: 16.0
         }
 
         ProgressBar {
             Connections {
                     target: compass
-                    onBinsChanged: progressBar6.value = compass.getBins(5)*16/100
+                    onBinsChanged: progressBar6.value = compass.getBins(5)
             }
             id: progressBar6
             x: 64
@@ -101,13 +107,14 @@ Rectangle {
             height: 70
             anchors.top: progressBar5.bottom
             anchors.topMargin: 19
-            value: compass.getBins(5)/100
+            value: compass.getBins(5)
+            maximumValue: 16.0
         }
 
         ProgressBar {
             Connections {
                     target: compass
-                    onBinsChanged: progressBar7.value = compass.getBins(6)*16/100
+                    onBinsChanged: progressBar7.value = compass.getBins(6)
             }
             id: progressBar7
             x: 64
@@ -115,12 +122,13 @@ Rectangle {
             height: 70
             anchors.top: progressBar6.bottom
             anchors.topMargin: 19
-            value: compass.getBins(6)/100
+            value: compass.getBins(6)
+            maximumValue: 16.0
         }
         ProgressBar {
             Connections {
                     target: compass
-                    onBinsChanged: progressBar8.value = compass.getBins(7)*16/100
+                    onBinsChanged: progressBar8.value = compass.getBins(7)
             }
             id: progressBar8
             x: 64
@@ -128,7 +136,8 @@ Rectangle {
             height: 70
             anchors.top: progressBar7.bottom
             anchors.topMargin: 19
-            value: compass.getBins(7)/100
+            value: compass.getBins(7)
+            maximumValue: 16.0
         }
 
         Button {
@@ -345,6 +354,7 @@ Rectangle {
             x: 560
             y: 666
             text: m_complable
+            font.pointSize: 24
             anchors.top: button3.bottom
             anchors.topMargin: 19
     }

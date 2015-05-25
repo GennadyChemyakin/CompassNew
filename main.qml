@@ -476,7 +476,8 @@ Window {
                 hoverEnabled: true
                 onEntered: bmenuEnterAnim.start()
                 onExited: bmenuExitAnim.start()
-                onClicked:{settingsDisplay.settingsSlided === false ? slideLCDForward.start():slideLCDBack.start();
+                onClicked:{
+                    settingsDisplay.settingsSlided === false ? slideLCDForward.start():slideLCDBack.start();
                     compass.startSettingsViewControlTimer(300000);
                 }
             }

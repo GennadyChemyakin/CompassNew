@@ -100,6 +100,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     connect(this,SIGNAL(compClosed()),compport,SLOT(stopCompensation()));
     connect(compport,SIGNAL(dialCompProgressChanged(int,int)),this,SLOT(updateCompensationInfo(int,int)));
     connect(compport,SIGNAL(dialCompStatusChanged(QString)),this,SLOT(setCompensationLabel(QString)));
+    connect(compport,SIGNAL(revertStatusChanged(QString)),this,SLOT(setCompensationLabel(QString)));
     connect(compport,SIGNAL(compFinished()),this,SLOT(setBarstoDefault()));
     connect(this,SIGNAL(compClosed()),this,SLOT(setCompensationLabeltoDeafault()));
     /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
@@ -158,6 +159,8 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     out = new QTextStream(file);
     *out<<"angle  '"<<"roll  '"<<"pitch  '"<<"B  '"<<"C  '"<<"Z  '"<<"Time '\n";
     index = 0;
+//    m_bins.bin0= 12;//*16/100;
+//    emit binsChanged();
 
 }
 
