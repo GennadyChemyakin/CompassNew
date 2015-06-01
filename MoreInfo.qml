@@ -4,10 +4,10 @@ import QtQuick.Controls.Styles 1.1
 
 Rectangle {
     id: moreInfoRect
-//    width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
-//    height: window1.height
-    width: 1440
-    height: 980
+    width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
+    height: window1.height
+    //width: 1440
+    //height: 980
     color: "#00000000"
     visible: true
     FontLoader { id: a_LCDNovaObl; source: "content/a_LCDNovaObl.ttf" }
@@ -16,14 +16,14 @@ Rectangle {
     Rectangle
     {
         id: lcdRollRect
-        y: 72
+        y: window1.height/13.611111111
         z: 3
-        width: 360
-        height: 170
+        width: window1.width/4
+        height: window1.height/5.764705882
         border.width: 3
         border.color: "white"
         color: "#000000"
-        anchors.left: textRoll.right
+        anchors.left: lcdPitchRect.left
         anchors.leftMargin: 0
         anchors.horizontalCenterOffset: 0
         anchors.verticalCenterOffset: 0
@@ -33,7 +33,7 @@ Rectangle {
             id: lcdRoll
             anchors.centerIn: parent
             text: m_roll
-            font.pixelSize: 150
+            font.pixelSize: window1.height/6.533333333
             font.family: a_LCDNovaObl.name
             style: Text.Outline
             styleColor: "white"
@@ -43,16 +43,16 @@ Rectangle {
 
     Text {
         id: textRoll
-        width: 474
-        height: 170
+        width: window1.width/3.037974684
+        height: window1.height/5.764705882
         text: qsTr("Крен")
         anchors.top: parent.top
-        anchors.topMargin: 70
+        anchors.topMargin: window1.height/14
         anchors.left: parent.left
-        anchors.leftMargin: 40
+        anchors.leftMargin: window1.height/24.5
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
-        font.pixelSize: 79
+        font.pixelSize: window1.height/12.405063291
         color: "white"
         font.family: a_LCDNovaObl.name
     }
@@ -61,10 +61,10 @@ Rectangle {
     Rectangle
     {
         id: lcdPitchRect
-        y: 290
+        y: window1.height/3.379310345
         z: 3
-        width: 360
-        height: 170
+        width: window1.width/4
+        height: window1.height/5.764705882
         border.width: 3
         border.color: "white"
         color: "#000000"
@@ -76,7 +76,7 @@ Rectangle {
             id: lcdPitch
             anchors.centerIn: parent
             text: m_pitch
-            font.pixelSize: 150
+            font.pixelSize: window1.height/6.533333333
             font.family: a_LCDNovaObl.name
             style: Text.Outline
             styleColor: "white"
@@ -86,16 +86,16 @@ Rectangle {
 
     Text {
         id: textPitch
-        width: 474
-        height: 170
+        width: window1.height/2.067510549
+        height: window1.height/5.764705882
         text: qsTr("Дифферент")
         anchors.top: textRoll.bottom
-        anchors.topMargin: 50
+        anchors.topMargin: window1.height/19.6
         anchors.left: parent.left
-        anchors.leftMargin: 40
+        anchors.leftMargin: window1.height/24.5
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
-        font.pixelSize: 79
+        font.pixelSize: window1.height/12.405063291
         color: "white"
         font.family: a_LCDNovaObl.name
     }
@@ -104,10 +104,10 @@ Rectangle {
     Rectangle
     {
         id: lcdCoefBRect
-        y: 640
+        y: window1.width/2.25
         z: 3
-        width: 170
-        height: 120
+        width: window1.width/8.470588235
+        height: window1.width/12
         border.width: 3
         border.color: "white"
         color: "#000000"
@@ -121,7 +121,7 @@ Rectangle {
             id: lcdB
             anchors.centerIn: parent
             text: coef_B
-            font.pixelSize: 50
+            font.pixelSize: window1.height/19.6
             font.family: a_LCDNovaObl.name
             style: Text.Outline
             styleColor: "white"
@@ -131,15 +131,15 @@ Rectangle {
 
     Text {
         id: textB
-        y: 640
-        width: 120
-        height: 120
+        y: window1.width/2.25
+        width: window1.width/12
+        height: window1.width/12
         text: qsTr("B")
         anchors.left: parent.left
-        anchors.leftMargin: 40
+        anchors.leftMargin: window1.width/36
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
-        font.pixelSize: 79
+        font.pixelSize: window1.width/18
         color: "white"
         font.family: a_LCDNovaObl.name
     }
@@ -148,10 +148,10 @@ Rectangle {
     Rectangle
     {
         id: lcdCoefCRect
-        y: 640
+        y: window1.width/2.25
         z: 3
-        width: 170
-        height: 120
+        width: window1.width/8.470588235
+        height: window1.width/12
         border.width: 3
         border.color: "white"
         color: "#000000"
@@ -165,7 +165,7 @@ Rectangle {
             id: lcdC
             anchors.centerIn: parent
             text: coef_C
-            font.pixelSize: 50
+            font.pixelSize: window1.height/19.6
             font.family: a_LCDNovaObl.name
             style: Text.Outline
             styleColor: "white"
@@ -175,15 +175,15 @@ Rectangle {
 
     Text {
         id: textC
-        y: 640
-        width: 120
-        height: 120
+        y: window1.width/2.25
+        width: window1.width/12
+        height: window1.width/12
         text: qsTr("C")
-        anchors.left: lcdCoefBRect.right
-        anchors.leftMargin: 0
+        anchors.left: lcdCoefBRect.left
+        anchors.leftMargin: window1.width/36*4
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
-        font.pixelSize: 79
+        font.pixelSize: window1.width/18
         color: "white"
         font.family: a_LCDNovaObl.name
     }
@@ -192,10 +192,10 @@ Rectangle {
     {
 
         id: lcdCoefZRect
-        y: 640
+        y: window1.width/2.25
         z: 3
-        width: 170
-        height: 120
+        width: window1.width/8.470588235
+        height: window1.width/12
         border.width: 3
         border.color: "white"
         color: "#000000"
@@ -209,7 +209,7 @@ Rectangle {
             id: lcdZ
             anchors.centerIn: parent
             text: coef_Z
-            font.pixelSize: 50
+            font.pixelSize: window1.height/19.6
             font.family: a_LCDNovaObl.name
             style: Text.Outline
             styleColor: "white"
@@ -219,33 +219,35 @@ Rectangle {
 
     Text {
         id: textZ
-        y: 640
-        width: 120
-        height: 120
+        y: window1.width/2.25
+        width: window1.width/12
+        height: window1.width/12
         text: qsTr("Z")
-        anchors.left: lcdCoefCRect.right
-        anchors.leftMargin: 0
+        anchors.left: lcdCoefCRect.left
+        anchors.leftMargin: window1.width/36*4
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
-        font.pixelSize: 79
+        font.pixelSize: window1.width/18
         color: "white"
         font.family: a_LCDNovaObl.name
     }
 
     Button {
         id: button1
-        x: 330
-        y: 781
-        width: 410
-        height: 93
+        width: window1.height/2.390243902
+        height: window1.height/10.537634409
         text: logMsg
+        anchors.top: lcdCoefBRect.bottom
+        anchors.topMargin: window1.width/72
+        anchors.left: lcdCoefBRect.left
+        anchors.leftMargin: 0
         style: ButtonStyle {
-                label: Text {
+            label: Text {
                     renderType: Text.NativeRendering
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                     font.family: "Helvetica"
-                    font.pointSize: 27
+                    font.pointSize: window1.height/36.296296296
                     color: "black"
                     text: control.text
                 }

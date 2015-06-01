@@ -4,12 +4,13 @@ import QtQuick.Controls.Styles 1.1
 
 Rectangle {
     id: settings
-    //width: window1.width
-    //height: window1.height
-    width: 1440
-    height: 980
-    property int buttonWidth:360
-    property int buttonHeight:75
+    width: window1.width
+    height: window1.height
+    //width: 1440
+    //height: 980
+    property int buttonWidth:window1.width/4
+    property int buttonHeight:window1.height/13.066666667
+    property int buttonFontSize:window1.width/53.333333333
     property int buttonNum:0
     //color: "#028000"
 
@@ -17,37 +18,35 @@ Rectangle {
     Compensation
     {
         id:compensationDisplay
-        x: 1440
         width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
         height: settings.height
         anchors.rightMargin: -compensationDisplay.width
         anchors.right: parent.right
         z:2
     }
-    KeyBoard
-    {
-        id:keyboardDisplay
-        x: 1440
-        width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
-        height: settings.height
-        anchors.rightMargin: -keyboardDisplay.width
-        anchors.right: parent.right
-        z:2
-    }
     Deviation
     {
         id:deviationDisplay
-        x: 1440
         width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
         height: settings.height
         anchors.rightMargin: -deviationDisplay.width
         anchors.right: parent.right
         z:2
     }
+
+    KeyBoard
+    {
+        id:keyboardDisplay
+        width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
+        height: settings.height
+        anchors.rightMargin: -keyboardDisplay.width
+        anchors.right: parent.right
+        z:2
+    }
+
     MoreInfo
        {
            id:moreInfoDisp
-           x: 1440
            width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
            height: settings.height
            anchors.rightMargin: -compensationDisplay.width
@@ -323,16 +322,16 @@ Rectangle {
             text: qsTr("Компенсация")
 
             anchors.left: parent.left
-            anchors.leftMargin: 50
+            anchors.leftMargin: window1.width/28.8
             anchors.top: parent.top
-            anchors.topMargin: 300
+            anchors.topMargin: window1.height/3.266666667
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: 27
+                        font.pointSize: buttonFontSize
                         color: "black"
                         text: control.text
                       }
@@ -357,20 +356,20 @@ Rectangle {
         Button {
             id: button2
             width: settings.buttonWidth
-            height: 100
+            height:settings.buttonHeight
             visible: false
             text: qsTr("Изменить фон")
             anchors.left: parent.left
-            anchors.leftMargin: 50
+            anchors.leftMargin: button1.anchors.leftMargin
             anchors.top: button1.bottom
-            anchors.topMargin: 20
+            anchors.topMargin: window1.height/49
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: 27
+                        font.pointSize: buttonFontSize
                         color: "black"
                         text: control.text
                       }
@@ -398,16 +397,16 @@ Rectangle {
             height:settings.buttonHeight
             text: qsTr("Склонение")
             anchors.left: parent.left
-            anchors.leftMargin: 50
+            anchors.leftMargin: button1.anchors.leftMargin
             anchors.top: button1.bottom
-            anchors.topMargin: 20
+            anchors.topMargin: window1.height/49
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: 27
+                        font.pointSize: buttonFontSize
                         color: "black"
                         text: control.text
                       }
@@ -435,16 +434,16 @@ Rectangle {
             height:settings.buttonHeight
             text: qsTr("Доп. информация")
             anchors.left: parent.left
-            anchors.leftMargin: 50
+            anchors.leftMargin: button1.anchors.leftMargin
             anchors.top: button3.bottom
-            anchors.topMargin: 20
+            anchors.topMargin: window1.height/49
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: 27
+                        font.pointSize: buttonFontSize
                         color: "black"
                         text: control.text
                       }
@@ -475,16 +474,16 @@ Rectangle {
             checked: false
             checkable: true
             anchors.left: parent.left
-            anchors.leftMargin: 50
+            anchors.leftMargin: button1.anchors.leftMargin
             anchors.top: button4.bottom
-            anchors.topMargin: 20
+            anchors.topMargin: window1.height/49
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: 18
+                        font.pointSize: window1.width/80
                         color: "black"
                         text: control.text
                     }
@@ -498,16 +497,16 @@ Rectangle {
             height:settings.buttonHeight
             text: qsTr("Коэффициент A")
             anchors.left: parent.left
-            anchors.leftMargin: 50
+            anchors.leftMargin: button1.anchors.leftMargin
             anchors.top: button5.bottom
-            anchors.topMargin: 20
+            anchors.topMargin: window1.height/49
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: 27
+                        font.pointSize: buttonFontSize
                         color: "black"
                         text: control.text
                       }
@@ -535,16 +534,16 @@ Rectangle {
             height:settings.buttonHeight
             text: qsTr("Девиация")
             anchors.left: parent.left
-            anchors.leftMargin: 50
+            anchors.leftMargin: button1.anchors.leftMargin
             anchors.top: button6.bottom
-            anchors.topMargin: 20
+            anchors.topMargin: window1.height/49
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: 27
+                        font.pointSize: buttonFontSize
                         color: "black"
                         text: control.text
                       }
@@ -580,7 +579,7 @@ Rectangle {
 
         Rectangle {
             id: rectangle2
-            y: 66
+            //y: window1.height/14.848484848
             height: 1
             color: "#ffffff"
             anchors.bottom: button1.top

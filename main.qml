@@ -5,8 +5,8 @@ import QtQuick.Window 2.1
 
 Window {
     id: window1
-    width: 1440
-    height: 980
+    width: 800
+    height: 600
     title: qsTr("Compass")
     visibility: "Windowed"
 
@@ -48,8 +48,8 @@ Window {
         }
         Image {
             id: backgrnCompass
-            width: 910
-            height: 910
+            width: window1.width / 1.582417582
+            height: backgrnCompass.width
             property bool slided: false
             anchors.top: parent.top
             anchors.topMargin: 0
@@ -59,9 +59,10 @@ Window {
             source: "content/baggraund.png"
             Image {
                 id: smallNeedle
-                x: 454
-                y: 16
-                width: 7
+                //x: 454
+                //y: 16
+                width: window1/205.714285714
+                height: window1.height/4.152542373
                 anchors.horizontalCenterOffset: -3
                 anchors.verticalCenterOffset: -328
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -80,7 +81,7 @@ Window {
             PropertyAnimation {
                 target: backgrnCompass
                 properties: "anchors.horizontalCenterOffset"
-                to: -window1.width/4+100
+                to: -window1.width/4+window1.width/14.4
                 duration: 300
             }
             PropertyAnimation {
@@ -123,7 +124,7 @@ Window {
             PropertyAnimation {
                 target: lcdDisplay
                 properties: "anchors.horizontalCenterOffset"
-                to: -window1.width/2+lcdDisplay.width/2+50
+                to: -window1.width/2+lcdDisplay.width/2+window1.width/28.8
                 duration: 300
             }
             PropertyAnimation {
@@ -185,7 +186,7 @@ Window {
             z: 1
             width: backgrnCompass.width/1.3239
             height: backgrnCompass.width/1.3239
-            anchors.horizontalCenterOffset: -3
+            anchors.horizontalCenterOffset: 0
             source: "content/compass10.png"
             transform: Rotation{
                 angle: -fract_part*3.6
@@ -256,8 +257,8 @@ Window {
         {
             id: lcdDisplay
             z: 3
-            width: 360
-            height: 170
+            width: window1.width/4
+            height: window1.height/5.764705882
             border.width: 3
             border.color: "black"
             color: "#000000"
@@ -272,7 +273,7 @@ Window {
                 anchors.centerIn: parent
                 //text: afterComma === 0 ? full_angle%360+".0" : full_angle%360
                 text: full_angle
-                font.pixelSize: 150
+                font.pixelSize: window1.width/9.6
                 font.family: a_LCDNovaObl.name
                 style: Text.Outline
                 styleColor: "black"
@@ -407,8 +408,8 @@ Window {
         {
             id: menuButton
             x: 1208
-            width: 200
-            height: 100
+            width: window1.width/7.2
+            height: window1.height/9.8
             radius: 7
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 20
@@ -422,14 +423,14 @@ Window {
                 text: settingsDisplay.settingsSlided === false ? "Настройки":"Компас"
                 style: Text.Normal
                 font.bold: true
-                font.pixelSize: 25
+                font.pixelSize: window1.width/57.6
                 color: "#FFFFFF"
             }
             gradient: Gradient { // добавление градиента
                 GradientStop {
                     id: bmenugradient0
                     position: 0
-                    color: window1.gradientcolor0
+                    color: "#ffffff"
                 }
                 GradientStop {
                     id: bmenugradient1
