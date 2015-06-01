@@ -48,7 +48,7 @@ Window {
         }
         Image {
             id: backgrnCompass
-            width: window1.width / 1.582417582
+            width: window1.height / 1.076923077
             height: backgrnCompass.width
             property bool slided: false
             anchors.top: parent.top
