@@ -48,7 +48,7 @@ Window {
         }
         Image {
             id: backgrnCompass
-            width: window1.height / 1.076923077
+            width: window1.height
             height: backgrnCompass.width
             property bool slided: false
             anchors.top: parent.top
@@ -61,10 +61,10 @@ Window {
                 id: smallNeedle
                 //x: 454
                 //y: 16
-                width: window1/205.714285714
-                height: window1.height/4.152542373
-                anchors.horizontalCenterOffset: -3
-                anchors.verticalCenterOffset: -328
+                width: 4
+                height: backgrnCompass.width / 4
+                anchors.horizontalCenterOffset: -1
+                anchors.verticalCenterOffset: -backgrnCompass.width / 4 - height / 2
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
                 source: "content/needleSmall.png"
@@ -124,13 +124,13 @@ Window {
             PropertyAnimation {
                 target: lcdDisplay
                 properties: "anchors.horizontalCenterOffset"
-                to: -window1.width/2+lcdDisplay.width/2+window1.width/28.8
+                to: -window1.width / 2 + lcdDisplay.width / 2 + settingsDisplay.buttonWidth / 10
                 duration: 300
             }
             PropertyAnimation {
                 target: lcdDisplay
                 properties: "anchors.verticalCenterOffset"
-                to: -window1.height/2+lcdDisplay.height
+                to: -window1.height / 2 + lcdDisplay.height / 2 + settingsDisplay.buttonHeight / 2
                 duration: 300
             }
             PropertyAnimation {
@@ -206,14 +206,10 @@ Window {
 
         Image {
             id: compass360
-            /*Connections {
-                    target: compass
-                    onAngleChanged: rotation1.angle = -compass.angle()
-            }*/
             anchors.centerIn: backgrnCompass
             z: 1
-            width: backgrnCompass.width/1.0217
-            height: backgrnCompass.width/1.0217
+            width: backgrnCompass.width
+            height: backgrnCompass.width
             source: "content/kompas1(720).png"
             transform: Rotation{
                 id: rotation1
@@ -258,7 +254,7 @@ Window {
             id: lcdDisplay
             z: 3
             width: window1.width/4
-            height: window1.height/5.764705882
+            height: window1.height/6
             border.width: 3
             border.color: "black"
             color: "#000000"
@@ -281,135 +277,11 @@ Window {
             }
         }
 
-//        Button {
-//            id: buttonSettings
-//            x: 1075
-//            width: 200
-//            height: 80
-//            text: qsTr("Settings")
-//            style: ButtonStyle {
-//                    background: Rectangle {
-//                        implicitWidth: 100
-//                        implicitHeight: 25
-//                        border.width: control.activeFocus ? 2 : 1
-//                        border.color: "#888"
-//                        radius: 4
-//                        gradient: Gradient {
-//                            GradientStop { position: 0 ; color: control.pressed ? "#FF7C7C7C" : "#FF4E4E4E" }
-//                            GradientStop { position: 1 ; color: control.pressed ? "#FF4E4E4E" : "#FF7C7C7C" }
-//                        }
-//                    }
-//                }
-//            anchors.top: parent.top
-//            anchors.topMargin: 100
-//            anchors.right: parent.right
-//            anchors.rightMargin: 10
-//        }
-
-//        Button {
-//            id: buttonCoef
-//            x: 1070
-//            y: 0
-//            width: 200
-//            height: 80
-//            text: qsTr("Coef")
-//            style: ButtonStyle {
-//                background: Rectangle {
-//                    radius: 4
-//                    implicitWidth: 100
-//                    gradient: Gradient {
-//                        GradientStop {
-//                            position: 0
-//                            color: control.pressed ? "#FF7C7C7C" : "#FF4E4E4E"
-//                        }
-
-//                        GradientStop {
-//                            position: 1
-//                            color: control.pressed ? "#FF4E4E4E" : "#FF7C7C7C"
-//                        }
-//                    }
-//                    border.width: control.activeFocus ? 2 : 1
-//                    border.color: "#888888"
-//                    implicitHeight: 25
-//                }
-//            }
-//            anchors.top: buttonSettings.bottom
-//            anchors.rightMargin: 10
-//            anchors.right: parent.right
-//            anchors.topMargin: 40
-//        }
-
-//        Button {
-//            id: buttonTrueCourse
-//            x: 1070
-//            y: 1
-//            width: 200
-//            height: 80
-//            text: qsTr("True/Magnetic")
-//            style: ButtonStyle {
-//                background: Rectangle {
-//                    radius: 4
-//                    implicitWidth: 100
-//                    gradient: Gradient {
-//                        GradientStop {
-//                            position: 0
-//                            color: control.pressed ? "#FF7C7C7C" : "#FF4E4E4E"
-//                        }
-
-//                        GradientStop {
-//                            position: 1
-//                            color: control.pressed ? "#FF4E4E4E" : "#FF7C7C7C"
-//                        }
-//                    }
-//                    border.width: control.activeFocus ? 2 : 1
-//                    border.color: "#888888"
-//                    implicitHeight: 25
-//                }
-//            }
-//            anchors.top: buttonCoef.bottom
-//            anchors.rightMargin: 10
-//            anchors.right: parent.right
-//            anchors.topMargin: 40
-//        }
-
-//        Button {
-//            id: buttonBackGround
-//            x: 1070
-//            y: -3
-//            width: 200
-//            height: 80
-//            text: qsTr("BackGround")
-//            style: ButtonStyle {
-//                background: Rectangle {
-//                    radius: 4
-//                    implicitWidth: 100
-//                    gradient: Gradient {
-//                        GradientStop {
-//                            position: 0
-//                            color: control.pressed ? "#FF7C7C7C" : "#FF4E4E4E"
-//                        }
-
-//                        GradientStop {
-//                            position: 1
-//                            color: control.pressed ? "#FF4E4E4E" : "#FF7C7C7C"
-//                        }
-//                    }
-//                    border.width: control.activeFocus ? 2 : 1
-//                    border.color: "#888888"
-//                    implicitHeight: 25
-//                }
-//            }
-//            anchors.top: buttonTrueCourse.bottom
-//            anchors.rightMargin: 10
-//            anchors.right: parent.right
-//            anchors.topMargin: 40
-//        }
         Rectangle
         {
             id: menuButton
-            x: 1208
-            width: window1.width/7.2
-            height: window1.height/9.8
+            width: window1.width/7.0
+            height: window1.height/10.0
             radius: 7
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 20
@@ -629,299 +501,6 @@ Window {
                 onExited: tmcExitAnim.start()
                 //onClicked: compass.changeTrueMagneticCourse();
                 onClicked: backgrnCompass.slided === false ? slideForward.start():slideBack.start()
-            }
-        }
-        Rectangle
-        {
-            id: compButton
-            width: menuButton.width
-            height: menuButton.height
-            visible: true
-            anchors.right: parent.right
-            anchors.rightMargin: 8
-            anchors.top: colorButton.bottom
-            anchors.topMargin: 25
-            radius: 7
-            z: 0
-            Text {
-                id: compText
-                anchors.centerIn: parent
-                text: "Kомпенсация"
-                font.bold: true
-                font.pixelSize: menuText.font.pixelSize
-                color: "#FFFFFF"
-            }
-            gradient: Gradient { // добавление градиента
-                GradientStop {
-                    id: compgradient0
-                    position: 0
-                    color: window1.gradientcolor0
-                }
-                GradientStop {
-                    id: compgradient1
-                    position: 1
-                    color: window1.gradientcolor1
-                }
-            }
-            ParallelAnimation {
-                id: compEnterAnim
-                PropertyAnimation {
-                    target: compgradient0
-                    properties: "color"
-                    to: window1.gradientcolor1
-                    duration: 300
-                }
-                PropertyAnimation {
-                    target: compgradient1
-                    properties: "color"
-                    to: window1.gradientcolor0
-                    duration: 300
-                }
-            }
-            ParallelAnimation {
-                id: compExitAnim
-                PropertyAnimation {
-                    target: compgradient0
-                    properties: "color"
-                    to: window1.gradientcolor0
-                    duration: 300
-                }
-                PropertyAnimation {
-                    target: compgradient1
-                    properties: "color"
-                    to: window1.gradientcolor1
-                    duration: 300
-                }
-            }
-            MouseArea
-            {
-                anchors.fill: parent
-                id: compMouseArea
-                visible: true
-                hoverEnabled: true
-                onEntered: compEnterAnim.start()
-                onExited: compExitAnim.start()
-                //При нажатии вызвать функцию
-                onClicked: compass.initComp();
-            }
-        }
-        Rectangle
-        {
-            id: infoButton
-            width: menuButton.width
-            height: menuButton.height
-            visible: true
-            anchors.right: parent.right
-            anchors.rightMargin: 8
-            anchors.top: compButton.bottom
-            anchors.topMargin: 25
-            radius: 7
-            z: 0
-            Text {
-                id:  infoButtonText
-                anchors.centerIn: parent;
-                text: "Доп. информация"
-                font.bold: true
-                font.pixelSize: menuText.font.pixelSize-3
-                color: "#FFFFFF"
-            }
-            gradient: Gradient { // добавление градиента
-                GradientStop {
-                    id: infogradient0
-                    position: 0
-                    color: window1.gradientcolor0
-                }
-                GradientStop {
-                    id: infogradient1
-                    position: 1
-                    color: window1.gradientcolor1
-                }
-            }
-            ParallelAnimation {
-                id: infoEnterAnim
-                PropertyAnimation {
-                    target: infogradient0
-                    properties: "color"
-                    to: window1.gradientcolor1
-                    duration: 300
-                }
-                PropertyAnimation {
-                    target: infogradient1
-                    properties: "color"
-                    to: window1.gradientcolor0
-                    duration: 300
-                }
-            }
-            ParallelAnimation {
-                id: infoExitAnim
-                PropertyAnimation {
-                    target: infogradient0
-                    properties: "color"
-                    to: window1.gradientcolor0
-                    duration: 300
-                }
-                PropertyAnimation {
-                    target: infogradient1
-                    properties: "color"
-                    to: window1.gradientcolor1
-                    duration: 300
-                }
-            }
-            MouseArea
-            {
-                anchors.fill: parent
-                id:  pButtonMouseArea
-                anchors.rightMargin: 0
-                anchors.bottomMargin: -1
-                anchors.leftMargin: 0
-                anchors.topMargin: 1
-                hoverEnabled: true
-                onEntered: infoEnterAnim.start()
-                onExited: infoExitAnim.start()
-                onClicked: compass.changeInfoScreenVisibility()
-            }
-        }
-        Rectangle
-        {
-            id: sklButton
-            width: menuButton.width
-            height: menuButton.height
-            anchors.top: infoButton.bottom
-            anchors.topMargin: 25
-            visible: true
-            radius: 7
-            z: 0
-            anchors.right: parent.right
-            anchors.rightMargin: 8
-            Text {
-                id:  sklButtonText
-                anchors.centerIn: parent;
-                text: "Склонение"
-                font.bold: true
-                font.pixelSize: menuText.font.pixelSize
-                color: "#FFFFFF"
-            }
-            gradient: Gradient { // добавление градиента
-                GradientStop {
-                    id: bsklrgradient0
-                    position: 0
-                    color: window1.gradientcolor0
-                }
-                GradientStop {
-                    id: bsklrgradient1
-                    position: 1
-                    color: window1.gradientcolor1
-                }
-            }
-            ParallelAnimation {
-                id: bsklEnterAnim
-                PropertyAnimation {
-                    target: bsklrgradient0
-                    properties: "color"
-                    to: window1.gradientcolor1
-                    duration: 300
-                }
-                PropertyAnimation {
-                    target: bsklrgradient1
-                    properties: "color"
-                    to: window1.gradientcolor0
-                    duration: 300
-                }
-            }
-            ParallelAnimation {
-                id: bsklExitAnim
-                PropertyAnimation {
-                    target: bsklrgradient0
-                    properties: "color"
-                    to: window1.gradientcolor0
-                    duration: 300
-                }
-                PropertyAnimation {
-                    target: bsklrgradient1
-                    properties: "color"
-                    to: window1.gradientcolor1
-                    duration: 300
-                }
-            }
-            MouseArea
-            {
-                anchors.fill: parent
-                id:  sklButtonMouseArea
-                hoverEnabled: true
-                onEntered: bsklEnterAnim.start()
-                onExited: bsklExitAnim.start()
-                //При нажатии вызвать функцию
-                onClicked: compass.changeSkl()
-            }
-        }
-        Rectangle
-        {
-            id: pitch
-            visible: infoVisibility
-            width: 114
-            height: 44
-            border.width: 2
-            border.color: "#0500ff"
-            color: "black"
-            anchors.top: parent.top
-            anchors.topMargin: 80
-            anchors.left: parent.left
-            anchors.leftMargin: 18
-            Text
-            {
-                id: pitchText
-                x: 0
-                y: -30
-                text: "Дифферент"
-                font.pixelSize: 22
-                font.family: a_LCDNovaObl.name
-                color: "white";
-            }
-            Text
-            {
-                id: pitchArg
-                anchors.centerIn: parent
-                text: m_pitch
-                font.pixelSize: 22
-                font.family: a_LCDNovaObl.name
-                style: Text.Outline
-                styleColor: "white"
-                color: "white";
-            }
-        }
-        Rectangle
-        {
-            id: roll
-            visible: infoVisibility
-            width: 114
-            height: 44
-            border.width: 2
-            border.color: "#0500ff"
-            color: "black"
-            anchors.top: pitch.bottom
-            anchors.topMargin: 50
-            anchors.left: parent.left
-            anchors.leftMargin: 18
-            Text
-            {
-                id: rollText
-                x: 0
-                y: -29
-                text: "Крен"
-                font.pixelSize: 22
-                font.family: a_LCDNovaObl.name
-                color: "white";
-            }
-            Text
-            {
-                id: rollArg
-                anchors.centerIn: parent
-                text: m_roll
-                font.pixelSize: 22
-                font.family: a_LCDNovaObl.name
-                style: Text.Outline
-                styleColor: "white"
-                color: "white";
             }
         }
     }

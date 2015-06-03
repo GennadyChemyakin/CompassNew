@@ -3,7 +3,7 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 
 Rectangle {
-    id: rectangle1
+    id: deviationRect
     width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
     height: window1.height
     color: "#00000000"
@@ -14,6 +14,13 @@ Rectangle {
     property int buttonNumber : 0
     property bool degaus : false
     property string degausButText : "РУ выкл"
+
+
+    property int buttonWidthKeyboard: window1.width/9.0
+    property int buttonHeightKeyboard: window1.height/9.0
+    property int buttonFontSize:buttonHeightKeyboard / 3.0
+    property real buttonMargin:buttonHeightKeyboard / 5.5
+
     function setMod(arg){
         modeSKL = arg
     }
@@ -30,20 +37,20 @@ Rectangle {
 
         Button {
             id: but7
-            width: window1.width/8.674698795
-            height: window1.width/13.457943925
+            width: buttonWidthKeyboard
+            height: buttonHeightKeyboard
             text: qsTr("7")
             anchors.left: textField1.left
             anchors.leftMargin: 0
             anchors.top: textField1.bottom
-            anchors.topMargin: window1.width/72
+            anchors.topMargin: buttonMargin
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: devFontSize
+                        font.pointSize: buttonFontSize
                         color: "black"
                         text: control.text
                       }
@@ -52,20 +59,20 @@ Rectangle {
         }
         Button {
             id: butPLUSMINUS
-            width: window1.width/8.674698795
-            height: window1.width/13.457943925
+            width: buttonWidthKeyboard
+            height: buttonHeightKeyboard
             text: qsTr("+/-")
             anchors.left: butDel.right
-            anchors.leftMargin: window1.width/48
-            anchors.top: textField1.bottom
-            anchors.topMargin: -window1.width/13.457943925
+            anchors.leftMargin: buttonMargin
+            anchors.top: textField1.top
+            anchors.topMargin: 0
             style: ButtonStyle {
-                    label: Text {
+                label: Text {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: devFontSize
+                        font.pointSize: buttonFontSize
                         color: "black"
                         text: control.text
                       }
@@ -75,20 +82,20 @@ Rectangle {
 
         Button {
             id: but8
-            width: window1.width/8.674698795
-            height: window1.width/13.457943925
+            width: buttonWidthKeyboard
+            height: buttonHeightKeyboard
             text: qsTr("8")
             anchors.left: but7.right
-            anchors.leftMargin: window1.width/48
+            anchors.leftMargin: buttonMargin
             anchors.top: textField1.bottom
-            anchors.topMargin: window1.width/72
+            anchors.topMargin: buttonMargin
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: devFontSize
+                        font.pointSize: buttonFontSize
                         color: "black"
                         text: control.text
                       }
@@ -98,20 +105,20 @@ Rectangle {
 
         Button {
             id: but9
-            width: window1.width/8.674698795
-            height: window1.width/13.457943925
+            width: buttonWidthKeyboard
+            height: buttonHeightKeyboard
             text: qsTr("9")
             anchors.left: but8.right
-            anchors.leftMargin: window1.width/48
+            anchors.leftMargin: buttonMargin
             anchors.top: textField1.bottom
-            anchors.topMargin: window1.width/72
+            anchors.topMargin: buttonMargin
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: devFontSize
+                        font.pointSize: buttonFontSize
                         color: "black"
                         text: control.text
                       }
@@ -121,20 +128,20 @@ Rectangle {
 
         Button {
             id: but4
-            width: window1.width/8.674698795
-            height: window1.width/13.457943925
+            width: buttonWidthKeyboard
+            height: buttonHeightKeyboard
             text: qsTr("4")
-            anchors.left: textField1.left
+            anchors.left: but7.left
             anchors.leftMargin: 0
             anchors.top: but7.bottom
-            anchors.topMargin: window1.width/72
+            anchors.topMargin: buttonMargin
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: devFontSize
+                        font.pointSize: buttonFontSize
                         color: "black"
                         text: control.text
                       }
@@ -144,20 +151,20 @@ Rectangle {
 
         Button {
             id: but5
-            width: window1.width/8.674698795
-            height: window1.width/13.457943925
+            width: buttonWidthKeyboard
+            height: buttonHeightKeyboard
             text: qsTr("5")
             anchors.left: but4.right
-            anchors.leftMargin: window1.width/48
+            anchors.leftMargin: buttonMargin
             anchors.top: but7.bottom
-            anchors.topMargin: window1.width/72
+            anchors.topMargin: buttonMargin
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: devFontSize
+                        font.pointSize: buttonFontSize
                         color: "black"
                         text: control.text
                       }
@@ -167,20 +174,20 @@ Rectangle {
 
         Button {
             id: but6
-            width: window1.width/8.674698795
-            height: window1.width/13.457943925
+            width: buttonWidthKeyboard
+            height: buttonHeightKeyboard
             text: qsTr("6")
             anchors.left: but5.right
-            anchors.leftMargin: window1.width/48
+            anchors.leftMargin: buttonMargin
             anchors.top: but7.bottom
-            anchors.topMargin: window1.width/72
+            anchors.topMargin: buttonMargin
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: devFontSize
+                        font.pointSize: buttonFontSize
                         color: "black"
                         text: control.text
                       }
@@ -190,44 +197,43 @@ Rectangle {
 
         Button {
             id: but1
-            width: window1.width/8.674698795
-            height: window1.width/13.457943925
+            width: buttonWidthKeyboard
+            height: buttonHeightKeyboard
             text: qsTr("1")
-            anchors.left: textField1.left
+            anchors.left: but7.left
             anchors.leftMargin: 0
             anchors.top: but4.bottom
-            anchors.topMargin: window1.width/72
+            anchors.topMargin: buttonMargin
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: devFontSize
+                        font.pointSize: buttonFontSize
                         color: "black"
                         text: control.text
                       }
-
             }
             onClicked: degaus === false ? compass.addDelta("1",deviationCourse) : compass.addDeltaDegaus("1",deviationCourse)
         }
 
         Button {
             id: but2
-            width: window1.width/8.674698795
-            height: window1.width/13.457943925
+            width: buttonWidthKeyboard
+            height: buttonHeightKeyboard
             text: qsTr("2")
             anchors.left: but1.right
-            anchors.leftMargin: window1.width/48
+            anchors.leftMargin: buttonMargin
             anchors.top: but4.bottom
-            anchors.topMargin: window1.width/72
+            anchors.topMargin: buttonMargin
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: devFontSize
+                        font.pointSize: buttonFontSize
                         color: "black"
                         text: control.text
                       }
@@ -237,20 +243,20 @@ Rectangle {
 
         Button {
             id: but3
-            width: window1.width/8.674698795
-            height: window1.width/13.457943925
+            width: buttonWidthKeyboard
+            height: buttonHeightKeyboard
             text: qsTr("3")
             anchors.left: but2.right
-            anchors.leftMargin: window1.width/48
+            anchors.leftMargin: buttonMargin
             anchors.top: but4.bottom
-            anchors.topMargin: window1.width/72
+            anchors.topMargin: buttonMargin
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: devFontSize
+                        font.pointSize: buttonFontSize
                         color: "black"
                         text: control.text
                       }
@@ -260,20 +266,20 @@ Rectangle {
 
         Button {
             id: butSave
-            width: window1.width/8.674698795
-            height: window1.width/13.457943925
+            width: buttonWidthKeyboard
+            height: buttonHeightKeyboard
             text: qsTr("Сохранить")
-            anchors.left: textField1.left
+            anchors.left: but1.left
             anchors.leftMargin: 0
             anchors.top: but1.bottom
-            anchors.topMargin: window1.width/72
+            anchors.topMargin: buttonMargin
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: window1.width/60
+                        font.pointSize: buttonFontSize / 2
                         color: "black"
                         text: control.text
                       }
@@ -283,20 +289,20 @@ Rectangle {
 
         Button {
             id: button0
-            width: window1.width/8.674698795
-            height: window1.width/13.457943925
+            width: buttonWidthKeyboard
+            height: buttonHeightKeyboard
             text: qsTr("0")
             anchors.left: butSave.right
-            anchors.leftMargin: window1.width/48
+            anchors.leftMargin: buttonMargin
             anchors.top: but1.bottom
-            anchors.topMargin: window1.width/72
+            anchors.topMargin: buttonMargin
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: devFontSize
+                        font.pointSize: buttonFontSize
                         color: "black"
                         text: control.text
                       }
@@ -306,33 +312,32 @@ Rectangle {
 
         TextField {
             id: textField1
-            y: window1.width/5.329959514
-            width: window1.width/3.692307692
-            height: window1.width/13.58490566
+            x: (deviationRect.width - (14 + 5 * buttonWidthKeyboard))/2
+            y: (deviationRect.height - (4 * buttonMargin + 5 * buttonHeightKeyboard) + buttonMargin + 2 * buttonHeightKeyboard)/2
+            width: buttonWidthKeyboard * 2 + buttonMargin
+            height: buttonHeightKeyboard
             z: 1
             placeholderText: qsTr("Text Field")
             text:  degaus === false ? (delta_str > 0.1 ? "+" + delta_str : delta_str) : (deltaDegaus_str > 0.1 ? "+" + deltaDegaus_str : deltaDegaus_str)
-            anchors.left: parent.left
-            anchors.leftMargin: (rectangle1.width-(buttonC0.width*4 + degausButton.width))/2
-            font.pixelSize: window1.width/16.363636364
+            font.pixelSize: textField1.height / 1.5
         }
 
         Button {
             id: butDel
-            width: window1.width/8.674698795
-            height: window1.width/13.457943925
+            width: buttonWidthKeyboard
+            height: buttonHeightKeyboard
             text: qsTr("<-")
-            anchors.top: textField1.bottom
-            anchors.topMargin: -window1.width/13.457943925
+            anchors.top: textField1.top
+            anchors.topMargin: 0
             anchors.left: textField1.right
-            anchors.leftMargin: window1.width/288
+            anchors.leftMargin: buttonMargin
             style: ButtonStyle {
-                    label: Text {
+                label: Text {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: devFontSize
+                        font.pointSize: buttonFontSize
                         color: "black"
                         text: control.text
                       }
@@ -342,21 +347,20 @@ Rectangle {
 
         Button {
             id: butPlus
-            y: window1.width/3.945205479
-            width: window1.width/8.674698795
-            height: window1.width/13.457943925
+            width: buttonWidthKeyboard
+            height: buttonHeightKeyboard
             text: qsTr("+0.1")
             anchors.left: but9.right
-            anchors.leftMargin: window1.width/48
-            anchors.top: textField1.bottom
-            anchors.topMargin: window1.width/18.227848101
+            anchors.leftMargin: buttonMargin
+            anchors.top: but9.top
+            anchors.topMargin: but9.height/2 + buttonMargin / 2
             style: ButtonStyle {
-                    label: Text {
+                label: Text {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: devFontSize
+                        font.pointSize: buttonFontSize
                         color: "black"
                         text: control.text
                       }
@@ -366,21 +370,20 @@ Rectangle {
 
         Button {
             id: butMinus
-            y: window1.width/2.909090909
-            width: window1.width/8.674698795
-            height: window1.width/13.457943925
+            width: buttonWidthKeyboard
+            height: buttonHeightKeyboard
             text: qsTr("-0.1")
+            anchors.bottom: but3.bottom
+            anchors.bottomMargin: but3.height/2 + buttonMargin / 2
             anchors.left: but3.right
-            anchors.leftMargin: window1.width/48
-            anchors.top: textField1.bottom
-            anchors.topMargin: window1.width/6.76056338
+            anchors.leftMargin: buttonMargin
             style: ButtonStyle {
-                    label: Text {
+                label: Text {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: devFontSize
+                        font.pointSize: buttonFontSize
                         color: "black"
                         text: control.text
                       }
@@ -389,15 +392,13 @@ Rectangle {
         }
         Button {
             id: buttonC0
-            x: window1.width/10.909090909
-            y: window1.width/96
-            width: window1.width/8.674698795
-            height: window1.width/13.457943925
+            width: buttonWidthKeyboard
+            height: buttonHeightKeyboard
             text: qsTr("0")
             anchors.right: but7.right
             anchors.rightMargin: 0
-            anchors.bottom: but7.top
-            anchors.bottomMargin: window1.width/5.052631579
+            anchors.bottom: textField1.top
+            anchors.bottomMargin: buttonMargin + buttonHeightKeyboard  + 2
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
@@ -425,8 +426,8 @@ Rectangle {
 
         Button {
             id: buttonC45
-            width: window1.width/8.674698795
-            height: window1.width/13.457943925
+            width: buttonWidthKeyboard
+            height: buttonHeightKeyboard
             text: qsTr("45")
             anchors.top: buttonC0.top
             anchors.topMargin: 0
@@ -459,8 +460,8 @@ Rectangle {
 
         Button {
             id: buttonC90
-            width: window1.width/8.674698795
-            height: window1.width/13.457943925
+            width: buttonWidthKeyboard
+            height: buttonHeightKeyboard
             text: qsTr("90")
             anchors.top: buttonC0.top
             anchors.topMargin: 0
@@ -493,8 +494,8 @@ Rectangle {
 
         Button {
             id: buttonC135
-            width: window1.width/8.674698795
-            height: window1.width/13.457943925
+            width: buttonWidthKeyboard
+            height: buttonHeightKeyboard
             text: qsTr("135")
             anchors.top: buttonC0.top
             anchors.topMargin: 0
@@ -527,8 +528,8 @@ Rectangle {
 
         Button {
             id: buttonC180
-            width: window1.width/8.674698795
-            height: window1.width/13.457943925
+            width: buttonWidthKeyboard
+            height: buttonHeightKeyboard
             text: qsTr("180")
             anchors.left: buttonC0.left
             anchors.leftMargin: 0
@@ -561,8 +562,8 @@ Rectangle {
 
         Button {
             id: buttonC225
-            width: window1.width/8.674698795
-            height: window1.width/13.457943925
+            width: buttonWidthKeyboard
+            height: buttonHeightKeyboard
             text: qsTr("225")
             anchors.top: buttonC45.bottom
             anchors.topMargin: 2
@@ -595,8 +596,8 @@ Rectangle {
 
         Button {
             id: buttonC270
-            width: window1.width/8.674698795
-            height: window1.width/13.457943925
+            width: buttonWidthKeyboard
+            height: buttonHeightKeyboard
             text: qsTr("270")
             anchors.top: buttonC90.bottom
             anchors.topMargin: 2
@@ -629,8 +630,8 @@ Rectangle {
 
         Button {
             id: buttonC315
-            width: window1.width/8.674698795
-            height: window1.width/13.457943925
+            width: buttonWidthKeyboard
+            height: buttonHeightKeyboard
             text: qsTr("315")
             anchors.top: buttonC135.bottom
             anchors.topMargin: 2
@@ -662,14 +663,14 @@ Rectangle {
         }
         Button {
             id: degausButton
-            width: window1.width/8.674698795
+            width: buttonWidthKeyboard
             text: degaus===false ? degausButText="РУ выкл" : degausButText = "РУ вкл"
             anchors.left: buttonC135.right
             anchors.leftMargin: 5
             anchors.bottom: buttonC315.bottom
-            anchors.bottomMargin: window1.width/27.169811321
+            anchors.bottomMargin: buttonHeightKeyboard / 2
             anchors.top: buttonC135.top
-            anchors.topMargin: window1.width/27.169811321
+            anchors.topMargin: buttonHeightKeyboard / 2
             style: ButtonStyle {
                 label: Text {
                         renderType: Text.NativeRendering
@@ -696,20 +697,20 @@ Rectangle {
 
         Button {
             id: buttonDo
-            width: window1.width/8.674698795
-            height: window1.width/13.457943925
+            width: buttonWidthKeyboard
+            height: buttonHeightKeyboard
             text: qsTr("Расчитать")
             anchors.left: button0.right
-            anchors.leftMargin: window1.width/48
-            anchors.top: butMinus.bottom
-            anchors.topMargin: window1.width/17.777777778
+            anchors.leftMargin: buttonMargin
+            anchors.top: but3.bottom
+            anchors.topMargin: buttonMargin
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: window1.width/60
+                        font.pointSize: buttonFontSize / 2
                         color: "black"
                         text: control.text
                       }

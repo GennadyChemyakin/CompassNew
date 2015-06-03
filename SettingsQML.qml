@@ -4,15 +4,14 @@ import QtQuick.Controls.Styles 1.1
 
 Rectangle {
     id: settings
-    width: window1.width
-    height: window1.height
-    //width: 1440
-    //height: 980
-    property int buttonWidth:window1.width/4
-    property int buttonHeight:window1.height/13.066666667
-    property int buttonFontSize:window1.width/53.333333333
+    //width: window1.width
+    //height: window1.height
+    width: 1440
+    height: 980
+    property int buttonWidth:window1.width / 4
+    property int buttonHeight:window1.height / 14
+    property int buttonFontSize:buttonHeight / 3
     property int buttonNum:0
-    //color: "#028000"
 
 
     Compensation
@@ -67,10 +66,8 @@ Rectangle {
         id: backgroundviewer
         x: 0
         y: 0
-        width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
+        width: settings.width - buttonWidth - button1.anchors.leftMargin * 2
         height: settings.height
-        //width: 1980
-        //height: 1020
         color: "#00000000"
         anchors.rightMargin: -backgroundviewer.width
         anchors.right: parent.right
@@ -81,20 +78,19 @@ Rectangle {
         Rectangle
         {
             id: image1rect
-            width: 226
-            height: 226
+            width: window1.width / 6
+            height: window1.width / 6
             color: "#00000000"
             anchors.left: parent.left
-            anchors.leftMargin: 70
-            anchors.top: parent.top
-            anchors.topMargin: 100
+            anchors.leftMargin: width / 4
+            y: (settings.height - 3 * height - 3 * height / 4) / 2
             Image {
                 id: image1
                 source: "content/steel4.png"
                 anchors.horizontalCenter: image1rect.horizontalCenter
                 anchors.verticalCenter: image1rect.verticalCenter
-                width: 220
-                height: 220
+                width: window1.width / 6 - 6
+                height: window1.width / 6 - 6
             }
             border.width: 3
             border.color: (m_background===0 ? "green": "#00000000")
@@ -112,9 +108,9 @@ Rectangle {
             height: image1rect.height
             color: "#00000000"
             anchors.left: image1rect.right
-            anchors.leftMargin: 100
-            anchors.top: parent.top
-            anchors.topMargin: 100
+            anchors.leftMargin: width / 4
+            anchors.top: image1rect.top
+            anchors.topMargin: 0
             Image {
                 id: image2
                 source: "content/steel3.png"
@@ -139,9 +135,9 @@ Rectangle {
             height: image1rect.height
             color: "#00000000"
             anchors.left: image2rect.right
-            anchors.leftMargin: 100
-            anchors.top: parent.top
-            anchors.topMargin: 100
+            anchors.leftMargin: width / 4
+            anchors.top: image1rect.top
+            anchors.topMargin: 0
             Image {
                 id: image3
                 source: "content/steel2.png"
@@ -165,9 +161,9 @@ Rectangle {
             height: image1rect.height
             color: "#00000000"
             anchors.left: parent.left
-            anchors.leftMargin: 70
+            anchors.leftMargin: width / 4
             anchors.top: image1rect.bottom
-            anchors.topMargin: 150
+            anchors.topMargin: height / 4
             Image {
                 id: image4
                 source: "content/wood.png"
@@ -191,9 +187,9 @@ Rectangle {
             height: image1rect.height
             color: "#00000000"
             anchors.left: image4rect.right
-            anchors.leftMargin: 100
+            anchors.leftMargin: width / 4
             anchors.top: image2rect.bottom
-            anchors.topMargin: 150
+            anchors.topMargin: height / 4
             Image {
                 id: image5
                 source: "content/steel.png"
@@ -218,9 +214,9 @@ Rectangle {
             visible: false
             color: "#00000000"
             anchors.left: image5rect.right
-            anchors.leftMargin: 100
+            anchors.leftMargin: width / 4
             anchors.top: image3rect.bottom
-            anchors.topMargin: 150
+            anchors.topMargin: height / 4
             Image {
                 id: image6
                 //source: "qrc:/qtquickplugin/images/template_image.png"
@@ -287,13 +283,13 @@ Rectangle {
         PropertyAnimation {
             target: keyboardDisplay
             properties: "anchors.rightMargin"
-            to: -compensationDisplay.width
+            to: -keyboardDisplay.width
             duration: 0
         }
         PropertyAnimation {
             target: deviationDisplay
             properties: "anchors.rightMargin"
-            to: -compensationDisplay.width
+            to: -deviationDisplay.width
             duration: 0
         }
         PropertyAnimation {
@@ -305,7 +301,7 @@ Rectangle {
         PropertyAnimation {
             target: backgroundviewer
             properties: "anchors.rightMargin"
-            to: -compensationDisplay.width
+            to: -backgroundviewer.width
             duration: 0
         }
     }
@@ -322,9 +318,9 @@ Rectangle {
             text: qsTr("Компенсация")
 
             anchors.left: parent.left
-            anchors.leftMargin: window1.width/28.8
-            anchors.top: parent.top
-            anchors.topMargin: window1.height/3.266666667
+            anchors.leftMargin: width / 10
+            anchors.top: rectangle2.bottom
+            anchors.topMargin: height / 2
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
@@ -357,12 +353,12 @@ Rectangle {
             id: button2
             width: settings.buttonWidth
             height:settings.buttonHeight
-            visible: false
+            visible: true
             text: qsTr("Изменить фон")
             anchors.left: parent.left
-            anchors.leftMargin: button1.anchors.leftMargin
-            anchors.top: button1.bottom
-            anchors.topMargin: window1.height/49
+            anchors.leftMargin: width / 10
+            anchors.top: button7.bottom
+            anchors.topMargin: height / 2
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
@@ -397,9 +393,9 @@ Rectangle {
             height:settings.buttonHeight
             text: qsTr("Склонение")
             anchors.left: parent.left
-            anchors.leftMargin: button1.anchors.leftMargin
+            anchors.leftMargin: width / 10
             anchors.top: button1.bottom
-            anchors.topMargin: window1.height/49
+            anchors.topMargin: height / 2
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
@@ -434,9 +430,9 @@ Rectangle {
             height:settings.buttonHeight
             text: qsTr("Доп. информация")
             anchors.left: parent.left
-            anchors.leftMargin: button1.anchors.leftMargin
+            anchors.leftMargin: width / 10
             anchors.top: button3.bottom
-            anchors.topMargin: window1.height/49
+            anchors.topMargin: height / 2
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
@@ -474,9 +470,9 @@ Rectangle {
             checked: false
             checkable: true
             anchors.left: parent.left
-            anchors.leftMargin: button1.anchors.leftMargin
+            anchors.leftMargin: width / 10
             anchors.top: button4.bottom
-            anchors.topMargin: window1.height/49
+            anchors.topMargin: height / 2
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
@@ -497,9 +493,9 @@ Rectangle {
             height:settings.buttonHeight
             text: qsTr("Коэффициент A")
             anchors.left: parent.left
-            anchors.leftMargin: button1.anchors.leftMargin
+            anchors.leftMargin: width / 10
             anchors.top: button5.bottom
-            anchors.topMargin: window1.height/49
+            anchors.topMargin: height / 2
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
@@ -534,9 +530,9 @@ Rectangle {
             height:settings.buttonHeight
             text: qsTr("Девиация")
             anchors.left: parent.left
-            anchors.leftMargin: button1.anchors.leftMargin
+            anchors.leftMargin: width / 10
             anchors.top: button6.bottom
-            anchors.topMargin: window1.height/49
+            anchors.topMargin: height / 2
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
@@ -574,16 +570,15 @@ Rectangle {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 0
             anchors.left: button1.right
-            anchors.leftMargin: 30
+            anchors.leftMargin: button1.width / 10
         }
 
         Rectangle {
             id: rectangle2
-            //y: window1.height/14.848484848
             height: 1
             color: "#ffffff"
-            anchors.bottom: button1.top
-            anchors.bottomMargin: 30
+            anchors.top: parent.top
+            anchors.topMargin: lcdDisplay.height * 1.5
             z: 1
             anchors.right: rectangle1.left
             anchors.rightMargin: 0

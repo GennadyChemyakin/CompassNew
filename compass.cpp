@@ -85,7 +85,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     connect(settingsDialog,SIGNAL(revertRequest()),compport,SLOT(revert()));
     connect(this,SIGNAL(revertRequest()),compport,SLOT(revert()));
     connect(compport,SIGNAL(revertStatusChanged(QString)),settingsDialog,SLOT(setLable(QString)));
-    connect(compport,SIGNAL(revertStatusChanged(QString)),settingsDialog,SLOT(setCompensationLabel(QString)));
+    //connect(compport,SIGNAL(revertStatusChanged(QString)),settingsDialog,SLOT(setCompensationLabel(QString)));
     /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
     //compensation signals
