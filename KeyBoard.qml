@@ -273,7 +273,15 @@ Rectangle {
                         color: "black"
                         text: control.text
                       }
+                    background:
+                        Rectangle {
+                            gradient: Gradient {
+                                GradientStop { position: 0 ; color: control.pressed ? "#42e73a" : "white" }
+                                GradientStop { position: 1 ; color: control.pressed ? "#42e73a" : "white" }
+                            }
+                        }
             }
+
             onClicked: modeSKL===true ? compass.addSKL("save") : compass.addA("save")
         }
 

@@ -2,40 +2,47 @@
 #include "math.h"
 
 Compass::Compass(QQmlContext *context, QObject *parent) :
-    QObject(parent)
+    QObject(parent), k(0),m_comp_state(1),m_dempf(2),m_tmCourse(0),m_coef_A(0),
+    m_last(0),m_last2(0),m_angle(0),m_fractPart(0),m_fullangle(0),m_state(0),
+    m_connect(0),m_background(0),m_skl(0),m_savedCourse(0),m_roll(0),m_pitch(0),
+    m_afterComma(0),m_lastAngle(0),m_lastAngle1(0),m_sum(0),m_con(0),m_con1(0),
+    m_summ_ang(0),m_infoVisibility(false),m_progress(0),skl_str("0"),a_str("0"),
+    m_complable("0"),delta_str("0"),deltaDegaus_str("0")
 {
-    k=0;
-    m_comp_state=1;
-    m_dempf=2;
-    m_tmCourse = 0;
-    m_coef_A=0;
-    m_last=0;
-    m_last2=0;
-    m_angle=0;
-    m_fractPart=0;
-    m_fullangle=0;
-    m_state=0;
-    m_connect=0;
-    m_background=0;
-    m_skl=0;
-    m_savedCourse=0;
-    m_roll=0;
-    m_pitch=0;
-    m_afterComma=0;
-    m_lastAngle=0;
-    m_lastAngle1=0;
-    m_sum=0;
-    m_con=0;
-    m_con1=0;
-    m_summ_ang=0;
-    m_infoVisibility=false;
-    m_progress=0;
-    skl_str="0";
-    a_str="0";
-    m_complable="";
-    delta_str = "0";
-    deltaDegaus_str = "0";
+//    k=0;
+//    m_comp_state=1;
+//    m_dempf=2;
+//    m_tmCourse = 0;
+//    m_coef_A=0;
+//    m_last=0;
+//    m_last2=0;
+//    m_angle=0;
+//    m_fractPart=0;
+//    m_fullangle=0;
+//    m_state=0;
+//    m_connect=0;
+//    m_background=0;
+//    m_skl=0;
+//    m_savedCourse=0;
+//    m_roll=0;
+//    m_pitch=0;
+//    m_afterComma=0;
+//    m_lastAngle=0;
+//    m_lastAngle1=0;
+//    m_sum=0;
+//    m_con=0;
+//    m_con1=0;
+//    m_summ_ang=0;
+//    m_infoVisibility=false;
+//    m_progress=0;
+//    skl_str="0";
+//    a_str="0";
+//    m_complable="";
+//    delta_str = "0";
+//    deltaDegaus_str = "0";
+
     spline = new cubic_spline();
+
     for(int i=0;i<8;i++)
     {
         delta[i]=0;
@@ -144,24 +151,13 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     context_m->setContextProperty("m_complable",m_complable);
 
 
-    //fignay
-    /*context_m->setContextProperty("bin0Value",m_progress);
-    context_m->setContextProperty("bin1Value",m_progress);
-    context_m->setContextProperty("bin2Value",m_progress);
-    context_m->setContextProperty("bin3Value",m_progress);
-    context_m->setContextProperty("bin4Value",m_progress);
-    context_m->setContextProperty("bin5Value",m_progress);
-    context_m->setContextProperty("bin6Value",m_progress);
-    context_m->setContextProperty("bin7Value",m_progress);*/
+
 
     file = new QFile("Log, time:"+QTime::currentTime().toString());
     //file->open(QFile::ReadWrite);
     out = new QTextStream(file);
     *out<<"angle  '"<<"roll  '"<<"pitch  '"<<"B  '"<<"C  '"<<"Z  '"<<"Time '\n";
     index = 0;
-//    m_bins.bin0= 12;//*16/100;
-//    emit binsChanged();
-
 }
 
 Compass::~Compass()

@@ -283,6 +283,13 @@ Rectangle {
                         color: "black"
                         text: control.text
                       }
+                    background:
+                        Rectangle {
+                            gradient: Gradient {
+                                GradientStop { position: 0 ; color: control.pressed ? "#42e73a" : "white" }
+                                GradientStop { position: 1 ; color: control.pressed ? "#42e73a" : "white" }
+                            }
+                        }
             }
             onClicked:  degaus === false ? compass.addDelta("save",deviationCourse) : compass.addDeltaDegaus("save",deviationCourse)
         }
@@ -714,6 +721,13 @@ Rectangle {
                         color: "black"
                         text: control.text
                       }
+                    background:
+                        Rectangle {
+                            gradient: Gradient {
+                                GradientStop { position: 0 ; color: control.pressed ? "#42e73a" : "white" }
+                                GradientStop { position: 1 ; color: control.pressed ? "#42e73a" : "white" }
+                            }
+                        }
             }
             onClicked: compass.getDevCoef()
         }

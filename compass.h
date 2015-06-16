@@ -142,37 +142,36 @@ protected:
 
 
 private:
-    double m_B,m_C,m_Z;
-    bool m_writeLog;
-    double m_points[25];
+    int k;
     bool m_comp_state;
-    bool m_tmCourse;
     double m_dempf;
+    bool m_tmCourse;
     double m_coef_A;
     double m_last;
     double m_last2;
     double m_angle;
     double m_fractPart;
     double m_fullangle;
-    double m_afterComma;
     int m_state;
     int m_connect;
     int m_background;
     double m_skl;
     double m_savedCourse;
-    bool m_savedCourseVisibility;
-    double m_pitch;
     double m_roll;
+    double m_pitch;
+    double m_afterComma;
     int m_lastAngle;
     double m_lastAngle1;
     double m_sum;
     int m_con;
     int m_con1;
-    int m_temp;
-    bool m_infoVisibility;
     double m_summ_ang;
+    bool m_infoVisibility;
     int m_progress;
-    int k;
+
+    double m_B,m_C,m_Z;
+    bool m_writeLog;
+    double m_points[25];
 
 
     double delta[8];
@@ -180,10 +179,12 @@ private:
 
     QTime m_oldTime;
     QString skl_str;
-    QString delta_str;
-    QString deltaDegaus_str;
     QString a_str;
     QString m_complable;
+    QString delta_str;
+    QString deltaDegaus_str;
+
+
 
     cubic_spline *spline;
 
