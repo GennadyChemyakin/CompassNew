@@ -242,7 +242,7 @@ void Compass::setAngle(double a)
     qDebug()<<"a "<<a;
     a = a - spline->f(a);
 
-    if(index == 0)
+    if(index++ == 0)
         m_last = a;
     a=m_last+(a-m_last)*0.5;
     m_last=a;
@@ -258,7 +258,6 @@ void Compass::setAngle(double a)
         a-=360;
     if (a!=0)
     {
-        qDebug()<<"a-delta "<<a;
         double temp;
         double *pt=new double;
         temp=QString::number(modf(a,pt)).left(3).toDouble();
@@ -309,12 +308,11 @@ void Compass::setAngle(double a)
 
     //context_m->setContextProperty("angle_value",m_angle);
     //if(!((m_last-m_angle>100) || (m_angle-m_last>100)))
+    
     emit angleChanged();
     context_m->setContextProperty("fract_part",m_fractPart);
-
     context_m->setContextProperty("full_angle",strAngle);
     context_m->setContextProperty("afterComma",m_afterComma);
-    //m_last=m_angle;
     m_last2=m_fractPart;
 }
 

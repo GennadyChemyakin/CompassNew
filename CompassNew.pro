@@ -9,7 +9,8 @@ SOURCES += main.cpp \
     coefdial.cpp \
     dialogcomp.cpp \
     settings.cpp \
-    cubic_spline.cpp
+    cubic_spline.cpp \
+    compassangle.cpp
 
 RESOURCES += qml.qrc \
     png.qrc
@@ -26,7 +27,8 @@ HEADERS += \
     coefdial.h \
     dialogcomp.h \
     settings.h \
-    cubic_spline.h
+    cubic_spline.h \
+    compassangle.h
 
 FORMS += \
     coefdial.ui \
