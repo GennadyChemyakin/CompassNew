@@ -25,6 +25,37 @@ Rectangle {
         modeSKL = arg
     }
 
+    function changeDeviationButtonState(deviationCourse){
+        if(deviationCourse === 1){
+            buttonC0.buttonC0Color = "#42e73a";
+        } else if(deviationCourse === 2){
+            buttonC45.buttonC45Color = "#42e73a";
+        } else if(deviationCourse === 3){
+            buttonC90.buttonC90Color = "#42e73a";
+        } else if(deviationCourse === 4){
+            buttonC135.buttonC135Color = "#42e73a";
+        } else if(deviationCourse === 5){
+            buttonC180.buttonC180Color = "#42e73a";
+        } else if(deviationCourse === 6){
+            buttonC225.buttonC225Color = "#42e73a";
+        }else if(deviationCourse === 7){
+            buttonC270.buttonC270Color = "#42e73a";
+        }else if(deviationCourse === 8){
+            buttonC315.buttonC315Color = "#42e73a";
+        }
+    }
+
+    function deviationButtonsStateReset(){
+        buttonC0.buttonC0Color = Qt.binding(function(){return deviationCourse === 1 ? "#42e73a":"white";})
+        buttonC45.buttonC45Color = Qt.binding(function(){return deviationCourse === 2 ? "#42e73a":"white";})
+        buttonC90.buttonC90Color = Qt.binding(function(){return deviationCourse === 3 ? "#42e73a":"white";})
+        buttonC135.buttonC135Color = Qt.binding(function(){return deviationCourse === 4 ? "#42e73a":"white";})
+        buttonC180.buttonC180Color = Qt.binding(function(){return deviationCourse === 5 ? "#42e73a":"white";})
+        buttonC225.buttonC225Color = Qt.binding(function(){return deviationCourse === 6 ? "#42e73a":"white";})
+        buttonC270.buttonC270Color = Qt.binding(function(){return deviationCourse === 7 ? "#42e73a":"white";})
+        buttonC315.buttonC315Color = Qt.binding(function(){return deviationCourse === 8 ? "#42e73a":"white";})
+    }
+
     Image {
         id: compensationBackground
         visible: true
@@ -266,6 +297,10 @@ Rectangle {
 
         Button {
             id: butSave
+            signal saveClicked(int deviationCourse)
+            Component.onCompleted: {
+                butSave.saveClicked.connect(changeDeviationButtonState)
+            }
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
             text: qsTr("Сохранить")
@@ -291,7 +326,10 @@ Rectangle {
                             }
                         }
             }
-            onClicked:  degaus === false ? compass.addDelta("save",deviationCourse) : compass.addDeltaDegaus("save",deviationCourse)
+            onClicked:{
+                degaus === false ? compass.addDelta("save",deviationCourse) : compass.addDeltaDegaus("save",deviationCourse)
+                butSave.saveClicked(deviationCourse)
+            }
         }
 
         Button {
@@ -350,6 +388,7 @@ Rectangle {
                       }
             }
             onClicked: degaus === false ? compass.addDelta("<-",deviationCourse) : compass.addDeltaDegaus("<-",deviationCourse)
+
         }
 
         Button {
@@ -399,6 +438,7 @@ Rectangle {
         }
         Button {
             id: buttonC0
+            property color buttonC0Color: deviationCourse === 1 ? "#42e73a":"white"
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
             text: qsTr("0")
@@ -417,12 +457,13 @@ Rectangle {
                         text: control.text
                       }
                     background: Rectangle {
+                        id: buttonC0backGround
                         implicitWidth: 100
                         implicitHeight: 25
                         border.width: control.activeFocus ? 2 : 1
                         border.color: "#888"
                         radius: 4
-                        color: deviationCourse === 1 ? "#42e73a":"white"
+                        color: buttonC0.buttonC0Color
                     }
             }
             onClicked: {
@@ -433,6 +474,7 @@ Rectangle {
 
         Button {
             id: buttonC45
+            property color buttonC45Color: deviationCourse === 2 ? "#42e73a":"white"
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
             text: qsTr("45")
@@ -451,12 +493,13 @@ Rectangle {
                         text: control.text
                       }
                 background: Rectangle {
+                    id: buttonC45backGround
                     implicitWidth: 100
                     implicitHeight: 25
                     border.width: control.activeFocus ? 2 : 1
                     border.color: "#888"
                     radius: 4
-                    color: deviationCourse === 2 ? "#42e73a":"white"
+                    color: buttonC45.buttonC45Color
                 }
             }
             onClicked: {
@@ -467,6 +510,7 @@ Rectangle {
 
         Button {
             id: buttonC90
+            property color buttonC90Color: deviationCourse === 3 ? "#42e73a":"white"
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
             text: qsTr("90")
@@ -485,12 +529,13 @@ Rectangle {
                         text: control.text
                       }
                 background: Rectangle {
+                    id: buttonC90backGround
                     implicitWidth: 100
                     implicitHeight: 25
                     border.width: control.activeFocus ? 2 : 1
                     border.color: "#888"
                     radius: 4
-                    color: deviationCourse === 3 ? "#42e73a":"white"
+                    color: buttonC90.buttonC90Color
                 }
             }
             onClicked: {
@@ -501,6 +546,7 @@ Rectangle {
 
         Button {
             id: buttonC135
+            property color buttonC135Color: deviationCourse === 4 ? "#42e73a":"white"
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
             text: qsTr("135")
@@ -524,7 +570,7 @@ Rectangle {
                     border.width: control.activeFocus ? 2 : 1
                     border.color: "#888"
                     radius: 4
-                    color: deviationCourse === 4 ? "#42e73a":"white"
+                    color: buttonC135.buttonC135Color
                 }
             }
             onClicked: {
@@ -535,6 +581,7 @@ Rectangle {
 
         Button {
             id: buttonC180
+            property color buttonC180Color: deviationCourse === 5 ? "#42e73a":"white"
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
             text: qsTr("180")
@@ -558,7 +605,7 @@ Rectangle {
                         border.width: control.activeFocus ? 2 : 1
                         border.color: "#888"
                         radius: 4
-                        color: deviationCourse === 5 ? "#42e73a":"white"
+                        color: buttonC180.buttonC180Color
                     }
             }
             onClicked: {
@@ -569,6 +616,7 @@ Rectangle {
 
         Button {
             id: buttonC225
+            property color buttonC225Color: deviationCourse === 6 ? "#42e73a":"white"
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
             text: qsTr("225")
@@ -592,7 +640,7 @@ Rectangle {
                         border.width: control.activeFocus ? 2 : 1
                         border.color: "#888"
                         radius: 4
-                        color: deviationCourse === 6 ? "#42e73a":"white"
+                        color: buttonC225.buttonC225Color
                     }
             }
             onClicked: {
@@ -603,6 +651,7 @@ Rectangle {
 
         Button {
             id: buttonC270
+            property color buttonC270Color: deviationCourse === 7 ? "#42e73a":"white"
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
             text: qsTr("270")
@@ -626,7 +675,7 @@ Rectangle {
                     border.width: control.activeFocus ? 2 : 1
                     border.color: "#888"
                     radius: 4
-                    color: deviationCourse === 7 ? "#42e73a":"white"
+                    color: buttonC270.buttonC270Color
                 }
             }
             onClicked: {
@@ -637,6 +686,7 @@ Rectangle {
 
         Button {
             id: buttonC315
+            property color buttonC315Color: deviationCourse === 8 ? "#42e73a":"white"
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
             text: qsTr("315")
@@ -660,7 +710,7 @@ Rectangle {
                         border.width: control.activeFocus ? 2 : 1
                         border.color: "#888"
                         radius: 4
-                        color: deviationCourse === 8 ? "#42e73a":"white"
+                        color: buttonC315.buttonC315Color
                     }
             }
             onClicked: {
@@ -707,6 +757,12 @@ Rectangle {
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
             text: qsTr("Расчитать")
+            signal doClicked()
+
+            Component.onCompleted: {
+                buttonDo.doClicked.connect(deviationButtonsStateReset)
+            }
+
             anchors.left: button0.right
             anchors.leftMargin: buttonMargin
             anchors.top: but3.bottom
@@ -729,7 +785,10 @@ Rectangle {
                             }
                         }
             }
-            onClicked: compass.getDevCoef()
+            onClicked: {
+                compass.getDevCoef()
+                buttonDo.doClicked()
+            }
         }
 
     }
