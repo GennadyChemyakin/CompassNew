@@ -70,7 +70,7 @@ void CompassPort::on()
             {
                 qint64 byteAvail = port->bytesAvailable();
                 qApp->processEvents();
-                QThread::msleep(9);
+                QThread::msleep(10);
                 if(byteAvail >=23)
                 {
                     ByteArray = port->readAll();

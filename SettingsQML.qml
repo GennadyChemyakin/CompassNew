@@ -466,25 +466,31 @@ Rectangle {
             id: button5
             width: settings.buttonWidth
             height:settings.buttonHeight
-            text: trueMagneticCourse === 1 ?   qsTr("Истинный курс") : qsTr("Магнитный курс")
-            checked: false
-            checkable: true
             anchors.left: parent.left
             anchors.leftMargin: width / 10
             anchors.top: button4.bottom
             anchors.topMargin: height / 2
             style: ButtonStyle {
-                    label: Text {
+                label: Text {
+                        id:button5Text
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: window1.width/80
+                        font.pointSize: buttonFontSize
                         color: "black"
-                        text: control.text
-                    }
-                  }
-            onClicked:compass.changeTrueMagneticCourse()
+                        text: "MK"
+                        Component.onCompleted: button5Text.text = Qt.binding(function(){
+                            if(trueMagneticCourse === 0)
+                                return "KK";
+                            else if(trueMagneticCourse === 1)
+                                return "MK";
+                            else if(trueMagneticCourse === 2)
+                                return "ИК";
+                        })
+                      }
+            }
+            onClicked: compass.changeTrueMagneticCourse()
         }
 
         Button {

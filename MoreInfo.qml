@@ -105,7 +105,7 @@ Rectangle {
         anchors.topMargin: lcdHeight
         anchors.left: textPitch.left
         anchors.leftMargin: 0
-        text: qsTr("B")
+        text: qsTr("X")
         font.pixelSize: textHeight / 2
         color: "white"
         font.family: a_LCDNovaObl.name
@@ -140,7 +140,7 @@ Rectangle {
 
     Label{
         id: textC
-        text: qsTr("C")
+        text: qsTr("Y")
         anchors.left: lcdCoefBRect.right
         anchors.leftMargin: lcdHeight / 2
         anchors.top: lcdCoefBRect.top

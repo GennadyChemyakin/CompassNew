@@ -14,6 +14,7 @@
 #include "dialogcomp.h"
 #include "settings.h"
 #include "cubic_spline.h"
+#include "compassangle.h"
 
 class Compass : public QObject
 {
@@ -38,14 +39,16 @@ public:
         DevCoef(){A=B=C=D=E=0;}
     };
 
+    Compassangle *compangle;
+
 
 signals:
     void angleChanged();
     void pitchChanged();
     void rollChanged();
 
-    void sklChanged();
-    void coef_AChanged();
+    void sklChanged(double);
+    void coef_AChanged(double);
     void compStarted();
     void afterCommaChanged();
     void trueMagneticCourseChanged();
@@ -78,6 +81,11 @@ public slots:
     {
         emit closeSettingsViewSignal();
         qDebug()<<"timeout";
+    }
+
+    int getTMKCourse()
+    {
+        return compangle->getM_tmCourse();
     }
 
     void revert();
@@ -209,6 +217,7 @@ private:
     QThread *portThread;
     DialogComp *dialComp;
     Settings *settingsDialog;
+
 
 
 };

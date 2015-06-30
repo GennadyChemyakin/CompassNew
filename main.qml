@@ -1,7 +1,7 @@
 import QtQuick 2.2
 import QtQuick.Window 2.1
-//import QtQuick.Controls 1.1
-//import QtQuick.Controls.Styles 1.1
+import QtQuick.Controls 1.1
+import QtQuick.Controls.Styles 1.1
 
 Window {
     id: window1
@@ -197,8 +197,8 @@ Window {
                    {
                        SpringAnimation
                        {
-                           spring: 1.4
-                           damping: 1
+                           spring: 1.9
+                           damping: 0.3
                        }
                    }
             }
@@ -213,7 +213,7 @@ Window {
             source: "content/kompas1(720).png"
             transform: Rotation{
                 id: rotation1
-                angle: -compass.angle
+                angle: -angle_value
                 axis.z: 1
                 origin.x: compass360.width/2
                 origin.y: compass360.height/2
@@ -221,8 +221,8 @@ Window {
                    {
                        SpringAnimation
                        {
-                           spring: 1.4
-                           damping: 0.4
+                           spring: 1.9
+                           damping: 0.3
                        }
                    }
             }
@@ -230,6 +230,8 @@ Window {
 
         Image {
             id: border
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: -110
             clip: false
             visible: false
             anchors.centerIn: parent
@@ -356,6 +358,39 @@ Window {
             }
 
         }
+
+        Button{
+            id: tmkState
+            y: 520
+            width: menuButton.width
+            height: menuButton.height
+            anchors.left: parent.left
+            anchors.leftMargin: 32
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 20
+            style: ButtonStyle {
+                label: Text {
+                        id:tmkStateText
+                        renderType: Text.NativeRendering
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        font.family: "Helvetica"
+                        font.pointSize: menuText.font.pixelSize
+                        color: "black"
+                        text: "MK"
+                        Component.onCompleted: tmkStateText.text = Qt.binding(function(){
+                            if(trueMagneticCourse === 0)
+                                return "KK";
+                            else if(trueMagneticCourse === 1)
+                                return "MK";
+                            else if(trueMagneticCourse === 2)
+                                return "ИК";
+                        })
+                      }
+            }
+            onClicked: compass.changeTrueMagneticCourse()
+        }
+
         Rectangle
         {
             id: colorButton

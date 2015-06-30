@@ -52,14 +52,8 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
         m_points[i+16] = 0;
 
     }
-    delta[0] = -0.8;
-    delta[1] = 0.8;
-    delta[2] = 0.9;
-    delta[3] = 0.5;
-    delta[4] = 0.0;
-    delta[5] = -0.2;
-    delta[6] = -0.2;
-    delta[7] = -0.8;
+
+
 
     context_m = context;
     dialComp = new DialogComp();
@@ -95,9 +89,14 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     //connect(compport,SIGNAL(revertStatusChanged(QString)),settingsDialog,SLOT(setCompensationLabel(QString)));
     /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
+
+    compangle = new Compassangle(this);
     //compensation signals
     connect(this,SIGNAL(compensationRequest()),compport,SLOT(initComp()));
     connect(this,SIGNAL(compensationRequest()),this,SLOT(setCompensationLabeltoDeafault()));
+
+    connect(this,SIGNAL(sklChanged(double)),compangle,SLOT(setM_skl(double)));
+    connect(this,SIGNAL(coef_AChanged(double)),compangle,SLOT(setM_coef_A(double)));
 
     //connect(compport,SIGNAL(compStarted()),dialComp,SLOT(show()));
     //connect(compport,SIGNAL(compFinished()),dialComp,SLOT(setBarstoDefault()));
@@ -128,18 +127,19 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     context_m->setContextProperty("logMsg","Start write to log");
 
     context_m->setContextProperty("compass",this);
+    //context_m->setContextProperty("compassangle",compangle);
 
     context_m->setContextProperty("coef_B","0.0");
     context_m->setContextProperty("coef_C","0.0");
     context_m->setContextProperty("coef_Z","0.0");
 
-    context_m->setContextProperty("trueMagneticCourse",m_tmCourse);
+    context_m->setContextProperty("trueMagneticCourse",compangle->getM_tmCourse());
     context_m->setContextProperty("m_background",m_background);
     context_m->setContextProperty("infoVisibility",m_infoVisibility);
 
-    //context_m->setContextProperty("angle_value",m_angle);
-    context_m->setContextProperty("fract_part",m_fractPart);
-    context_m->setContextProperty("full_angle",m_fullangle);
+    context_m->setContextProperty("angle_value",compangle->getM_angle());
+    context_m->setContextProperty("fract_part",compangle->getM_fractPart());
+    context_m->setContextProperty("full_angle",compangle->getM_fullangleStr());
     context_m->setContextProperty("afterComma",m_afterComma);
     context_m->setContextProperty("m_pitch",m_pitch);
     context_m->setContextProperty("m_roll",m_roll);
@@ -166,6 +166,8 @@ Compass::~Compass()
     file->close();
     //delete portThread;
     delete timer;
+    delete compangle;
+
 }
 void Compass::writeTolog()
 {
@@ -237,83 +239,100 @@ void Compass::setCompensationLabeltoDeafault()
     context_m->setContextProperty("m_complable",m_complable);
 }
 
+//void Compass::setAngle(double a)
+//{
+//    qDebug()<<"a "<<a;
+//    a = a + spline->f(a);
+
+//    if(index == 0)
+//        m_last = a;
+//    index = 1;
+//    a=m_last+(a-m_last)*0.5;
+//    m_last=a;
+
+//    qDebug()<<"a1 "<<a;
+//    qDebug()<<"a2 "<<Round(a,1);
+//    a = Round(a,1);
+
+//    //*out << index++ <<". "<< a <<"\n";
+
+//    a = a + m_coef_A;
+//    if(m_tmCourse)
+//        a=m_skl+a;
+//    if(a<0)
+//       a+=360;
+//    if(a>360)
+//        a-=360;
+//    if (a!=0)
+//    {
+//        double temp;
+//        double *pt=new double;
+//        temp=QString::number(modf(a,pt)).left(3).toDouble();
+//        m_afterComma=temp;
+//        m_fractPart=(QString::number(*pt).right(1).toDouble()+temp)*10;
+//        m_angle=*pt;
+//        m_fullangle=m_angle+temp;
+//    }
+//    else
+//        m_afterComma=m_fractPart=m_angle=m_fullangle=m_lastAngle=0;
+
+//    if(m_angle-m_lastAngle > 180)
+//    {
+//        m_con--;
+//    }
+//    else if(m_angle-m_lastAngle < -180)
+//    {
+//         m_con++;
+//    }
+//    m_lastAngle=m_angle;
+//    m_angle=m_angle+360*m_con;
+
+
+//    if(m_fractPart-m_lastAngle1 > 50)
+//    {
+//        m_con1--;
+//    }
+//    else if(m_fractPart-m_lastAngle1 < -50)
+//    {
+//         m_con1++;
+//    }
+
+//    m_lastAngle1=m_fractPart;
+//    m_fractPart=m_fractPart+100*m_con1;
+
+//    m_fractPart=m_last2+(m_fractPart-m_last2)*0.5;
+
+//    qApp->processEvents();
+//    QString strAngle =QString::number(m_fullangle);
+//    if(m_fullangle - (int)m_fullangle == 0)
+//        strAngle +=".0";
+//    if(m_fullangle/10<1)
+//       strAngle="0"+strAngle;
+//    if(m_fullangle/100<1)
+//        strAngle="0"+strAngle;
+
+//    qDebug()<<"strAngle"<<strAngle;
+
+//    //context_m->setContextProperty("angle_value",m_angle);
+//    //if(!((m_last-m_angle>100) || (m_angle-m_last>100)))
+    
+//    //emit angleChanged();
+//    context_m->setContextProperty("fract_part",m_fractPart);
+//    context_m->setContextProperty("full_angle",strAngle);
+//    context_m->setContextProperty("angle_value",m_angle);
+//    m_last2=m_fractPart;
+//}
+
+
 void Compass::setAngle(double a)
 {
-    qDebug()<<"a "<<a;
-    a = a - spline->f(a);
+    if(compangle->getM_tmCourse() > 0)
+        a = a + spline->f(a);
+    compangle->setM_fullangle(a);
 
-    if(index++ == 0)
-        m_last = a;
-    a=m_last+(a-m_last)*0.5;
-    m_last=a;
-
-    //*out << index++ <<". "<< a <<"\n";
-
-    a = a + m_coef_A;
-    if(m_tmCourse)
-        a=m_skl+a;
-    if(a<0)
-       a+=360;
-    if(a>360)
-        a-=360;
-    if (a!=0)
-    {
-        double temp;
-        double *pt=new double;
-        temp=QString::number(modf(a,pt)).left(3).toDouble();
-        m_afterComma=temp;
-        m_fractPart=(QString::number(*pt).right(1).toDouble()+temp)*10;
-        m_angle=*pt;
-        m_fullangle=m_angle+temp;
-    }
-    else
-        m_afterComma=m_fractPart=m_angle=m_fullangle=m_lastAngle=0;
-
-    if(m_angle-m_lastAngle > 180)
-    {
-        m_con--;
-    }
-    else if(m_angle-m_lastAngle < -180)
-    {
-         m_con++;
-    }
-    m_lastAngle=m_angle;
-    m_angle=m_angle+360*m_con;
-
-    //m_angle=m_last+(m_angle-m_last)*0.7;
-
-
-    if(m_fractPart-m_lastAngle1 > 50)
-    {
-        m_con1--;
-    }
-    else if(m_fractPart-m_lastAngle1 < -50)
-    {
-         m_con1++;
-    }
-
-    m_lastAngle1=m_fractPart;
-    m_fractPart=m_fractPart+100*m_con1;
-
-    m_fractPart=m_last2+(m_fractPart-m_last2)*0.5;
-
-    qApp->processEvents();
-    QString strAngle =QString::number(m_fullangle);
-    if(m_fullangle - (int)m_fullangle == 0)
-        strAngle +=".0";
-    if(m_fullangle/10<1)
-       strAngle="0"+strAngle;
-    if(m_fullangle/100<1)
-        strAngle="0"+strAngle;
-
-    //context_m->setContextProperty("angle_value",m_angle);
-    //if(!((m_last-m_angle>100) || (m_angle-m_last>100)))
-    
-    emit angleChanged();
-    context_m->setContextProperty("fract_part",m_fractPart);
-    context_m->setContextProperty("full_angle",strAngle);
-    context_m->setContextProperty("afterComma",m_afterComma);
-    m_last2=m_fractPart;
+    context_m->setContextProperty("fract_part",compangle->getM_fractPart());
+    context_m->setContextProperty("full_angle",compangle->getM_fullangleStr());
+    context_m->setContextProperty("angle_value",compangle->getM_angle());
 }
 
 void Compass::getDevCoef()
@@ -397,7 +416,7 @@ void Compass::addSKL(QString str)
     if(skl_str=="0" && (str=="<-" || str=="+/-" || str=="save"))
     {
         m_skl=skl_str.toDouble();
-        emit sklChanged();
+        emit sklChanged(m_skl);
         return;
     }
     else if(str=="<-" || (skl_str=="0" && (str!="+0.1" || str!="-0.1")))
@@ -409,7 +428,7 @@ void Compass::addSKL(QString str)
     else if(str=="save")
     {
         m_skl=skl_str.toDouble();
-        emit sklChanged();
+        emit sklChanged(m_skl);
         return;
     }
     else if(str=="+0.1")
@@ -614,7 +633,7 @@ void Compass::addA(QString str)
     if(a_str=="0" && (str=="<-" || str=="+/-" || str=="save"))
     {
         m_coef_A=a_str.toDouble();
-        emit coef_AChanged();
+        emit coef_AChanged(m_coef_A);
         return;
     }
     else if(str=="<-" || (a_str=="0" && (str!="+0.1" || str!="-0.1")))
@@ -626,7 +645,7 @@ void Compass::addA(QString str)
     else if(str=="save")
     {
         m_coef_A=a_str.toDouble();
-        emit coef_AChanged();
+        emit coef_AChanged(m_coef_A);
         return;
     }
     else if(str=="+0.1")
@@ -742,15 +761,20 @@ void Compass::revert()
 
 void Compass::changeTrueMagneticCourse()
 {
-    if(!m_tmCourse)
+    if(compangle->getM_tmCourse() == 0)
     {
-        context_m->setContextProperty("trueMagneticCourse",1);
-        m_tmCourse = true;
+        compangle->setM_tmCourse(1);
+        context_m->setContextProperty("trueMagneticCourse",compangle->getM_tmCourse());
     }
-    else
+    else if(compangle->getM_tmCourse() == 1)
     {
-        context_m->setContextProperty("trueMagneticCourse",0);
-        m_tmCourse = false;
+        compangle->setM_tmCourse(2);
+        context_m->setContextProperty("trueMagneticCourse",compangle->getM_tmCourse());
+    }
+    else if(compangle->getM_tmCourse() == 2)
+    {
+        compangle->setM_tmCourse(0);
+        context_m->setContextProperty("trueMagneticCourse",compangle->getM_tmCourse());
     }
 }
 
