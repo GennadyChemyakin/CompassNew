@@ -69,6 +69,8 @@ private:
    int m_con;
    int m_con1;
 
+   double Round(double st,int count);
+
 public slots:
    void setM_skl(double skl)
        {

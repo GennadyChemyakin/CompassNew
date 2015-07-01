@@ -97,3 +97,33 @@ void Compassangle::setM_fullangle(double a)
         m_fullangleStr="0"+m_fullangleStr;
 
 }
+
+double Compassangle::Round(double st,int count)
+{
+    double temp;
+    double *pt=new double;
+    if(st!=0)
+    {
+        temp=fabs(modf(st,pt));
+        QString str = QString::number(temp),arg="0.";
+        if(count<=str.size()+2)
+        {
+            if(QString(str[count+2]).toInt()<5)
+            {
+                str=str.left(count+2);
+                temp=str.toDouble();
+            }
+            else
+            {
+                for(int i=0;i<count-1;i++)
+                    arg.push_back("0");
+                arg.push_back("1");
+                temp+=arg.toDouble();
+                temp=QString::number(temp).left(count+2).toDouble();
+            }
+        }
+        return (fabs(*pt)+temp)*(st/fabs(st));
+    }
+    else return 0;
+
+}
