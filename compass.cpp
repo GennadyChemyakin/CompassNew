@@ -158,6 +158,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     out = new QTextStream(file);
     *out<<"angle  '"<<"roll  '"<<"pitch  '"<<"B  '"<<"C  '"<<"Z  '"<<"Time '\n";
     index = 0;
+
 }
 
 Compass::~Compass()

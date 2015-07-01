@@ -15,17 +15,18 @@ Compassangle::~Compassangle()
 
 void Compassangle::setM_fullangle(double a)
 {
-    //отсеиваем выбросы
-    if(m_last - a > 20)
-        a = m_last;
+//    //отсеиваем выбросы
+//    if(m_last - a > 20)
+//        a = m_last;
 
     //первое вхождение
     if(index == 0)
         m_last = a;
-    index = 1;
+
 
     //сглаживание
-    a=m_last+(a-m_last)*0.5;
+    if(fabs(fabs(m_last) - fabs(a)) <20)
+        a=m_last+(a-m_last)*0.5;
     m_last=a;
 
     // МК или ИК
@@ -77,8 +78,12 @@ void Compassangle::setM_fullangle(double a)
 
 
     //сглаживание маленькой куртушки
-    m_fractPart=m_last2+(m_fractPart-m_last2)*0.5;
-    m_last2=m_fractPart;
+//    if(index == 0)
+//        m_last2 = m_fractPart;
+//    m_fractPart=m_last2+(m_fractPart-m_last2)*0.5;
+//    m_last2=m_fractPart;
+
+    index = 1;
 
 
     // формирование строки lcd панели
