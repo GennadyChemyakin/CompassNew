@@ -1,5 +1,6 @@
 #include "compassangle.h"
 #include <math.h>
+#include <QDebug>
 
 Compassangle::Compassangle(QObject *parent) : QObject(parent), m_fullangle(0), m_angle(0), m_fractPart(0), m_last(0), m_last2(0), m_coef_A(0), m_lastAngle(0),
     m_lastAngle1(0), m_tmCourse(0), index(0), m_con(0), m_con1(0)
@@ -23,12 +24,19 @@ void Compassangle::setM_fullangle(double a)
     if(index == 0)
         m_last = a;
 
-
+    qDebug()<<"a0"<<a;
+    qDebug()<<"last"<<a;
     //сглаживание
     if(fabs(fabs(m_last) - fabs(a)) <20)
         a=m_last+(a-m_last)*0.5;
+    else if(fabs(fabs(m_last) - fabs(a)) < 350 && fabs(fabs(m_last) - fabs(a)) > 20)
+    {
+        a = m_last;
+    }
     a = Round(a,1);
     m_last=a;
+
+    qDebug()<<"aR "<<a;
 
     // МК или ИК
     if(m_tmCourse > 0)
@@ -72,13 +80,12 @@ void Compassangle::setM_fullangle(double a)
     {
          m_con1++;
     }
-
     m_lastAngle1=m_fractPart;
     m_fractPart=m_fractPart+100*m_con1;
     //--------------------------------------------------------------------------------------
 
 
-    //сглаживание маленькой куртушки
+    //сглаживание маленькой кaртушки
 //    if(index == 0)
 //        m_last2 = m_fractPart;
 //    m_fractPart=m_last2+(m_fractPart-m_last2)*0.5;
@@ -95,6 +102,7 @@ void Compassangle::setM_fullangle(double a)
        m_fullangleStr="0"+m_fullangleStr;
     if(m_fullangle / 100 < 1)
         m_fullangleStr="0"+m_fullangleStr;
+    qDebug()<<"aSTR "<<m_fullangleStr;
 
 }
 
