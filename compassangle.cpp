@@ -27,6 +27,7 @@ void Compassangle::setM_fullangle(double a)
     //сглаживание
     if(fabs(fabs(m_last) - fabs(a)) <20)
         a=m_last+(a-m_last)*0.5;
+    a = Round(a,1);
     m_last=a;
 
     // МК или ИК
