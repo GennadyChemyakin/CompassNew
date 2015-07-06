@@ -5,8 +5,8 @@ import QtQuick.Controls.Styles 1.1
 
 Window {
     id: window1
-    width: 800
-    height: 600
+    width: 1440
+    height: 980
     title: qsTr("Compass")
     visibility: "Windowed"
 
@@ -184,12 +184,14 @@ Window {
         }
         Image {
             id: compass10
-            x: 370
+            x: 366
+            y: 55
+            width: compass360.height / 1.32
+            height: compass10.width
             anchors.centerIn: backgrnCompass
             z: 1
-            width: backgrnCompass.width/1.3239
-            height: backgrnCompass.width/1.3239
-            anchors.horizontalCenterOffset: 0
+            anchors.verticalCenterOffset: 1
+            anchors.horizontalCenterOffset: -2
             source: sourseCompass10
             transform: Rotation{
                 angle: -fract_part*3.6
@@ -545,8 +547,8 @@ Window {
 
     Button {
         id: dayNightButton
-        width: 114
-        height: 60
+        width: menuButton.width
+        height: menuButton.height
         text: qsTr("ДЕНЬ")
         anchors.left: parent.left
         anchors.leftMargin: 32
