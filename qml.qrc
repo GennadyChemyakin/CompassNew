@@ -13,5 +13,7 @@
         <file>Compensation.qml</file>
         <file>MoreInfo.qml</file>
         <file>Deviation.qml</file>
+        <file>content/backgroundNight.png</file>
+        <file>content/backgroundDay.png</file>
     </qresource>
 </RCC>

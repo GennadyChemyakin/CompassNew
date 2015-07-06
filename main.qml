@@ -12,7 +12,10 @@ Window {
 
     property string gradientcolor0: "#FF7C7C7C"
     property string gradientcolor1: "#FF4E4E4E"
-
+    property string sourseCompass360: "content/compass360day.png"
+    property string sourseCompass10: "content/compass10day.png"
+    property string sourceBackground: "content/backgroundDay.png"
+    property bool dayNight: true
 
 
     Rectangle
@@ -56,7 +59,7 @@ Window {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.horizontalCenterOffset: 0
             z: 1
-            source: "content/baggraund.png"
+            source: sourceBackground
             Image {
                 id: smallNeedle
                 //x: 454
@@ -187,7 +190,7 @@ Window {
             width: backgrnCompass.width/1.3239
             height: backgrnCompass.width/1.3239
             anchors.horizontalCenterOffset: 0
-            source: "content/compass10.png"
+            source: sourseCompass10
             transform: Rotation{
                 angle: -fract_part*3.6
                 axis.z: 1
@@ -210,7 +213,7 @@ Window {
             z: 1
             width: backgrnCompass.width
             height: backgrnCompass.width
-            source: "content/kompas1(720).png"
+            source: sourseCompass360
             transform: Rotation{
                 id: rotation1
                 angle: -angle_value
@@ -537,6 +540,35 @@ Window {
                 //onClicked: compass.changeTrueMagneticCourse();
                 onClicked: backgrnCompass.slided === false ? slideForward.start():slideBack.start()
             }
+        }
+    }
+
+    Button {
+        id: dayNightButton
+        width: 114
+        height: 60
+        text: qsTr("ДЕНЬ")
+        anchors.left: parent.left
+        anchors.leftMargin: 32
+        anchors.top: parent.top
+        anchors.topMargin: 20
+        style: ButtonStyle {
+                label: Text {
+                    renderType: Text.NativeRendering
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.family: "Helvetica"
+                    font.pointSize: menuText.font.pixelSize
+                    color: "black"
+                    text: control.text
+                  }
+        }
+        onClicked: {
+            dayNight = !dayNight
+            dayNight === true ? sourseCompass10 = "content/compass10day.png" : sourseCompass10 = "content/compass10night.png"
+            dayNight === true ? sourseCompass360 = "content/compass360day.png" : sourseCompass360 = "content/compass360night.png"
+            dayNight === true ? sourceBackground = "content/backgroundDay.png" : sourceBackground = "content/backgroundNight.png"
+            dayNight === true ? dayNightButton.text = "ДЕНЬ" : dayNightButton.text = "НОЧЬ"
         }
     }
 }

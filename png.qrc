@@ -4,7 +4,11 @@
         <file>content/steel2.png</file>
         <file>content/steel4.png</file>
         <file>content/wood.png</file>
-        <file>content/compass10.png</file>
-        <file>content/kompas1(720).png</file>
+        <file>content/compass10night.png</file>
+        <file>content/compass360night.png</file>
+        <file>content/compass360day.png</file>
+        <file>content/compass10day.png</file>
+        <file>content/backgroundNight.png</file>
+        <file>content/backgroundDay.png</file>
     </qresource>
 </RCC>
