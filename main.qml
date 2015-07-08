@@ -140,7 +140,7 @@ Window {
             PropertyAnimation {
                 target: lcdDisplay
                 properties: "border.color"
-                to: "white"
+                to: "faf0e6"
                 duration: 300
             }
             PropertyAnimation {
@@ -173,7 +173,7 @@ Window {
             PropertyAnimation {
                 target: lcdDisplay
                 properties: "border.color"
-                to: dayNight === false ? "#000000" : "white"
+                to: dayNight === false ? "#000000" : "#faf0e6"
                 duration: 300
             }
             PropertyAnimation {
@@ -264,8 +264,8 @@ Window {
             width: window1.width/4
             height: window1.height/6
             border.width: 3
-            border.color: dayNight === false ? "#000000" : "white"
-            color: dayNight === false ? "#000000" : "white"
+            border.color: dayNight === false ? "#000000" : "#faf0e6"
+            color: dayNight === false ? "#000000" : "#faf0e6"
             anchors.horizontalCenter: backgrnCompass.horizontalCenter
             anchors.verticalCenter: backgrnCompass.verticalCenter
             anchors.horizontalCenterOffset: 0
@@ -281,7 +281,7 @@ Window {
                 font.family: a_LCDNovaObl.name
                 style: Text.Outline
                 styleColor: "black"
-                color: dayNight === false ? "green" : "black"
+                color: dayNight === false ? "#7fff00" : "black"
             }
         }
 

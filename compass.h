@@ -200,6 +200,8 @@ private:
 
     QTextStream *out;
     QFile *file;
+    QFile *fileDev;
+    QFile * fileSklA;
 
 
     Bins m_bins;

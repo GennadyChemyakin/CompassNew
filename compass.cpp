@@ -53,7 +53,24 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
 
     }
 
+    fileDev = new QFile("devCoef");
+    fileDev ->open(QFile::ReadOnly);
+    QTextStream* inDev = new QTextStream(fileDev);
+    for (int i=0;i<8;i++)
+        *inDev>>delta[i];
+    fileDev->close();
+    delta_str = QString::number(delta[0]);
+    delete inDev;
 
+    fileSklA = new QFile("SklA");
+    fileSklA->open(QFile::ReadOnly);
+    QTextStream* inSklA = new QTextStream(fileSklA);
+    *inSklA >> m_skl;
+    *inSklA >> m_coef_A;
+    fileSklA->close();
+    skl_str = QString::number(m_skl);
+    a_str = QString::number(m_coef_A);
+    delete inSklA;
 
     context_m = context;
     dialComp = new DialogComp();
@@ -165,6 +182,7 @@ Compass::~Compass()
 {
     delete compport;
     file->close();
+    delete fileDev;
     //delete portThread;
     delete timer;
     delete compangle;
@@ -338,9 +356,19 @@ void Compass::setAngle(double a)
 
 void Compass::getDevCoef()
 {
+    fileDev->remove();
+
+    fileDev->open(QFile::WriteOnly);
+    QTextStream* outDelta = new QTextStream(fileDev);
 
     for(int i = 0; i < 8; i++)
+    {
         m_coef_Dev.A+=delta[i];
+        *outDelta<<delta[i];
+        *outDelta<<" ";
+    }
+    fileDev->close();
+    delete outDelta;
     m_coef_Dev.A /= 8;
     m_coef_Dev.B = ((delta[2]-delta[6])/2 + (delta[1]-delta[5])/2 * sqrt(2)/2 + ((delta[3]-delta[7]) * sqrt(2)/2)/2)/2;
     m_coef_Dev.C = ((delta[0]-delta[4])/2 + (delta[1]-delta[5])/2 * sqrt(2)/2 + (delta[3]-delta[7]) * (-sqrt(2)/2)/2)/2;
@@ -428,7 +456,16 @@ void Compass::addSKL(QString str)
     }
     else if(str=="save")
     {
+        fileSklA->remove();
+        fileSklA->open(QFile::WriteOnly);
+        QTextStream* outSkl = new QTextStream(fileSklA);
         m_skl=skl_str.toDouble();
+        *outSkl<<m_skl;
+        *outSkl<<" ";
+        *outSkl<<m_coef_A;
+        *outSkl<<" ";
+        fileSklA->close();
+        delete outSkl;
         emit sklChanged(m_skl);
         return;
     }
@@ -645,7 +682,16 @@ void Compass::addA(QString str)
     }
     else if(str=="save")
     {
+        fileSklA->remove();
+        fileSklA->open(QFile::WriteOnly);
+        QTextStream* outSkl = new QTextStream(fileSklA);
         m_coef_A=a_str.toDouble();
+        *outSkl<<m_skl;
+        *outSkl<<" ";
+        *outSkl<<m_coef_A;
+        *outSkl<<" ";
+        fileSklA->close();
+        delete outSkl;
         emit coef_AChanged(m_coef_A);
         return;
     }
