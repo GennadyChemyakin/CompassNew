@@ -52,8 +52,8 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
         m_points[i+16] = 0;
 
     }
-
-    fileDev = new QFile("devCoef");
+    qDebug()<<QApplication::applicationDirPath();
+    fileDev = new QFile(QApplication::applicationDirPath()+"/devCoef");
     fileDev ->open(QFile::ReadOnly);
     QTextStream* inDev = new QTextStream(fileDev);
     for (int i=0;i<8;i++)
@@ -62,7 +62,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     delta_str = QString::number(delta[0]);
     delete inDev;
 
-    fileSklA = new QFile("SklA");
+    fileSklA = new QFile(QApplication::applicationDirPath()+"/SklA");
     fileSklA->open(QFile::ReadOnly);
     QTextStream* inSklA = new QTextStream(fileSklA);
     *inSklA >> m_skl;

@@ -8,8 +8,8 @@ Window {
     width: 800
     height: 600
     title: qsTr("Compass")
-    visibility: "Windowed"
-    //visibility: "FullScreen"
+    //visibility: "Windowed"
+    visibility: "FullScreen"
 
     property string gradientcolor0: "#FF7C7C7C"
     property string gradientcolor1: "#FF4E4E4E"
@@ -298,19 +298,18 @@ Window {
             z:2
             style: ButtonStyle {
                 label: Text {
+                        id:menuText
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: menuText.font.pixelSize
-                        color: "black"
+                        font.pointSize: menuButton.height / 3
                         text: control.text
                       }
             }
             onClicked:{
                 settingsDisplay.settingsSlided === false ? slideLCDForward.start():slideLCDBack.start();
                 compass.startSettingsViewControlTimer(300000);
-                settingsDisplay.settingsSlided === true ? dayNightButton.visible = false : dayNightButton.visible = true
                 settingsDisplay.settingsSlided === true ? tmkState.visible = false : tmkState.visible = true
             }
 
@@ -332,7 +331,7 @@ Window {
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: menuText.font.pixelSize
+                        font.pointSize: tmkState.height / 3
                         color: "black"
                         text: "MK"
                         Component.onCompleted: tmkStateText.text = Qt.binding(function(){
@@ -346,154 +345,6 @@ Window {
                       }
             }
             onClicked: compass.changeTrueMagneticCourse()
-        }
-
-        Rectangle
-        {
-            id: colorButton
-            width: menuButton.width
-            height: menuButton.height
-            anchors.top: tmcButton.bottom
-            anchors.topMargin: 25
-            visible: true
-            radius: 7
-            z: 0
-            anchors.right: parent.right
-            anchors.rightMargin: 8
-            Text {
-                id: colotText
-                anchors.centerIn: parent;
-                text: "Изменить фон"
-                font.bold: true
-                font.pixelSize: menuText.font.pixelSize
-                color: "#FFFFFF"
-            }
-            gradient: Gradient { // добавление градиента
-                GradientStop {
-                    id: bcolorgradient0
-                    position: 0
-                    color: window1.gradientcolor0
-                }
-                GradientStop {
-                    id: bcolorgradient1
-                    position: 1
-                    color: window1.gradientcolor1
-                }
-            }
-            ParallelAnimation {
-                id: bcolorEnterAnim
-                PropertyAnimation {
-                    target: bcolorgradient0
-                    properties: "color"
-                    to: window1.gradientcolor1
-                    duration: 300
-                }
-                PropertyAnimation {
-                    target: bcolorgradient1
-                    properties: "color"
-                    to: window1.gradientcolor0
-                    duration: 300
-                }
-            }
-            ParallelAnimation {
-                id: bcolorExitAnim
-                PropertyAnimation {
-                    target: bcolorgradient0
-                    properties: "color"
-                    to: window1.gradientcolor0
-                    duration: 300
-                }
-                PropertyAnimation {
-                    target: bcolorgradient1
-                    properties: "color"
-                    to: window1.gradientcolor1
-                    duration: 300
-                }
-            }
-            MouseArea
-            {
-                anchors.fill: parent
-                id: colorMouseArea
-                hoverEnabled: true
-                onEntered: bcolorEnterAnim.start()
-                onExited: bcolorExitAnim.start()
-                onClicked: compass.changeBackground()
-            }
-        }
-        Rectangle
-        {
-            id: tmcButton
-            width: menuButton.width
-            height: menuButton.height
-            anchors.right: parent.right
-            anchors.rightMargin: 8
-            anchors.top: menuButton.bottom
-            anchors.topMargin: 25
-            visible: true
-            radius: 7
-            z:0
-            Text {
-                id: tmcText
-                anchors.centerIn: parent
-                //text: trueMagneticCourse === true ? "Истинный курс":"Магнитный курс"
-                text: "True/Magnetic"
-                font.bold: true
-                font.pixelSize: menuText.font.pixelSize
-                color: "#FFFFFF"
-            }
-            gradient: Gradient { // добавление градиента
-                GradientStop {
-                    id: tmcgradient0
-                    position: 0
-                    color: "#ffffff"
-                }
-                GradientStop {
-                    id: tmcgradient1
-                    position: 1
-                    color: window1.gradientcolor1
-                }
-            }
-            ParallelAnimation {
-                id: tmcEnterAnim
-                PropertyAnimation {
-                    target: tmcgradient0
-                    properties: "color"
-                    to: window1.gradientcolor1
-                    duration: 300
-                }
-                PropertyAnimation {
-                    target: tmcgradient1
-                    properties: "color"
-                    to: window1.gradientcolor0
-                    duration: 300
-                }
-            }
-            ParallelAnimation {
-                id: tmcExitAnim
-                PropertyAnimation {
-                    target: tmcgradient0
-                    properties: "color"
-                    to: window1.gradientcolor0
-                    duration: 300
-                }
-                PropertyAnimation {
-                    target: tmcgradient1
-                    properties: "color"
-                    to: window1.gradientcolor1
-                    duration: 300
-                }
-            }
-            MouseArea
-            {
-                anchors.fill: parent
-                id: tmcMouseArea
-                visible: true
-                hoverEnabled: true
-                onEntered: tmcEnterAnim.start()
-                onExited: tmcExitAnim.start()
-                //onClicked: compass.changeTrueMagneticCourse();
-                onClicked: backgrnCompass.slided === false ? slideForward.start():slideBack.start()
-            }
         }
     }
 

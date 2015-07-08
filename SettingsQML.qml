@@ -508,7 +508,7 @@ Rectangle {
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: menuText.font.pixelSize
+                        font.pointSize: buttonFontSize
                         color: "black"
                         text: control.text
                       }
