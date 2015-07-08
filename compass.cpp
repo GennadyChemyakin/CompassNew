@@ -7,7 +7,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     m_connect(0),m_background(0),m_skl(0),m_savedCourse(0),m_roll(0),m_pitch(0),
     m_afterComma(0),m_lastAngle(0),m_lastAngle1(0),m_sum(0),m_con(0),m_con1(0),
     m_summ_ang(0),m_infoVisibility(false),m_progress(0),skl_str("0"),a_str("0"),
-    m_complable("0"),delta_str("0"),deltaDegaus_str("0")
+    m_complable(""),delta_str("0"),deltaDegaus_str("0")
 {
 //    k=0;
 //    m_comp_state=1;
@@ -70,6 +70,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     fileSklA->close();
     skl_str = QString::number(m_skl);
     a_str = QString::number(m_coef_A);
+
     delete inSklA;
 
     context_m = context;
@@ -166,6 +167,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     context_m->setContextProperty("delta_str",delta_str);
     context_m->setContextProperty("deltaDegaus_str",deltaDegaus_str);
     context_m->setContextProperty("m_complable",m_complable);
+    context_m->setContextProperty("m_dempf",compangle->getM_dempf());
 
 
 
@@ -176,6 +178,9 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     *out<<"angle  '"<<"roll  '"<<"pitch  '"<<"B  '"<<"C  '"<<"Z  '"<<"Time '\n";
     index = 0;
 
+    addSKL("save");
+    addA("save");
+    getDevCoef();
 }
 
 Compass::~Compass()
@@ -251,6 +256,7 @@ void Compass::setCompensationLabel(QString msg)
 {
     m_complable = msg;
     context_m->setContextProperty("m_complable",m_complable);
+    emit compensationLabelChanged();
 }
 void Compass::setCompensationLabeltoDeafault()
 {
@@ -345,6 +351,7 @@ void Compass::setCompensationLabeltoDeafault()
 
 void Compass::setAngle(double a)
 {
+
     if(compangle->getM_tmCourse() > 0)
         a = a + spline->f(a);
     compangle->setM_fullangle(a);
@@ -444,7 +451,16 @@ void Compass::addSKL(QString str)
 {
     if(skl_str=="0" && (str=="<-" || str=="+/-" || str=="save"))
     {
+        fileSklA->remove();
+        fileSklA->open(QFile::WriteOnly);
+        QTextStream* outSkl = new QTextStream(fileSklA);
         m_skl=skl_str.toDouble();
+        *outSkl<<m_skl;
+        *outSkl<<" ";
+        *outSkl<<m_coef_A;
+        *outSkl<<" ";
+        fileSklA->close();
+        delete outSkl;
         emit sklChanged(m_skl);
         return;
     }

@@ -52,6 +52,18 @@ public:
         return m_fractPart;
     }
 
+    void  setM_dempf(double dempf)
+    {
+        m_dempf = dempf;
+        emit dempfChanged();
+    }
+
+    double getM_dempf()
+    {
+        return m_dempf;
+    }
+
+
 
 private:
    QString m_fullangleStr;
@@ -74,6 +86,15 @@ private:
 
    double Round(double st,int count);
    double AbsAngle(double, double);
+
+private slots:
+  void resetCurrAngleCount()
+  {
+      curr_angle_count = 0;
+  }
+
+signals:
+   void dempfChanged();
 
 public slots:
    void setM_skl(double skl)

@@ -14,7 +14,25 @@ Rectangle {
     property var textFontSize:buttonHeightComrect / 3
     property int textWidth: window1.width / 24
     property real textHeight: window1.height / 19.6
+
+    property color compensationStatusBackgroundcolor: "white"
     color: "#00000000"
+
+
+    function changeColor()
+    {
+        compensationStatusBackgroundcolor = Qt.binding(function(){console.log("here");
+        if(m_complable === "Успех")
+            return "#42e73a";
+        else if(m_complable === "Время вышло" || m_complable === "Провал" || m_complable === "Flash Write Fail")
+            return "red";
+        else if(m_complable === "Новые параметры не лучше")
+            return "blue";
+        else return "white";
+        })
+    }
+
+
     Image {
 
 
@@ -346,13 +364,22 @@ Rectangle {
         TextField
         {
             id:compensationStatus
+
             width: buttonWidthComrect
+            Component.onCompleted: changeColor()
             height: buttonHeightComrect
             x: button1.x
             anchors.top: button3.bottom
             anchors.topMargin: progressBarMargin
             text: m_complable
             font.pointSize: textFontSize / 2
+            style:
+                TextFieldStyle{
+                background: Rectangle{
+                    id: compensationStatusBackground
+                    color: compensationStatusBackgroundcolor
+                }
+            }
         }
 
     }

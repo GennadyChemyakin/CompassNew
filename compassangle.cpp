@@ -7,9 +7,10 @@ Compassangle::Compassangle(QObject *parent) : QObject(parent), m_fullangle(0), m
 {
     m_fullangleStr = "000.0";
     m_skl = 0; // here will be another arg from file
-    m_dempf = 5;
+    m_dempf = 0;
     curr_angle_count = 0;
     m_sum = 0;
+    connect(this,SIGNAL(dempfChanged()),this,SLOT(resetCurrAngleCount()));
 }
 
 Compassangle::~Compassangle()
@@ -23,11 +24,13 @@ void Compassangle::setM_fullangle(double a)
     qDebug()<<"a(-1)"<<a;
     if(curr_angle_count++ == m_dempf)
     {
+        if(m_dempf != 0)
+        {
+            a = (m_sum + a) / (m_dempf+1);
+            m_sum = 0;
 
-        a = (m_sum + a) / (m_dempf+1);
-        m_sum = 0;
-        curr_angle_count = 0;
-
+        }
+    curr_angle_count = 0;
     if(index == 0)
         m_last = a;
     qDebug()<<"a0"<<a;
@@ -37,14 +40,14 @@ void Compassangle::setM_fullangle(double a)
         a = (m_last-360) + (a - m_last + 360)*0.5;
     else
         a = m_last + (a - m_last)*0.5;
-    qDebug()<<"a1"<<a;
+    //qDebug()<<"a1"<<a;
     if(a<0)
         a+=360;
      if(a>360)
         a-=360;
     a = Round(a,1);
     m_last=a;
-    qDebug()<<"aR"<<a;
+    //qDebug()<<"aR"<<a;
 
 
     //------------------------------------------
@@ -113,7 +116,7 @@ void Compassangle::setM_fullangle(double a)
        m_fullangleStr="0"+m_fullangleStr;
     if(m_fullangle / 100 < 1)
         m_fullangleStr="0"+m_fullangleStr;
-     qDebug()<<"fullangle"<<m_fullangleStr;
+     //qDebug()<<"fullangle"<<m_fullangleStr;
     }
     else
     {

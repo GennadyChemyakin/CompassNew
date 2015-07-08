@@ -47,6 +47,8 @@ signals:
     void pitchChanged();
     void rollChanged();
 
+    void compensationLabelChanged();
+
     void sklChanged(double);
     void coef_AChanged(double);
     void compStarted();
@@ -76,6 +78,14 @@ public slots:
     void setB(double);
     void setC(double);
     void setZ(double);
+    void changeDempf()
+    {
+        if(compangle->getM_dempf() == 0)
+            compangle->setM_dempf(5);
+        else if(compangle->getM_dempf() == 5)
+            compangle->setM_dempf(0);
+        context_m->setContextProperty("m_dempf",compangle->getM_dempf());
+    }
 
     void closeSettingsView()
     {
@@ -90,6 +100,11 @@ public slots:
 
     void revert();
     double angle() const {return m_angle;}
+    double getDempf()
+    {
+        return compangle->getM_dempf();
+    }
+
     void setBins(Bins bins){m_bins=bins;}
     int getBins(int binNum)
     {
@@ -144,6 +159,7 @@ public slots:
     void addDelta(QString,int);
     void addDeltaDegaus(QString,int);
     void startSettingsViewControlTimer(int msec);
+
 
 protected:
     QObject *qml;

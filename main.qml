@@ -311,9 +311,41 @@ Window {
                 settingsDisplay.settingsSlided === false ? slideLCDForward.start():slideLCDBack.start();
                 compass.startSettingsViewControlTimer(300000);
                 settingsDisplay.settingsSlided === true ? tmkState.visible = false : tmkState.visible = true
+                settingsDisplay.settingsSlided === true ? dempfButton.visible = false : dempfButton.visible = true
             }
 
         }
+
+        Button
+        {
+            id: dempfButton
+            width: window1.width/7.0
+            height: window1.height/10.0
+            text: "Демпфирование"
+            anchors.top: parent.top
+            anchors.topMargin: 20
+            anchors.left: parent.left
+            anchors.leftMargin: 32
+            style: ButtonStyle {
+                label: Text {
+                        renderType: Text.NativeRendering
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        font.family: "Helvetica"
+                        font.pointSize: dempfButton.height / 5
+                        text: control.text
+                      }
+                background:
+                    Rectangle {
+                        color:m_dempf===0 ? "white" : "#42e73a"
+                    }
+            }
+            onClicked:{
+                compass.changeDempf();
+            }
+
+        }
+
 
         Button{
             id: tmkState

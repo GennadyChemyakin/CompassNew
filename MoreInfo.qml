@@ -220,6 +220,7 @@ Rectangle {
         width: buttonWidth
         height: buttonHeight
         text: logMsg
+        visible: false
         anchors.top: lcdCoefBRect.bottom
         anchors.topMargin: lcdHeight
         anchors.left: textB.left
