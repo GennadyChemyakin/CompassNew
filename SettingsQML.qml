@@ -349,43 +349,43 @@ Rectangle {
             }
         }
 
-        Button {
-            id: button2
-            width: settings.buttonWidth
-            height:settings.buttonHeight
-            visible: true
-            text: qsTr("Изменить фон")
-            anchors.left: parent.left
-            anchors.leftMargin: width / 10
-            anchors.top: button7.bottom
-            anchors.topMargin: height / 2
-            style: ButtonStyle {
-                    label: Text {
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
-                        font.pointSize: buttonFontSize
-                        color: "black"
-                        text: control.text
-                      }
-                    background: Rectangle {
-                        implicitWidth: 100
-                        implicitHeight: 25
-                        border.width: control.activeFocus ? 2 : 1
-                        border.color: "#888"
-                        radius: 4
-                        color: buttonNum === 2 ? "#42e73a":"white"
+//        Button {
+//            id: button2
+//            width: settings.buttonWidth
+//            height:settings.buttonHeight
+//            visible: false
+//            text: qsTr("Изменить фон")
+//            anchors.left: parent.left
+//            anchors.leftMargin: width / 10
+//            anchors.top: button7.bottom
+//            anchors.topMargin: height / 2
+//            style: ButtonStyle {
+//                    label: Text {
+//                        renderType: Text.NativeRendering
+//                        verticalAlignment: Text.AlignVCenter
+//                        horizontalAlignment: Text.AlignHCenter
+//                        font.family: "Helvetica"
+//                        font.pointSize: buttonFontSize
+//                        color: "black"
+//                        text: control.text
+//                      }
+//                    background: Rectangle {
+//                        implicitWidth: 100
+//                        implicitHeight: 25
+//                        border.width: control.activeFocus ? 2 : 1
+//                        border.color: "#888"
+//                        radius: 4
+//                        color: buttonNum === 2 ? "#42e73a":"white"
 
-                    }
-                }
-            onClicked:
-            {
-                slideCompBack.start()
-                slideBackgroundForward.start()
-                buttonNum = 2
-            }
-        }
+//                    }
+//                }
+//            onClicked:
+//            {
+//                slideCompBack.start()
+//                slideBackgroundForward.start()
+//                buttonNum = 2
+//            }
+//        }
 
         Button {
             id: button3
@@ -492,6 +492,36 @@ Rectangle {
             }
             onClicked: compass.changeTrueMagneticCourse()
         }
+
+        Button {
+            id: dayNightButton
+            width: settings.buttonWidth
+            height:settings.buttonHeight
+            anchors.left: parent.left
+            anchors.leftMargin: width / 10
+            anchors.top: button7.bottom
+            anchors.topMargin: height / 2
+            text: qsTr("ДЕНЬ")
+            style: ButtonStyle {
+                    label: Text {
+                        renderType: Text.NativeRendering
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        font.family: "Helvetica"
+                        font.pointSize: menuText.font.pixelSize
+                        color: "black"
+                        text: control.text
+                      }
+            }
+            onClicked: {
+                dayNight = !dayNight
+                dayNight === true ? sourseCompass10 = "content/compass10day.png" : sourseCompass10 = "content/compass10night.png"
+                dayNight === true ? sourseCompass360 = "content/compass360day.png" : sourseCompass360 = "content/compass360night.png"
+                dayNight === true ? sourceBackground = "content/backgroundDay.png" : sourceBackground = "content/backgroundNight.png"
+                dayNight === true ? dayNightButton.text = "ДЕНЬ" : dayNightButton.text = "НОЧЬ"
+            }
+        }
+
 
         Button {
             id: button6

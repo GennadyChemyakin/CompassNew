@@ -65,11 +65,15 @@ private:
    double m_lastAngle;
    double m_lastAngle1;
    int m_tmCourse;
+   double m_sum;
    int index;
    int m_con;
    int m_con1;
+   int m_dempf;
+   int curr_angle_count;
 
    double Round(double st,int count);
+   double AbsAngle(double, double);
 
 public slots:
    void setM_skl(double skl)

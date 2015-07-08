@@ -10,5 +10,7 @@
         <file>content/compass10day.png</file>
         <file>content/backgroundNight.png</file>
         <file>content/backgroundDay.png</file>
+        <file>content/day.jpg</file>
+        <file>content/night.jpg</file>
     </qresource>
 </RCC>

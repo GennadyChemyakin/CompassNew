@@ -5,10 +5,11 @@ import QtQuick.Controls.Styles 1.1
 
 Window {
     id: window1
-    width: 1440
-    height: 980
+    width: 800
+    height: 600
     title: qsTr("Compass")
     visibility: "Windowed"
+    //visibility: "FullScreen"
 
     property string gradientcolor0: "#FF7C7C7C"
     property string gradientcolor1: "#FF4E4E4E"
@@ -172,7 +173,7 @@ Window {
             PropertyAnimation {
                 target: lcdDisplay
                 properties: "border.color"
-                to: "black"
+                to: dayNight === false ? "#000000" : "white"
                 duration: 300
             }
             PropertyAnimation {
@@ -186,7 +187,7 @@ Window {
             id: compass10
             x: 366
             y: 55
-            width: compass360.height / 1.32
+            width: compass360.width
             height: compass10.width
             anchors.centerIn: backgrnCompass
             z: 1
@@ -252,8 +253,8 @@ Window {
             anchors.topMargin: 0
             anchors.fill: parent
             z: 0
-            source: (m_background === 0 ? "content/steel4.png" :( m_background === 1 ? "content/steel3.png":(m_background === 2 ? "content/steel2.png":(m_background === 3 ? "content/wood.png":(m_background === 4 ? "content/steel.png":"content/steel4.png")))))
-
+            //source: (m_background === 0 ? "content/steel4.png" :( m_background === 1 ? "content/steel3.png":(m_background === 2 ? "content/steel2.png":(m_background === 3 ? "content/wood.png":(m_background === 4 ? "content/steel.png":"content/steel4.png")))))
+            source: dayNight === true ? "content/day.jpg" : "content/night.jpg"
         }
 
         Rectangle
@@ -263,8 +264,8 @@ Window {
             width: window1.width/4
             height: window1.height/6
             border.width: 3
-            border.color: "black"
-            color: "#000000"
+            border.color: dayNight === false ? "#000000" : "white"
+            color: dayNight === false ? "#000000" : "white"
             anchors.horizontalCenter: backgrnCompass.horizontalCenter
             anchors.verticalCenter: backgrnCompass.verticalCenter
             anchors.horizontalCenterOffset: 0
@@ -280,86 +281,37 @@ Window {
                 font.family: a_LCDNovaObl.name
                 style: Text.Outline
                 styleColor: "black"
-                color: "white"
+                color: dayNight === false ? "green" : "black"
             }
         }
 
-        Rectangle
+        Button
         {
             id: menuButton
             width: window1.width/7.0
             height: window1.height/10.0
-            radius: 7
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 20
-            z: 3
+            text: settingsDisplay.settingsSlided === false ? "Настройки":"Компас"
             anchors.right: parent.right
             anchors.rightMargin: 32
-            visible: true
-            Text {
-                id: menuText
-                anchors.centerIn: parent;
-                text: settingsDisplay.settingsSlided === false ? "Настройки":"Компас"
-                style: Text.Normal
-                font.bold: true
-                font.pixelSize: window1.width/57.6
-                color: "#FFFFFF"
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 20
+            z:2
+            style: ButtonStyle {
+                label: Text {
+                        renderType: Text.NativeRendering
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        font.family: "Helvetica"
+                        font.pointSize: menuText.font.pixelSize
+                        color: "black"
+                        text: control.text
+                      }
             }
-            gradient: Gradient { // добавление градиента
-                GradientStop {
-                    id: bmenugradient0
-                    position: 0
-                    color: "#ffffff"
-                }
-                GradientStop {
-                    id: bmenugradient1
-                    position: 1
-                    color: window1.gradientcolor1
-                }
-            }
-            ParallelAnimation {
-                id: bmenuEnterAnim
-                PropertyAnimation {
-                    target: bmenugradient0
-                    properties: "color"
-                    to: window1.gradientcolor1
-                    duration: 300
-                }
-                PropertyAnimation {
-                    target: bmenugradient1
-                    properties: "color"
-                    to: window1.gradientcolor0
-                    duration: 300
-                }
-            }
-            ParallelAnimation {
-                id: bmenuExitAnim
-                PropertyAnimation {
-                    target: bmenugradient0
-                    properties: "color"
-                    to: window1.gradientcolor0
-                    duration: 300
-                }
-                PropertyAnimation {
-                    target: bmenugradient1
-                    properties: "color"
-                    to: window1.gradientcolor1
-                    duration: 300
-                }
-            }
-            MouseArea
-            {
-                id: menuMouseArea
-                anchors.fill: parent
-                visible: true
-                opacity: 1
-                hoverEnabled: true
-                onEntered: bmenuEnterAnim.start()
-                onExited: bmenuExitAnim.start()
-                onClicked:{
-                    settingsDisplay.settingsSlided === false ? slideLCDForward.start():slideLCDBack.start();
-                    compass.startSettingsViewControlTimer(300000);
-                }
+            onClicked:{
+                settingsDisplay.settingsSlided === false ? slideLCDForward.start():slideLCDBack.start();
+                compass.startSettingsViewControlTimer(300000);
+                settingsDisplay.settingsSlided === true ? dayNightButton.visible = false : dayNightButton.visible = true
+                settingsDisplay.settingsSlided === true ? tmkState.visible = false : tmkState.visible = true
             }
 
         }
@@ -479,7 +431,7 @@ Window {
             anchors.topMargin: 25
             visible: true
             radius: 7
-            z: 0
+            z:0
             Text {
                 id: tmcText
                 anchors.centerIn: parent
@@ -493,7 +445,7 @@ Window {
                 GradientStop {
                     id: tmcgradient0
                     position: 0
-                    color: window1.gradientcolor0
+                    color: "#ffffff"
                 }
                 GradientStop {
                     id: tmcgradient1
@@ -545,33 +497,6 @@ Window {
         }
     }
 
-    Button {
-        id: dayNightButton
-        width: menuButton.width
-        height: menuButton.height
-        text: qsTr("ДЕНЬ")
-        anchors.left: parent.left
-        anchors.leftMargin: 32
-        anchors.top: parent.top
-        anchors.topMargin: 20
-        style: ButtonStyle {
-                label: Text {
-                    renderType: Text.NativeRendering
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    font.family: "Helvetica"
-                    font.pointSize: menuText.font.pixelSize
-                    color: "black"
-                    text: control.text
-                  }
-        }
-        onClicked: {
-            dayNight = !dayNight
-            dayNight === true ? sourseCompass10 = "content/compass10day.png" : sourseCompass10 = "content/compass10night.png"
-            dayNight === true ? sourseCompass360 = "content/compass360day.png" : sourseCompass360 = "content/compass360night.png"
-            dayNight === true ? sourceBackground = "content/backgroundDay.png" : sourceBackground = "content/backgroundNight.png"
-            dayNight === true ? dayNightButton.text = "ДЕНЬ" : dayNightButton.text = "НОЧЬ"
-        }
-    }
+
 }
 

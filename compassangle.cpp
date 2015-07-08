@@ -7,6 +7,9 @@ Compassangle::Compassangle(QObject *parent) : QObject(parent), m_fullangle(0), m
 {
     m_fullangleStr = "000.0";
     m_skl = 0; // here will be another arg from file
+    m_dempf = 5;
+    curr_angle_count = 0;
+    m_sum = 0;
 }
 
 Compassangle::~Compassangle()
@@ -16,28 +19,35 @@ Compassangle::~Compassangle()
 
 void Compassangle::setM_fullangle(double a)
 {
-//    //отсеиваем выбросы
-//    if(m_last - a > 20)
-//        a = m_last;
 
-    //первое вхождение
+    qDebug()<<"a(-1)"<<a;
+    if(curr_angle_count++ == m_dempf)
+    {
+
+        a = (m_sum + a) / (m_dempf+1);
+        m_sum = 0;
+        curr_angle_count = 0;
+
     if(index == 0)
         m_last = a;
-
     qDebug()<<"a0"<<a;
-    qDebug()<<"last"<<a;
-    //сглаживание
-    if(fabs(fabs(m_last) - fabs(a)) <20)
-        a=m_last+(a-m_last)*0.5;
-    else if(fabs(fabs(m_last) - fabs(a)) < 350 && fabs(fabs(m_last) - fabs(a)) > 20)
-    {
-        a = m_last;
-    }
+    if(m_last - a > 180)
+        a = m_last + ((a+360) - m_last)*0.5;
+    else if(m_last - a < -180)
+        a = (m_last-360) + (a - m_last + 360)*0.5;
+    else
+        a = m_last + (a - m_last)*0.5;
+    qDebug()<<"a1"<<a;
+    if(a<0)
+        a+=360;
+     if(a>360)
+        a-=360;
     a = Round(a,1);
     m_last=a;
+    qDebug()<<"aR"<<a;
 
-    qDebug()<<"aR "<<a;
 
+    //------------------------------------------
     // МК или ИК
     if(m_tmCourse > 0)
         a = a + m_coef_A;
@@ -45,6 +55,13 @@ void Compassangle::setM_fullangle(double a)
     // ИК
     if(m_tmCourse > 1)
         a = m_skl + a;
+
+    if(a<0)
+        a+=360;
+     if(a>360)
+        a-=360;
+    //------------------------------------------
+
 
     if (a!=0)
     {
@@ -85,12 +102,6 @@ void Compassangle::setM_fullangle(double a)
     //--------------------------------------------------------------------------------------
 
 
-    //сглаживание маленькой кaртушки
-//    if(index == 0)
-//        m_last2 = m_fractPart;
-//    m_fractPart=m_last2+(m_fractPart-m_last2)*0.5;
-//    m_last2=m_fractPart;
-
     index = 1;
 
 
@@ -102,8 +113,28 @@ void Compassangle::setM_fullangle(double a)
        m_fullangleStr="0"+m_fullangleStr;
     if(m_fullangle / 100 < 1)
         m_fullangleStr="0"+m_fullangleStr;
-    qDebug()<<"aSTR "<<m_fullangleStr;
+     qDebug()<<"fullangle"<<m_fullangleStr;
+    }
+    else
+    {
+        if(index == 0)
+            m_last = a;
+        if(m_last - a > 180)
+            a = m_last + ((a+360) - m_last)*0.5;
+        else if(m_last - a < -180)
+            a = (m_last-360) + (a - m_last + 360)*0.5;
+        else
+            a = m_last + (a - m_last)*0.5;
+        if(a<0)
+            a+=360;
+         if(a>360)
+            a-=360;
+        a = Round(a,1);
+        m_last=a;
+        m_sum += a;
+        index = 1;
 
+    }
 }
 
 double Compassangle::Round(double st,int count)
@@ -134,4 +165,9 @@ double Compassangle::Round(double st,int count)
     }
     else return 0;
 
+}
+
+double Compassangle::AbsAngle(double angle, double con)
+{
+    return angle + 360* con;
 }
