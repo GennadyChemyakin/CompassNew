@@ -316,7 +316,7 @@ Rectangle {
             height: buttonHeightKeyboard
             z: 1
             placeholderText: qsTr("Text Field")
-            text: modeSKL===true ? (skl_str > 0.1 ? "+" + skl_str : skl_str ): (a_str > 0.1 ? "+" + a_str : a_str)
+            text: modeSKL===true ? (skl_str > 0 ? "+" + skl_str : skl_str ): (a_str > 0 ? "+" + a_str : a_str)
             font.pixelSize: textField1.height / 1.5
         }
 

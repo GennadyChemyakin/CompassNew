@@ -74,167 +74,6 @@ Rectangle {
         z:2
 
 
-
-        Rectangle
-        {
-            id: image1rect
-            width: window1.width / 6
-            height: window1.width / 6
-            color: "#00000000"
-            anchors.left: parent.left
-            anchors.leftMargin: width / 4
-            y: (settings.height - 3 * height - 3 * height / 4) / 2
-            Image {
-                id: image1
-                source: "content/steel4.png"
-                anchors.horizontalCenter: image1rect.horizontalCenter
-                anchors.verticalCenter: image1rect.verticalCenter
-                width: window1.width / 6 - 6
-                height: window1.width / 6 - 6
-            }
-            border.width: 3
-            border.color: (m_background===0 ? "green": "#00000000")
-            MouseArea
-            {
-                anchors.fill: parent
-                onClicked: compass.changeBackground(0)
-            }
-        }
-
-        Rectangle
-        {
-            id: image2rect
-            width: image1rect.width
-            height: image1rect.height
-            color: "#00000000"
-            anchors.left: image1rect.right
-            anchors.leftMargin: width / 4
-            anchors.top: image1rect.top
-            anchors.topMargin: 0
-            Image {
-                id: image2
-                source: "content/steel3.png"
-                anchors.horizontalCenter: image2rect.horizontalCenter
-                anchors.verticalCenter: image2rect.verticalCenter
-                width: image1.width
-                height: image1.height
-            }
-            border.width: 3
-            border.color: (m_background===1 ? "green": "#00000000")
-            MouseArea
-            {
-                anchors.fill: parent
-                onClicked: compass.changeBackground(1)
-            }
-        }
-
-        Rectangle
-        {
-            id: image3rect
-            width: image1rect.width
-            height: image1rect.height
-            color: "#00000000"
-            anchors.left: image2rect.right
-            anchors.leftMargin: width / 4
-            anchors.top: image1rect.top
-            anchors.topMargin: 0
-            Image {
-                id: image3
-                source: "content/steel2.png"
-                anchors.horizontalCenter: image3rect.horizontalCenter
-                anchors.verticalCenter: image3rect.verticalCenter
-                width: image1.width
-                height: image1.height
-            }
-            border.width: 3
-            border.color: m_background===2 ? "green": "#00000000"
-            MouseArea
-            {
-                anchors.fill: parent
-                onClicked: compass.changeBackground(2)
-            }
-        }
-        Rectangle
-        {
-            id: image4rect
-            width: image1rect.width
-            height: image1rect.height
-            color: "#00000000"
-            anchors.left: parent.left
-            anchors.leftMargin: width / 4
-            anchors.top: image1rect.bottom
-            anchors.topMargin: height / 4
-            Image {
-                id: image4
-                source: "content/wood.png"
-                anchors.horizontalCenter: image4rect.horizontalCenter
-                anchors.verticalCenter: image4rect.verticalCenter
-                width: image1.width
-                height: image1.height
-            }
-            border.width: 3
-            border.color: m_background===3 ? "green": "#00000000"
-            MouseArea
-            {
-                anchors.fill: parent
-                onClicked: compass.changeBackground(3)
-            }
-        }
-        Rectangle
-        {
-            id: image5rect
-            width: image1rect.width
-            height: image1rect.height
-            color: "#00000000"
-            anchors.left: image4rect.right
-            anchors.leftMargin: width / 4
-            anchors.top: image2rect.bottom
-            anchors.topMargin: height / 4
-            Image {
-                id: image5
-                source: "content/steel.png"
-                anchors.horizontalCenter: image5rect.horizontalCenter
-                anchors.verticalCenter: image5rect.verticalCenter
-                width: image1.width
-                height: image1.height
-            }
-            border.width: 3
-            border.color: m_background===4 ? "green": "#00000000"
-            MouseArea
-            {
-                anchors.fill: parent
-                onClicked: compass.changeBackground(4)
-            }
-        }
-        Rectangle
-        {
-            id: image6rect
-            width: image1rect.width
-            height: image1rect.height
-            visible: false
-            color: "#00000000"
-            anchors.left: image5rect.right
-            anchors.leftMargin: width / 4
-            anchors.top: image3rect.bottom
-            anchors.topMargin: height / 4
-            Image {
-                id: image6
-                //source: "qrc:/qtquickplugin/images/template_image.png"
-                anchors.horizontalCenter: image6rect.horizontalCenter
-                anchors.verticalCenter: image6rect.verticalCenter
-                width: image1.width
-                height: image1.height
-            }
-            border.width: 3
-            border.color: m_background===5 ? "green": "#00000000"
-            MouseArea
-            {
-                anchors.fill: parent
-                onClicked: compass.changeBackground(5)
-            }
-        }
-
-
     }
     ParallelAnimation {
         id: slideBackgroundForward
@@ -305,12 +144,12 @@ Rectangle {
             duration: 0
         }
     }
-    Image {
+    Rectangle {
         id: settingsBackground
         z: 1
         anchors.fill: parent
-        source: (m_background === 0 ? "content/steel4.png" :( m_background === 1 ? "content/steel3.png":(m_background === 2 ? "content/steel2.png":(m_background === 3 ? "content/wood.png":(m_background === 4 ? "content/steel.png":"content/steel4.png")))))
-
+        //source: (m_background === 0 ? "content/steel4.png" :( m_background === 1 ? "content/steel3.png":(m_background === 2 ? "content/steel2.png":(m_background === 3 ? "content/wood.png":(m_background === 4 ? "content/steel.png":"content/steel4.png")))))
+        color: "#082567"
         Button {
             id: button1
             width: settings.buttonWidth
@@ -348,44 +187,6 @@ Rectangle {
                 buttonNum = 1
             }
         }
-
-//        Button {
-//            id: button2
-//            width: settings.buttonWidth
-//            height:settings.buttonHeight
-//            visible: false
-//            text: qsTr("Изменить фон")
-//            anchors.left: parent.left
-//            anchors.leftMargin: width / 10
-//            anchors.top: button7.bottom
-//            anchors.topMargin: height / 2
-//            style: ButtonStyle {
-//                    label: Text {
-//                        renderType: Text.NativeRendering
-//                        verticalAlignment: Text.AlignVCenter
-//                        horizontalAlignment: Text.AlignHCenter
-//                        font.family: "Helvetica"
-//                        font.pointSize: buttonFontSize
-//                        color: "black"
-//                        text: control.text
-//                      }
-//                    background: Rectangle {
-//                        implicitWidth: 100
-//                        implicitHeight: 25
-//                        border.width: control.activeFocus ? 2 : 1
-//                        border.color: "#888"
-//                        radius: 4
-//                        color: buttonNum === 2 ? "#42e73a":"white"
-
-//                    }
-//                }
-//            onClicked:
-//            {
-//                slideCompBack.start()
-//                slideBackgroundForward.start()
-//                buttonNum = 2
-//            }
-//        }
 
         Button {
             id: button3

@@ -364,7 +364,7 @@ Rectangle {
         TextField
         {
             id:compensationStatus
-
+            font.pixelSize: textFontSize / 2
             width: buttonWidthComrect
             Component.onCompleted: changeColor()
             height: buttonHeightComrect
@@ -372,13 +372,13 @@ Rectangle {
             anchors.top: button3.bottom
             anchors.topMargin: progressBarMargin
             text: m_complable
-            font.pointSize: textFontSize / 2
             style:
                 TextFieldStyle{
                 background: Rectangle{
                     id: compensationStatusBackground
                     color: compensationStatusBackgroundcolor
                 }
+
             }
         }
 

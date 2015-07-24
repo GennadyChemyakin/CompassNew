@@ -8,8 +8,8 @@ Window {
     width: 800
     height: 600
     title: qsTr("Compass")
-    //visibility: "Windowed"
-    visibility: "FullScreen"
+    visibility: "Windowed"
+    //visibility: "FullScreen"
 
     property string gradientcolor0: "#FF7C7C7C"
     property string gradientcolor1: "#FF4E4E4E"
@@ -140,7 +140,7 @@ Window {
             PropertyAnimation {
                 target: lcdDisplay
                 properties: "border.color"
-                to: "faf0e6"
+                to: dayNight === false ? "#000000" : "#faf0e6"
                 duration: 300
             }
             PropertyAnimation {
@@ -245,7 +245,7 @@ Window {
             source: "content/ramka.png"
         }
 
-        Image {
+        Rectangle {
             id: background
             anchors.rightMargin: 0
             anchors.bottomMargin: 0
@@ -254,7 +254,8 @@ Window {
             anchors.fill: parent
             z: 0
             //source: (m_background === 0 ? "content/steel4.png" :( m_background === 1 ? "content/steel3.png":(m_background === 2 ? "content/steel2.png":(m_background === 3 ? "content/wood.png":(m_background === 4 ? "content/steel.png":"content/steel4.png")))))
-            source: dayNight === true ? "content/day.jpg" : "content/night.jpg"
+            //source: dayNight === true ? "content/day.jpg" : "content/night.jpg"
+            color:  dayNight === true ? "#8cb1b9" : "#0c2132"
         }
 
         Rectangle
@@ -303,13 +304,13 @@ Window {
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: menuButton.height / 3
+                        font.pointSize: menuButton.height / 4
                         text: control.text
                       }
             }
             onClicked:{
                 settingsDisplay.settingsSlided === false ? slideLCDForward.start():slideLCDBack.start();
-                compass.startSettingsViewControlTimer(300000);
+                //compass.startSettingsViewControlTimer(300000);
                 settingsDisplay.settingsSlided === true ? tmkState.visible = false : tmkState.visible = true
                 settingsDisplay.settingsSlided === true ? dempfButton.visible = false : dempfButton.visible = true
             }
@@ -332,7 +333,7 @@ Window {
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: dempfButton.height / 5
+                        font.pointSize: dempfButton.height / 6
                         text: control.text
                       }
                 background:

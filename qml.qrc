@@ -1,12 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>content/baggraund.png</file>
         <file>content/needleSmall.png</file>
-        <file>content/kompasD12.png</file>
-        <file>content/ramka.png</file>
-        <file>content/steel3.png</file>
-        <file>content/button.png</file>
         <file>content/a_LCDNovaObl.ttf</file>
         <file>SettingsQML.qml</file>
         <file>KeyBoard.qml</file>

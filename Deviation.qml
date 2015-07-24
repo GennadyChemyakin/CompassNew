@@ -363,7 +363,7 @@ Rectangle {
             height: buttonHeightKeyboard
             z: 1
             placeholderText: qsTr("Text Field")
-            text:  degaus === false ? (delta_str >= 0.1 ? "+" + delta_str : delta_str) : (deltaDegaus_str > 0.1 ? "+" + deltaDegaus_str : deltaDegaus_str)
+            text:  degaus === false ? (delta_str > 0 ? "+" + delta_str : delta_str) : (deltaDegaus_str > 0 ? "+" + deltaDegaus_str : deltaDegaus_str)
             font.pixelSize: textField1.height / 1.5
         }
 

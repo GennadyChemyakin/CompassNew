@@ -517,6 +517,8 @@ void Compass::addSKL(QString str)
         if(skl_str.indexOf(".")!=-1 && skl_str.indexOf(".")!=skl_str.size()-1)
             skl_str.remove(skl_str.size()-1,1);
         skl_str+=str;
+        if(skl_str.indexOf("+") == 0)
+            skl_str.remove(0,1);
         if(skl_str.toInt()<-180)
             skl_str="-180";
         else if(skl_str.toInt()>180)
@@ -595,6 +597,8 @@ void Compass::addDelta(QString str,int course)
         if(delta_str.indexOf(".")!=-1 && delta_str.indexOf(".")!=delta_str.size()-1)
             delta_str.remove(delta_str.size()-1,1);
         delta_str+=str;
+        if(delta_str.indexOf("+") == 0)
+            delta_str.remove(0,1);
         if(delta_str.toInt()<-180)
             delta_str="-180";
         else if(delta_str.toInt()>180)
@@ -673,6 +677,8 @@ void Compass::addDeltaDegaus(QString str,int course)
         if(deltaDegaus_str.indexOf(".")!=-1 && deltaDegaus_str.indexOf(".")!=deltaDegaus_str.size()-1)
             deltaDegaus_str.remove(deltaDegaus_str.size()-1,1);
         deltaDegaus_str+=str;
+        if(deltaDegaus_str.indexOf("+") == 0)
+            deltaDegaus_str.remove(0,1);
         if(deltaDegaus_str.toInt()<-180)
             deltaDegaus_str="-180";
         else if(deltaDegaus_str.toInt()>180)
@@ -743,6 +749,8 @@ void Compass::addA(QString str)
         if(a_str.indexOf(".")!=-1 && a_str.indexOf(".")!=a_str.size()-1)
             a_str.remove(a_str.size()-1,1);
         a_str+=str;
+        if(a_str.indexOf("+") == 0)
+            a_str.remove(0,1);
         if(a_str.toInt()<-10)
             a_str="-10";
         else if(a_str.toInt()>10)

@@ -1,9 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>content/steel.png</file>
-        <file>content/steel2.png</file>
-        <file>content/steel4.png</file>
-        <file>content/wood.png</file>
         <file>content/compass10night.png</file>
         <file>content/compass360night.png</file>
         <file>content/compass360day.png</file>
