@@ -139,6 +139,21 @@ public slots:
         }
     }
     void getDevCoef();
+    double getSKL(){
+        return m_skl;
+    }
+    double getA(){
+        return m_coef_A;
+    }
+
+    void setSKL(double skl){
+        m_skl = skl;
+    }
+
+    void setA(double a){
+        m_coef_A = a;
+    }
+
     void setRoll(double);
     void setPitch(double);
     void changeSkl();
@@ -156,8 +171,15 @@ public slots:
     void addA(QString str);
     void startWriteLog();
     void writeTolog();
-    void addDelta(QString,int);
-    void addDeltaDegaus(QString,int);
+    double getDelta(int num){
+        return delta[num-1];
+    }
+    void addDelta(int, double);
+    void addDeltaDegaus(int, double);
+
+    double getDeltaDegaus(int num){
+        return deltaDegaus[num-1];
+    }
     void startSettingsViewControlTimer(int msec);
 
 

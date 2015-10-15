@@ -33,14 +33,27 @@ Rectangle {
         z:2
     }
 
-    KeyBoard
+    NewKeyboard
     {
         id:keyboardDisplay
-        width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
-        height: settings.height
+        //width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
+        //height: settings.height
         anchors.rightMargin: -keyboardDisplay.width
         anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.topMargin: (settings.height - keyboardDisplay.height)/2
+        Component.onCompleted: {
+            console.log(keyboardDisplay.height)
+        }
+
         z:2
+    }
+
+    function setA(){
+        compass.setA(keyboardDisplay.getValue());
+    }
+    function setSKL(){
+        compass.setSKL(keyboardDisplay.getValue());
     }
 
     MoreInfo
@@ -188,6 +201,8 @@ Rectangle {
             }
         }
 
+
+
         Button {
             id: button3
             width: settings.buttonWidth
@@ -216,9 +231,13 @@ Rectangle {
                         color: buttonNum === 3 ? "#42e73a":"white"
                     }
                 }
+
             onClicked:
             {
                 keyboardDisplay.setMod(true)
+                keyboardDisplay.setRes(compass.getSKL())
+                keyboardDisplay.saved.disconnect(setA)
+                keyboardDisplay.saved.connect(setSKL)
                 slideCompBack.start()
                 slideKeybordForward.start()
                 buttonNum = 3
@@ -324,6 +343,7 @@ Rectangle {
         }
 
 
+
         Button {
             id: button6
             width: settings.buttonWidth
@@ -353,9 +373,13 @@ Rectangle {
 
                     }
                 }
+
             onClicked:
             {
                 keyboardDisplay.setMod(false)
+                keyboardDisplay.setRes(compass.getA())
+                keyboardDisplay.saved.disconnect(setSKL)
+                keyboardDisplay.saved.connect(setA)
                 slideCompBack.start()
                 slideKeybordForward.start()
                 buttonNum = 6

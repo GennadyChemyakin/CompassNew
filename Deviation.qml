@@ -4,8 +4,10 @@ import QtQuick.Controls.Styles 1.1
 
 Rectangle {
     id: deviationRect
-    width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
-    height: window1.height
+    //width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
+    //height: window1.height
+    width: 800
+    height: 600
     color: "#00000000"
     property int devFontSize: window1.width/53.333333333
     property bool modeSKL : true
@@ -56,6 +58,16 @@ Rectangle {
         buttonC315.buttonC315Color = Qt.binding(function(){return deviationCourse === 8 ? "#42e73a":"white";})
     }
 
+
+    function setDelta(num,value){
+        if(degaus == false)
+            compass.addDelta(num, value);
+        else
+            compass.addDeltaDegaus(num, value);
+    }
+
+
+
     Image {
         id: compensationBackground
         visible: true
@@ -64,388 +76,33 @@ Rectangle {
         anchors.leftMargin: 0
         anchors.topMargin: 0
         anchors.fill: parent
-        //source: "content/steel4.png"
 
-        Button {
-            id: but7
-            width: buttonWidthKeyboard
-            height: buttonHeightKeyboard
-            text: qsTr("7")
-            anchors.left: textField1.left
+
+        NewKeyboard{
+            id:keyboardDisplay
+            width: 640
+            height: 480
+            anchors.topMargin: buttonHeightKeyboard + buttonMargin
+            anchors.left: buttonC0.left
             anchors.leftMargin: 0
-            anchors.top: textField1.bottom
-            anchors.topMargin: buttonMargin
-            style: ButtonStyle {
-                    label: Text {
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
-                        font.pointSize: buttonFontSize
-                        color: "black"
-                        text: control.text
-                      }
-            }
-            onClicked: degaus === false ? compass.addDelta("7",deviationCourse) : compass.addDeltaDegaus("7",deviationCourse)
-        }
-        Button {
-            id: butPLUSMINUS
-            width: buttonWidthKeyboard
-            height: buttonHeightKeyboard
-            text: qsTr("+/-")
-            anchors.left: butDel.right
-            anchors.leftMargin: buttonMargin
-            anchors.top: textField1.top
-            anchors.topMargin: 0
-            style: ButtonStyle {
-                label: Text {
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
-                        font.pointSize: buttonFontSize
-                        color: "black"
-                        text: control.text
-                      }
-            }
-            onClicked: degaus === false ? compass.addDelta("+/-",deviationCourse) : compass.addDeltaDegaus("+/-",deviationCourse)
-        }
-
-        Button {
-            id: but8
-            width: buttonWidthKeyboard
-            height: buttonHeightKeyboard
-            text: qsTr("8")
-            anchors.left: but7.right
-            anchors.leftMargin: buttonMargin
-            anchors.top: textField1.bottom
-            anchors.topMargin: buttonMargin
-            style: ButtonStyle {
-                    label: Text {
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
-                        font.pointSize: buttonFontSize
-                        color: "black"
-                        text: control.text
-                      }
-            }
-            onClicked: degaus === false ? compass.addDelta("8",deviationCourse) : compass.addDeltaDegaus("8",deviationCourse)
-        }
-
-        Button {
-            id: but9
-            width: buttonWidthKeyboard
-            height: buttonHeightKeyboard
-            text: qsTr("9")
-            anchors.left: but8.right
-            anchors.leftMargin: buttonMargin
-            anchors.top: textField1.bottom
-            anchors.topMargin: buttonMargin
-            style: ButtonStyle {
-                    label: Text {
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
-                        font.pointSize: buttonFontSize
-                        color: "black"
-                        text: control.text
-                      }
-            }
-            onClicked: degaus === false ?  compass.addDelta("9",deviationCourse) : compass.addDeltaDegaus("9",deviationCourse)
-        }
-
-        Button {
-            id: but4
-            width: buttonWidthKeyboard
-            height: buttonHeightKeyboard
-            text: qsTr("4")
-            anchors.left: but7.left
-            anchors.leftMargin: 0
-            anchors.top: but7.bottom
-            anchors.topMargin: buttonMargin
-            style: ButtonStyle {
-                    label: Text {
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
-                        font.pointSize: buttonFontSize
-                        color: "black"
-                        text: control.text
-                      }
-            }
-            onClicked: degaus === false ? compass.addDelta("4",deviationCourse) : compass.addDeltaDegaus("4",deviationCourse)
-        }
-
-        Button {
-            id: but5
-            width: buttonWidthKeyboard
-            height: buttonHeightKeyboard
-            text: qsTr("5")
-            anchors.left: but4.right
-            anchors.leftMargin: buttonMargin
-            anchors.top: but7.bottom
-            anchors.topMargin: buttonMargin
-            style: ButtonStyle {
-                    label: Text {
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
-                        font.pointSize: buttonFontSize
-                        color: "black"
-                        text: control.text
-                      }
-            }
-            onClicked: degaus === false ? compass.addDelta("5",deviationCourse) : compass.addDeltaDegaus("5",deviationCourse)
-        }
-
-        Button {
-            id: but6
-            width: buttonWidthKeyboard
-            height: buttonHeightKeyboard
-            text: qsTr("6")
-            anchors.left: but5.right
-            anchors.leftMargin: buttonMargin
-            anchors.top: but7.bottom
-            anchors.topMargin: buttonMargin
-            style: ButtonStyle {
-                    label: Text {
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
-                        font.pointSize: buttonFontSize
-                        color: "black"
-                        text: control.text
-                      }
-            }
-            onClicked: degaus === false ? compass.addDelta("6",deviationCourse) : compass.addDeltaDegaus("6",deviationCourse)
-        }
-
-        Button {
-            id: but1
-            width: buttonWidthKeyboard
-            height: buttonHeightKeyboard
-            text: qsTr("1")
-            anchors.left: but7.left
-            anchors.leftMargin: 0
-            anchors.top: but4.bottom
-            anchors.topMargin: buttonMargin
-            style: ButtonStyle {
-                    label: Text {
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
-                        font.pointSize: buttonFontSize
-                        color: "black"
-                        text: control.text
-                      }
-            }
-            onClicked: degaus === false ? compass.addDelta("1",deviationCourse) : compass.addDeltaDegaus("1",deviationCourse)
-        }
-
-        Button {
-            id: but2
-            width: buttonWidthKeyboard
-            height: buttonHeightKeyboard
-            text: qsTr("2")
-            anchors.left: but1.right
-            anchors.leftMargin: buttonMargin
-            anchors.top: but4.bottom
-            anchors.topMargin: buttonMargin
-            style: ButtonStyle {
-                    label: Text {
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
-                        font.pointSize: buttonFontSize
-                        color: "black"
-                        text: control.text
-                      }
-            }
-            onClicked: degaus === false ? compass.addDelta("2",deviationCourse) : compass.addDeltaDegaus("2",deviationCourse)
-        }
-
-        Button {
-            id: but3
-            width: buttonWidthKeyboard
-            height: buttonHeightKeyboard
-            text: qsTr("3")
-            anchors.left: but2.right
-            anchors.leftMargin: buttonMargin
-            anchors.top: but4.bottom
-            anchors.topMargin: buttonMargin
-            style: ButtonStyle {
-                    label: Text {
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
-                        font.pointSize: buttonFontSize
-                        color: "black"
-                        text: control.text
-                      }
-            }
-            onClicked: degaus === false ? compass.addDelta("3",deviationCourse) : compass.addDeltaDegaus("3",deviationCourse)
-        }
-
-        Button {
-            id: butSave
-            signal saveClicked(int deviationCourse)
-            Component.onCompleted: {
-                butSave.saveClicked.connect(changeDeviationButtonState)
-            }
-            width: buttonWidthKeyboard
-            height: buttonHeightKeyboard
-            text: qsTr("Сохранить")
-            anchors.left: but1.left
-            anchors.leftMargin: 0
-            anchors.top: but1.bottom
-            anchors.topMargin: buttonMargin
-            style: ButtonStyle {
-                    label: Text {
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
-                        font.pointSize: buttonFontSize / 2
-                        color: "black"
-                        text: control.text
-                      }
-                    background:
-                        Rectangle {
-                            gradient: Gradient {
-                                GradientStop { position: 0 ; color: control.pressed ? "#42e73a" : "white" }
-                                GradientStop { position: 1 ; color: control.pressed ? "#42e73a" : "white" }
-                            }
-                        }
-            }
-            onClicked:{
-                degaus === false ? compass.addDelta("save",deviationCourse) : compass.addDeltaDegaus("save",deviationCourse)
-                butSave.saveClicked(deviationCourse)
+            anchors.top: buttonC0.bottom
+            z:2
+            Connections{
+                onSaved:{
+                    setDelta(deviationCourse,keyboardDisplay.getValue());
+                    changeDeviationButtonState(deviationCourse);
+                }
             }
         }
 
-        Button {
-            id: button0
-            width: buttonWidthKeyboard
-            height: buttonHeightKeyboard
-            text: qsTr("0")
-            anchors.left: butSave.right
-            anchors.leftMargin: buttonMargin
-            anchors.top: but1.bottom
-            anchors.topMargin: buttonMargin
-            style: ButtonStyle {
-                    label: Text {
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
-                        font.pointSize: buttonFontSize
-                        color: "black"
-                        text: control.text
-                      }
-            }
-            onClicked: degaus === false ? compass.addDelta("0",deviationCourse) : compass.addDeltaDegaus("0",deviationCourse)
-        }
-
-        TextField {
-            id: textField1
-            x: (deviationRect.width - (14 + 5 * buttonWidthKeyboard))/2
-            y: (deviationRect.height - (4 * buttonMargin + 5 * buttonHeightKeyboard) + buttonMargin + 2 * buttonHeightKeyboard)/2
-            width: buttonWidthKeyboard * 2 + buttonMargin
-            height: buttonHeightKeyboard
-            z: 1
-            placeholderText: qsTr("Text Field")
-            text:  degaus === false ? (delta_str > 0 ? "+" + delta_str : delta_str) : (deltaDegaus_str > 0 ? "+" + deltaDegaus_str : deltaDegaus_str)
-            font.pixelSize: textField1.height / 1.5
-        }
-
-        Button {
-            id: butDel
-            width: buttonWidthKeyboard
-            height: buttonHeightKeyboard
-            text: qsTr("<-")
-            anchors.top: textField1.top
-            anchors.topMargin: 0
-            anchors.left: textField1.right
-            anchors.leftMargin: buttonMargin
-            style: ButtonStyle {
-                label: Text {
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
-                        font.pointSize: buttonFontSize
-                        color: "black"
-                        text: control.text
-                      }
-            }
-            onClicked: degaus === false ? compass.addDelta("<-",deviationCourse) : compass.addDeltaDegaus("<-",deviationCourse)
-
-        }
-
-        Button {
-            id: butPlus
-            width: buttonWidthKeyboard
-            height: buttonHeightKeyboard
-            text: qsTr("+0.1")
-            anchors.left: but9.right
-            anchors.leftMargin: buttonMargin
-            anchors.top: but9.top
-            anchors.topMargin: but9.height/2 + buttonMargin / 2
-            style: ButtonStyle {
-                label: Text {
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
-                        font.pointSize: buttonFontSize
-                        color: "black"
-                        text: control.text
-                      }
-            }
-            onClicked:  degaus === false ? compass.addDelta("+0.1",deviationCourse) : compass.addDeltaDegaus("+0.1",deviationCourse)
-        }
-
-        Button {
-            id: butMinus
-            width: buttonWidthKeyboard
-            height: buttonHeightKeyboard
-            text: qsTr("-0.1")
-            anchors.bottom: but3.bottom
-            anchors.bottomMargin: but3.height/2 + buttonMargin / 2
-            anchors.left: but3.right
-            anchors.leftMargin: buttonMargin
-            style: ButtonStyle {
-                label: Text {
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
-                        font.pointSize: buttonFontSize
-                        color: "black"
-                        text: control.text
-                      }
-            }
-            onClicked: degaus === false ? compass.addDelta("-0.1",deviationCourse) : compass.addDeltaDegaus("-0.1",deviationCourse)
-        }
         Button {
             id: buttonC0
             property color buttonC0Color: deviationCourse === 1 ? "#42e73a":"white"
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
             text: qsTr("0")
-            anchors.right: but7.right
-            anchors.rightMargin: 0
-            anchors.bottom: textField1.top
-            anchors.bottomMargin: buttonMargin + buttonHeightKeyboard  + 2
+            x: buttonWidth/4
+            y: buttonHeight/2
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
@@ -468,7 +125,7 @@ Rectangle {
             }
             onClicked: {
                 deviationCourse = 1
-                degaus === false ? compass.addDelta("reset",deviationCourse) : compass.addDeltaDegaus("reset",deviationCourse)
+                degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
             }
         }
 
@@ -504,7 +161,7 @@ Rectangle {
             }
             onClicked: {
                 deviationCourse = 2
-                degaus === false ? compass.addDelta("reset",deviationCourse) : compass.addDeltaDegaus("reset",deviationCourse)
+                degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
             }
         }
 
@@ -540,7 +197,7 @@ Rectangle {
             }
             onClicked: {
                 deviationCourse = 3
-                degaus === false ? compass.addDelta("reset",deviationCourse) : compass.addDeltaDegaus("reset",deviationCourse)
+                degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
             }
         }
 
@@ -575,7 +232,7 @@ Rectangle {
             }
             onClicked: {
                 deviationCourse = 4
-                degaus === false ? compass.addDelta("reset",deviationCourse) : compass.addDeltaDegaus("reset",deviationCourse)
+                degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
             }
         }
 
@@ -610,7 +267,7 @@ Rectangle {
             }
             onClicked: {
                 deviationCourse = 5
-                degaus === false ? compass.addDelta("reset",deviationCourse) : compass.addDeltaDegaus("reset",deviationCourse)
+                degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
             }
         }
 
@@ -645,7 +302,7 @@ Rectangle {
             }
             onClicked: {
                 deviationCourse = 6
-                degaus === false ? compass.addDelta("reset",deviationCourse) : compass.addDeltaDegaus("reset",deviationCourse)
+                degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
             }
         }
 
@@ -680,7 +337,7 @@ Rectangle {
             }
             onClicked: {
                 deviationCourse = 7
-                degaus === false ? compass.addDelta("reset",deviationCourse) : compass.addDeltaDegaus("reset",deviationCourse)
+                degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
             }
         }
 
@@ -715,19 +372,22 @@ Rectangle {
             }
             onClicked: {
                 deviationCourse = 8
-                degaus === false ? compass.addDelta("reset",deviationCourse) : compass.addDeltaDegaus("reset",deviationCourse)
+                degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
             }
         }
         Button {
             id: degausButton
             width: buttonWidthKeyboard
+            height: buttonHeightKeyboard
             text: degaus===false ? degausButText="РУ выкл" : degausButText = "РУ вкл"
             anchors.left: buttonC135.right
             anchors.leftMargin: 5
-            anchors.bottom: buttonC315.bottom
-            anchors.bottomMargin: buttonHeightKeyboard / 2
-            anchors.top: buttonC135.top
-            anchors.topMargin: buttonHeightKeyboard / 2
+            anchors.top: buttonC0.top
+            anchors.topMargin: 0
+            signal degausClicked()
+            Component.onCompleted: {
+                degausButton.degausClicked.connect(deviationButtonsStateReset)
+            }
             style: ButtonStyle {
                 label: Text {
                         renderType: Text.NativeRendering
@@ -749,6 +409,9 @@ Rectangle {
             }
             onClicked: {
                 degaus = !degaus
+                degausClicked();
+                console.log(degaus);
+                degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
             }
         }
 
@@ -756,17 +419,18 @@ Rectangle {
             id: buttonDo
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
+            anchors.left: buttonC315.right
+            anchors.leftMargin: 5
+            anchors.top: buttonC315.top
+            anchors.topMargin: 0
             text: qsTr("Расчитать")
             signal doClicked()
+            x: 656
+            y: 112
 
             Component.onCompleted: {
                 buttonDo.doClicked.connect(deviationButtonsStateReset)
             }
-
-            anchors.left: button0.right
-            anchors.leftMargin: buttonMargin
-            anchors.top: but3.bottom
-            anchors.topMargin: buttonMargin
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
@@ -783,6 +447,7 @@ Rectangle {
                                 GradientStop { position: 0 ; color: control.pressed ? "#42e73a" : "white" }
                                 GradientStop { position: 1 ; color: control.pressed ? "#42e73a" : "white" }
                             }
+                            radius: 4
                         }
             }
             onClicked: {

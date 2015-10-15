@@ -10,5 +10,6 @@
         <file>Deviation.qml</file>
         <file>content/backgroundNight.png</file>
         <file>content/backgroundDay.png</file>
+        <file>NewKeyboard.qml</file>
     </qresource>
 </RCC>
