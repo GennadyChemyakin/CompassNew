@@ -5,11 +5,11 @@ import QtQuick.Controls.Styles 1.1
 
 Window {
     id: window1
-    width: 800
-    height: 600
+    //width: 800
+    //height: 600
     title: qsTr("Compass")
-    visibility: "Windowed"
-    //visibility: "FullScreen"
+    //visibility: "Windowed"
+    visibility: "FullScreen"
 
     property string gradientcolor0: "#FF7C7C7C"
     property string gradientcolor1: "#FF4E4E4E"
