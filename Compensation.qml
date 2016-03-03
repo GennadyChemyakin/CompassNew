@@ -174,7 +174,7 @@ Rectangle {
             x: window1.height/1.75
             width: buttonWidthComrect
             height: buttonHeightComrect
-            text: qsTr("Начать компенсацию")
+            text: qsTr("Начать калибровку")
             anchors.top: progressBar1.top
             anchors.topMargin: 0
             anchors.left: progressBar1.right
@@ -199,7 +199,7 @@ Rectangle {
             x: button1.x
             width: buttonWidthComrect
             height: buttonHeightComrect
-            text: qsTr("Остановить компенсацию")
+            text: qsTr("Остановить калибровку")
             anchors.top: button1.bottom
             anchors.topMargin: progressBarMargin
             style: ButtonStyle {
@@ -237,7 +237,8 @@ Rectangle {
                         text: control.text
                       }
             }
-            onClicked: compass.revert()
+            onClicked: passDialShow.start()
+                //compass.revert()
         }
 
         Text {

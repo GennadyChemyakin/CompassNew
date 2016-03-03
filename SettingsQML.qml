@@ -13,6 +13,13 @@ Rectangle {
     property int buttonFontSize:buttonHeight / 3
     property int buttonNum:0
 
+    PasswordDial{
+        id:passDial
+        width: settings.width
+        height: settings.height
+        visible: false
+        z:5
+    }
 
     Compensation
     {
@@ -88,6 +95,34 @@ Rectangle {
 
 
     }
+    ParallelAnimation{
+        id:passDialShow
+        PropertyAnimation{
+            target:passDial
+            properties: "visible"
+            to: true
+            duration:5
+        }
+    }
+    ParallelAnimation{
+        id:passDialClose
+        PropertyAnimation{
+            target:passDial
+            properties: "visible"
+            to: false
+            duration:5
+        }
+    }
+    ParallelAnimation{
+        id:passDialAccept
+        PropertyAnimation{
+            target:passDial
+            properties: "visible"
+            to: false
+            duration:1000
+        }
+    }
+
     ParallelAnimation {
         id: slideBackgroundForward
         PropertyAnimation {
@@ -167,7 +202,7 @@ Rectangle {
             id: button1
             width: settings.buttonWidth
             height:settings.buttonHeight
-            text: qsTr("Компенсация")
+            text: qsTr("Калибровка")
 
             anchors.left: parent.left
             anchors.leftMargin: width / 10
