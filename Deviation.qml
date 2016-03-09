@@ -126,6 +126,7 @@ Rectangle {
             onClicked: {
                 deviationCourse = 1
                 degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
+                compass.ledOn()
             }
         }
 
@@ -162,6 +163,7 @@ Rectangle {
             onClicked: {
                 deviationCourse = 2
                 degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
+                compass.ledOn()
             }
         }
 
@@ -198,6 +200,7 @@ Rectangle {
             onClicked: {
                 deviationCourse = 3
                 degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
+                compass.ledOn()
             }
         }
 
@@ -233,6 +236,7 @@ Rectangle {
             onClicked: {
                 deviationCourse = 4
                 degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
+                compass.ledOn()
             }
         }
 
@@ -268,6 +272,7 @@ Rectangle {
             onClicked: {
                 deviationCourse = 5
                 degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
+                compass.ledOn()
             }
         }
 
@@ -303,6 +308,7 @@ Rectangle {
             onClicked: {
                 deviationCourse = 6
                 degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
+                compass.ledOn()
             }
         }
 
@@ -338,6 +344,7 @@ Rectangle {
             onClicked: {
                 deviationCourse = 7
                 degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
+                compass.ledOn()
             }
         }
 
@@ -373,6 +380,7 @@ Rectangle {
             onClicked: {
                 deviationCourse = 8
                 degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
+                compass.ledOn()
             }
         }
         Button {
@@ -412,6 +420,7 @@ Rectangle {
                 degausClicked();
                 console.log(degaus);
                 degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
+                compass.ledOn()
             }
         }
 
@@ -453,6 +462,7 @@ Rectangle {
             onClicked: {
                 compass.getDevCoef()
                 buttonDo.doClicked()
+                compass.ledOn()
             }
         }
 

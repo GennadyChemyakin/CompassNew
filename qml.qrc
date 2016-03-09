@@ -11,5 +11,6 @@
         <file>content/backgroundNight.png</file>
         <file>content/backgroundDay.png</file>
         <file>NewKeyboard.qml</file>
+        <file>PasswordDial.qml</file>
     </qresource>
 </RCC>

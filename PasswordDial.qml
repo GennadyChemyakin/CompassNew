@@ -100,7 +100,10 @@ Rectangle {
         anchors.top: textField.top
         anchors.topMargin: 0
         style: keyboardButtonStyle
-        onClicked: buttonClick(text)
+        onClicked: {
+            compass.ledOn()
+            buttonClick(text)
+        }
     }
     Button{
         id: button0
@@ -114,7 +117,10 @@ Rectangle {
         anchors.leftMargin: buttonMargin
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
-        onClicked: buttonClick(text)
+        onClicked: {
+            compass.ledOn()
+            buttonClick(text)
+        }
     }
     Button{
         id: button1
@@ -126,7 +132,10 @@ Rectangle {
         anchors.leftMargin: 0
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
-        onClicked: buttonClick(text)
+        onClicked: {
+            compass.ledOn()
+            buttonClick(text)
+        }
     }
     Button{
         id: button2
@@ -138,7 +147,10 @@ Rectangle {
         anchors.leftMargin: buttonMargin
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
-        onClicked: buttonClick(text)
+        onClicked: {
+            compass.ledOn()
+            buttonClick(text)
+        }
     }
     Button{
         id: button3
@@ -150,7 +162,10 @@ Rectangle {
         anchors.leftMargin: buttonMargin
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
-        onClicked: buttonClick(text)
+        onClicked: {
+            compass.ledOn()
+            buttonClick(text)
+        }
     }
     Button{
         id: button4
@@ -162,7 +177,10 @@ Rectangle {
         anchors.rightMargin: buttonMargin
         anchors.right: button2.left
         style: keyboardButtonStyle
-        onClicked: buttonClick(text)
+        onClicked: {
+            compass.ledOn()
+            buttonClick(text)
+        }
     }
     Button{
         id: button5
@@ -176,7 +194,10 @@ Rectangle {
         anchors.leftMargin: buttonMargin
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
-        onClicked: buttonClick(text)
+        onClicked: {
+            compass.ledOn()
+            buttonClick(text)
+        }
     }
     Button{
         id: button6
@@ -188,7 +209,10 @@ Rectangle {
         anchors.topMargin: buttonMargin
         anchors.leftMargin: buttonMargin
         style: keyboardButtonStyle
-        onClicked: buttonClick(text)
+        onClicked: {
+            compass.ledOn()
+            buttonClick(text)
+        }
     }
     Button{
         id: button7
@@ -201,7 +225,10 @@ Rectangle {
         anchors.right: button2.left
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
-        onClicked: buttonClick(text)
+        onClicked: {
+            compass.ledOn()
+            buttonClick(text)
+        }
     }
     Button{
         id: button8
@@ -215,7 +242,10 @@ Rectangle {
         anchors.leftMargin: buttonMargin
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
-        onClicked: buttonClick(text)
+        onClicked: {
+            compass.ledOn()
+            buttonClick(text)
+        }
     }
     Button{
         id: button9
@@ -227,7 +257,10 @@ Rectangle {
         anchors.leftMargin: buttonMargin
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
-        onClicked: buttonClick(text)
+        onClicked: {
+            compass.ledOn()
+            buttonClick(text)
+        }
     }
     Button{
         id: buttonOK
@@ -240,7 +273,10 @@ Rectangle {
         anchors.right: button2.left
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
-        onClicked: revert(keyBoardRes)
+        onClicked:{
+            compass.ledOn()
+            revert(keyBoardRes)
+        }
     }
     Button{
         id: buttonCancel
@@ -256,6 +292,7 @@ Rectangle {
             keyBoardRes =""
             passDialClose.start()
             textField.text = keyBoardRes
+            compass.ledOn()
         }
     }
 

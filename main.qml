@@ -309,6 +309,7 @@ Window {
                       }
             }
             onClicked:{
+                compass.ledOn()
                 settingsDisplay.settingsSlided === false ? slideLCDForward.start():slideLCDBack.start();
                 //compass.startSettingsViewControlTimer(300000);
                 settingsDisplay.settingsSlided === true ? tmkState.visible = false : tmkState.visible = true
@@ -342,6 +343,7 @@ Window {
                     }
             }
             onClicked:{
+                compass.ledOn()
                 compass.changeDempf();
             }
 
@@ -377,7 +379,10 @@ Window {
                         })
                       }
             }
-            onClicked: compass.changeTrueMagneticCourse()
+            onClicked:{
+                compass.ledOn()
+                compass.changeTrueMagneticCourse()
+            }
         }
     }
 

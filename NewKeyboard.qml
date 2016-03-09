@@ -93,7 +93,10 @@ Rectangle {
         height: buttonHeightKeyboard
         text: qsTr("0")
         style: keyboardButtonStyle
-        onClicked: buttonClick(text)
+        onClicked: {
+            compass.ledOn()
+            buttonClick(text)
+        }
     }
     Button{
         id: button1
@@ -105,7 +108,10 @@ Rectangle {
         height: buttonHeightKeyboard
         text: qsTr("1")
         style: keyboardButtonStyle
-        onClicked: buttonClick(text)
+        onClicked: {
+            compass.ledOn()
+            buttonClick(text)
+        }
     }
     Button{
         id: button2
@@ -117,7 +123,10 @@ Rectangle {
         height: buttonHeightKeyboard
         text: qsTr("2")
         style: keyboardButtonStyle
-        onClicked: buttonClick(text)
+        onClicked: {
+            compass.ledOn()
+            buttonClick(text)
+        }
     }
     Button{
         id: button3
@@ -129,7 +138,10 @@ Rectangle {
         height: buttonHeightKeyboard
         text: qsTr("3")
         style: keyboardButtonStyle
-        onClicked: buttonClick(text)
+        onClicked: {
+            compass.ledOn()
+            buttonClick(text)
+        }
     }
     Button{
         id: button4
@@ -141,7 +153,10 @@ Rectangle {
         height: buttonHeightKeyboard
         text: qsTr("4")
         style: keyboardButtonStyle
-        onClicked: buttonClick(text)
+        onClicked: {
+            compass.ledOn()
+            buttonClick(text)
+        }
     }
     Button{
         id: button5
@@ -153,7 +168,10 @@ Rectangle {
         height: buttonHeightKeyboard
         text: qsTr("5")
         style: keyboardButtonStyle
-        onClicked: buttonClick(text)
+        onClicked: {
+            compass.ledOn()
+            buttonClick(text)
+        }
     }
     Button{
         id: button6
@@ -165,7 +183,10 @@ Rectangle {
         height: buttonHeightKeyboard
         text: qsTr("6")
         style: keyboardButtonStyle
-        onClicked: buttonClick(text)
+        onClicked: {
+            compass.ledOn()
+            buttonClick(text)
+        }
     }
     Button{
         id: button7
@@ -177,7 +198,10 @@ Rectangle {
         anchors.top: textField.bottom
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
-        onClicked: buttonClick(text)
+        onClicked: {
+            compass.ledOn()
+            buttonClick(text)
+        }
     }
     Button{
         id: button8
@@ -189,7 +213,10 @@ Rectangle {
         anchors.top: button7.top
         anchors.topMargin: 0
         style: keyboardButtonStyle
-        onClicked: buttonClick(text)
+        onClicked: {
+            compass.ledOn()
+            buttonClick(text)
+        }
     }
     Button{
         id: button9
@@ -201,7 +228,10 @@ Rectangle {
         anchors.top: button8.top
         anchors.topMargin: 0
         style: keyboardButtonStyle
-        onClicked: buttonClick(text)
+        onClicked: {
+            compass.ledOn()
+            buttonClick(text)
+        }
     }
     Button{
         id: buttonSave
@@ -242,7 +272,10 @@ Rectangle {
         height: buttonHeightKeyboard
         text: qsTr(".")
         style: keyboardButtonStyle
-        onClicked: buttonClick(text)
+        onClicked: {
+            compass.ledOn()
+            buttonClick(text)
+        }
     }
     Button{
         id: buttonDel
@@ -254,7 +287,10 @@ Rectangle {
         height: buttonHeightKeyboard
         text: qsTr("<-")
         style: keyboardButtonStyle
-        onClicked: buttonClick(text)
+        onClicked: {
+            compass.ledOn()
+            buttonClick(text)
+        }
     }
     Button{
         id: buttonPlusMinus
@@ -266,7 +302,10 @@ Rectangle {
         height: buttonHeightKeyboard
         text: qsTr("+/-")
         style: keyboardButtonStyle
-        onClicked: buttonClick(text)
+        onClicked: {
+            compass.ledOn()
+            buttonClick(text)
+        }
     }
     Button{
         id: buttonPlus
@@ -278,7 +317,10 @@ Rectangle {
         height: buttonHeightKeyboard
         text: qsTr("+0.1")
         style: keyboardButtonStyle
-        onClicked: buttonClick(text)
+        onClicked: {
+            compass.ledOn()
+            buttonClick(text)
+        }
     }
     Button{
         id: buttonMinus
@@ -290,7 +332,10 @@ Rectangle {
         height: buttonHeightKeyboard
         text: qsTr("-0.1")
         style: keyboardButtonStyle
-        onClicked: buttonClick(text)
+        onClicked: {
+            compass.ledOn()
+            buttonClick(text)
+        }
     }
     TextField {
         id: textField

@@ -236,6 +236,9 @@ Rectangle {
                     text: control.text
                 }
               }
-        onClicked: compass.startWriteLog();
+        onClicked:{
+            compass.ledOn()
+            compass.startWriteLog();
+        }
     }
 }

@@ -2,7 +2,8 @@ TEMPLATE = app
 
 QT += qml quick widgets core gui
 QT += serialport
-
+INCLUDEPATH += /mnt/rasp-pi-rootfs/usr/local/include
+LIBS += -L/mnt/rasp-pi-rootfs/usr/local/lib -lwiringPi
 SOURCES += main.cpp \
     compass.cpp \
     compassport.cpp \
@@ -10,7 +11,8 @@ SOURCES += main.cpp \
     dialogcomp.cpp \
     settings.cpp \
     cubic_spline.cpp \
-    compassangle.cpp
+    compassangle.cpp \
+    gpiopi.cpp
 
 RESOURCES += qml.qrc \
     png.qrc
@@ -28,7 +30,8 @@ HEADERS += \
     dialogcomp.h \
     settings.h \
     cubic_spline.h \
-    compassangle.h
+    compassangle.h \
+    gpiopi.h
 
 FORMS += \
     coefdial.ui \

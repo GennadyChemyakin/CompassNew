@@ -191,7 +191,10 @@ Rectangle {
                         text: control.text
                       }
             }
-            onClicked: compass.initComp();
+            onClicked:{
+                compass.ledOn()
+                compass.initComp();
+            }
         }
 
         Button {
@@ -214,7 +217,10 @@ Rectangle {
                         text: control.text
                       }
             }
-            onClicked: compass.stopComp();
+            onClicked:{
+                compass.ledOn()
+                compass.stopComp();
+            }
         }
 
         Button {
@@ -237,7 +243,10 @@ Rectangle {
                         text: control.text
                       }
             }
-            onClicked: passDialShow.start()
+            onClicked:{
+                compass.ledOn()
+                passDialShow.start()
+            }
                 //compass.revert()
         }
 

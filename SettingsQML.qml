@@ -233,6 +233,7 @@ Rectangle {
                 slideCompBack.start()
                 slideCompForward.start()
                 buttonNum = 1
+                compass.ledOn()
             }
         }
 
@@ -276,6 +277,7 @@ Rectangle {
                 slideCompBack.start()
                 slideKeybordForward.start()
                 buttonNum = 3
+                compass.ledOn()
             }
         }
 
@@ -313,6 +315,7 @@ Rectangle {
                 slideCompBack.start()
                 slideMoreInfoForward.start()
                 buttonNum = 4
+                compass.ledOn()
             }
         }
 
@@ -345,7 +348,10 @@ Rectangle {
                         })
                       }
             }
-            onClicked: compass.changeTrueMagneticCourse()
+            onClicked:{
+                compass.ledOn()
+                compass.changeTrueMagneticCourse()
+            }
         }
 
         Button {
@@ -369,11 +375,13 @@ Rectangle {
                       }
             }
             onClicked: {
+                compass.ledOn()
                 dayNight = !dayNight
                 dayNight === true ? sourseCompass10 = "content/compass10day.png" : sourseCompass10 = "content/compass10night.png"
                 dayNight === true ? sourseCompass360 = "content/compass360day.png" : sourseCompass360 = "content/compass360night.png"
                 dayNight === true ? sourceBackground = "content/backgroundDay.png" : sourceBackground = "content/backgroundNight.png"
                 dayNight === true ? dayNightButton.text = "ДЕНЬ" : dayNightButton.text = "НОЧЬ"
+
             }
         }
 
@@ -418,6 +426,7 @@ Rectangle {
                 slideCompBack.start()
                 slideKeybordForward.start()
                 buttonNum = 6
+                compass.ledOn()
             }
         }
         Button {
@@ -455,6 +464,7 @@ Rectangle {
                 slideCompBack.start()
                 slideDeviationForward.start()
                 buttonNum = 7
+                compass.ledOn()
             }
         }
         Rectangle {
