@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QTimer>
 #include <QDebug>
-#include "wiringPi.h"
+//#include "wiringPi.h"
 
 
 

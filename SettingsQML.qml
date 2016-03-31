@@ -9,12 +9,23 @@ Rectangle {
     width: 1440
     height: 980
     property int buttonWidth:window1.width / 4
-    property int buttonHeight:window1.height / 14
+    property int buttonHeight:window1.height / 10
     property int buttonFontSize:buttonHeight / 3
     property int buttonNum:0
+    property int butState: 0 // 0-main, 1-settings
+
+    function close(){
+        console.log("here");
+        showMainBut.start();
+        slideCompBack.start();
+        butState =0;
+        buttonNum = 0;
+    }
 
     PasswordDial{
         id:passDial
+        x: 0
+        y: 0
         width: settings.width
         height: settings.height
         visible: false
@@ -24,7 +35,7 @@ Rectangle {
     Compensation
     {
         id:compensationDisplay
-        width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
+        width: settings.width-buttonWidth - calibBut.anchors.leftMargin * 2
         height: settings.height
         anchors.rightMargin: -compensationDisplay.width
         anchors.right: parent.right
@@ -33,7 +44,7 @@ Rectangle {
     Deviation
     {
         id:deviationDisplay
-        width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
+        width: settings.width-buttonWidth - calibBut.anchors.leftMargin * 2
         height: settings.height
         anchors.rightMargin: -deviationDisplay.width
         anchors.right: parent.right
@@ -43,7 +54,7 @@ Rectangle {
     NewKeyboard
     {
         id:keyboardDisplay
-        //width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
+        //width: settings.width-buttonWidth - calibBut.anchors.leftMargin * 2
         //height: settings.height
         anchors.rightMargin: -keyboardDisplay.width
         anchors.right: parent.right
@@ -63,10 +74,41 @@ Rectangle {
         compass.setSKL(keyboardDisplay.getValue());
     }
 
+    ParallelAnimation{
+        id:showSettingsBut
+        PropertyAnimation{
+            target:mainButtons
+            properties: "anchors.leftMargin"
+            to:window1.width
+            duration:0
+        }
+        PropertyAnimation{
+            target:settingsButtons
+            properties: "anchors.leftMargin"
+            to:0
+            duration:0
+        }
+    }
+    ParallelAnimation{
+        id:showMainBut
+        PropertyAnimation{
+            target:settingsButtons
+            properties: "anchors.leftMargin"
+            to:window1.width
+            duration:0
+        }
+        PropertyAnimation{
+            target:mainButtons
+            properties: "anchors.leftMargin"
+            to:0
+            duration:0
+        }
+    }
+
     MoreInfo
        {
            id:moreInfoDisp
-           width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
+           width: settings.width-buttonWidth - calibBut.anchors.leftMargin * 2
            height: settings.height
            anchors.rightMargin: -compensationDisplay.width
            anchors.right: parent.right
@@ -86,7 +128,7 @@ Rectangle {
         id: backgroundviewer
         x: 0
         y: 0
-        width: settings.width - buttonWidth - button1.anchors.leftMargin * 2
+        width: settings.width - buttonWidth - calibBut.anchors.leftMargin * 2
         height: settings.height
         color: "#00000000"
         anchors.rightMargin: -backgroundviewer.width
@@ -197,18 +239,26 @@ Rectangle {
         z: 1
         anchors.fill: parent
         //source: (m_background === 0 ? "content/steel4.png" :( m_background === 1 ? "content/steel3.png":(m_background === 2 ? "content/steel2.png":(m_background === 3 ? "content/wood.png":(m_background === 4 ? "content/steel.png":"content/steel4.png")))))
-        color: "#082567"
-        Button {
-            id: button1
-            width: settings.buttonWidth
-            height:settings.buttonHeight
-            text: qsTr("Калибровка")
-
+        color: "#072269"
+        Rectangle{
+            id:settingsButtons
             anchors.left: parent.left
-            anchors.leftMargin: width / 10
+            anchors.leftMargin: window1.width
             anchors.top: rectangle2.bottom
-            anchors.topMargin: height / 2
-            style: ButtonStyle {
+            anchors.topMargin: 0
+            width:settings.buttonWidth
+            Button {
+                id: calibBut
+                x: 20
+                width: settings.buttonWidth
+                height:settings.buttonHeight
+                text: qsTr("Калибровка")
+                anchors.top: parent.top
+                anchors.topMargin: 0
+                anchors.leftMargin: 10
+
+                anchors.left: parent.left
+                style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
@@ -217,7 +267,7 @@ Rectangle {
                         font.pointSize: buttonFontSize
                         color: "black"
                         text: control.text
-                      }
+                    }
                     background: Rectangle {
                         implicitWidth: 100
                         implicitHeight: 25
@@ -228,27 +278,25 @@ Rectangle {
 
                     }
                 }
-            onClicked:
-            {
-                slideCompBack.start()
-                slideCompForward.start()
-                buttonNum = 1
-                compass.ledOn()
+                onClicked:
+                {
+                    slideCompBack.start()
+                    slideCompForward.start()
+                    buttonNum = 1
+                    compass.ledOn()
+                }
             }
-        }
-
-
-
-        Button {
-            id: button3
-            width: settings.buttonWidth
-            height:settings.buttonHeight
-            text: qsTr("Склонение")
-            anchors.left: parent.left
-            anchors.leftMargin: width / 10
-            anchors.top: button1.bottom
-            anchors.topMargin: height / 2
-            style: ButtonStyle {
+            Button {
+                id: coefABut
+                x: 6
+                width: settings.buttonWidth
+                height:settings.buttonHeight
+                text: qsTr("Коэффициент A")
+                anchors.top: calibBut.bottom
+                anchors.topMargin: 10
+                anchors.leftMargin: 10
+                anchors.left: parent.left
+                style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
@@ -257,16 +305,189 @@ Rectangle {
                         font.pointSize: buttonFontSize
                         color: "black"
                         text: control.text
-                      }
+                    }
                     background: Rectangle {
                         implicitWidth: 100
                         implicitHeight: 25
                         border.width: control.activeFocus ? 2 : 1
                         border.color: "#888"
                         radius: 4
-                        color: buttonNum === 3 ? "#42e73a":"white"
+                        color: buttonNum === 6 ? "#42e73a":"white"
+
                     }
                 }
+
+                onClicked:
+                {
+                    keyboardDisplay.setMod(false)
+                    keyboardDisplay.setRes(compass.getA())
+                    keyboardDisplay.saved.disconnect(setSKL)
+                    keyboardDisplay.saved.connect(setA)
+                    slideCompBack.start()
+                    slideKeybordForward.start()
+                    buttonNum = 6
+                    compass.ledOn()
+                }
+            }
+
+            Button {
+                id: deviBut
+                x: 18
+                width: settings.buttonWidth
+                height:settings.buttonHeight
+                text: qsTr("Девиация")
+                anchors.top: coefABut.bottom
+                anchors.topMargin: 10
+                anchors.leftMargin: 10
+                anchors.left: parent.left
+                style: ButtonStyle {
+                    label: Text {
+                        renderType: Text.NativeRendering
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        font.family: "Helvetica"
+                        font.pointSize: buttonFontSize
+                        color: "black"
+                        text: control.text
+                    }
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 25
+                        border.width: control.activeFocus ? 2 : 1
+                        border.color: "#888"
+                        radius: 4
+                        color: buttonNum === 7 ? "#42e73a":"white"
+
+                    }
+                }
+                onClicked:
+                {
+                    //deviationDisplay.setMod(false)
+                    slideCompBack.start()
+                    slideDeviationForward.start()
+                    buttonNum = 7
+                    compass.ledOn()
+                }
+            }
+
+            Button {
+                id: showmainButtonsBut
+                x: 10
+                y: -1
+                width: settings.buttonWidth
+                height:settings.buttonHeight
+                text: qsTr("Настройки")
+                anchors.top: deviBut.bottom
+                anchors.topMargin: 10
+                anchors.leftMargin: 10
+
+                anchors.left: parent.left
+                style: ButtonStyle {
+                    label: Text {
+                        renderType: Text.NativeRendering
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        font.family: "Helvetica"
+                        font.pointSize: buttonFontSize
+                        color: "black"
+                        text: control.text
+                    }
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 25
+                        border.width: control.activeFocus ? 2 : 1
+                        border.color: "#888"
+                        radius: 4
+                        color: "white"
+
+                    }
+                }
+                onClicked:
+                {
+                    slideCompBack.start()
+                    butState = ~butState
+                    showMainBut.start()
+                    buttonNum = 0
+                    compass.ledOn()
+                }
+            }
+        }
+
+        Rectangle{
+        id:mainButtons
+
+        anchors.top: rectangle2.bottom
+        anchors.topMargin: 0
+        width:settings.buttonWidth
+        anchors.left: parent.left
+        anchors.leftMargin: 0
+        Button
+        {
+            id: courseStateBut
+            x: 15
+            y: 10
+            width: settings.buttonWidth
+            height:settings.buttonHeight
+            anchors.top: parent.top
+            anchors.topMargin: 10
+            anchors.leftMargin: 10
+            anchors.left: parent.left
+            style: ButtonStyle {
+                label: Text {
+                    id:courseStateButText
+                    renderType: Text.NativeRendering
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.family: "Helvetica"
+                    font.pointSize: buttonFontSize
+                    color: "black"
+                    text: "MK"
+                    Component.onCompleted: courseStateButText.text = Qt.binding(function(){
+                        if(trueMagneticCourse === 0)
+                            return "KK";
+                        else if(trueMagneticCourse === 1)
+                            return "MK";
+                        else if(trueMagneticCourse === 2)
+                            return "ИК";
+                    })
+                }
+            }
+            onClicked:{
+                compass.ledOn()
+                compass.changeTrueMagneticCourse()
+            }
+        }
+
+        Button {
+            id: sklBut
+            x: 10
+            y: 47
+            width: settings.buttonWidth
+            height:settings.buttonHeight
+            text: qsTr("Склонение")
+            anchors.top: courseStateBut.bottom
+            anchors.topMargin: 10
+            anchors.leftMargin: 10
+            anchors.left: parent.left
+            style: ButtonStyle {
+                label: Text {
+                    renderType: Text.NativeRendering
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.family: "Helvetica"
+                    font.pointSize: buttonFontSize
+                    color: "black"
+                    text: control.text
+                }
+                background: Rectangle {
+                    implicitWidth: 100
+                    implicitHeight: 25
+                    border.width: control.activeFocus ? 2 : 1
+                    border.color: "#888"
+                    radius: 4
+                    color: buttonNum === 3 ? "#42e73a":"white"
+                }
+            }
 
             onClicked:
             {
@@ -282,34 +503,36 @@ Rectangle {
         }
 
         Button {
-            id: button4
+            id: dInfoBut
+            x: 10
+            y: 84
             width: settings.buttonWidth
             height:settings.buttonHeight
             text: qsTr("Доп. информация")
+            anchors.top: sklBut.bottom
+            anchors.topMargin: 10
+            anchors.leftMargin: 10
             anchors.left: parent.left
-            anchors.leftMargin: width / 10
-            anchors.top: button3.bottom
-            anchors.topMargin: height / 2
             style: ButtonStyle {
-                    label: Text {
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
-                        font.pointSize: buttonFontSize
-                        color: "black"
-                        text: control.text
-                      }
-                    background: Rectangle {
-                        implicitWidth: 100
-                        implicitHeight: 25
-                        border.width: control.activeFocus ? 2 : 1
-                        border.color: "#888"
-                        radius: 4
-                        color: buttonNum === 4 ? "#42e73a":"white"
-
-                    }
+                label: Text {
+                    renderType: Text.NativeRendering
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.family: "Helvetica"
+                    font.pointSize: buttonFontSize
+                    color: "black"
+                    text: control.text
                 }
+                background: Rectangle {
+                    implicitWidth: 100
+                    implicitHeight: 25
+                    border.width: control.activeFocus ? 2 : 1
+                    border.color: "#888"
+                    radius: 4
+                    color: buttonNum === 4 ? "#42e73a":"white"
+
+                }
+            }
             onClicked:
             {
                 slideCompBack.start()
@@ -319,60 +542,108 @@ Rectangle {
             }
         }
 
-        Button
-        {
-            id: button5
+        Button {
+            id: deviDispBut
+            x: 14
+            y: 121
             width: settings.buttonWidth
             height:settings.buttonHeight
+            text: qsTr("Девиация")
+            anchors.top: dInfoBut.bottom
+            anchors.topMargin: 10
+            anchors.leftMargin: 14
+
             anchors.left: parent.left
-            anchors.leftMargin: width / 10
-            anchors.top: button4.bottom
-            anchors.topMargin: height / 2
             style: ButtonStyle {
                 label: Text {
-                        id:button5Text
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
-                        font.pointSize: buttonFontSize
-                        color: "black"
-                        text: "MK"
-                        Component.onCompleted: button5Text.text = Qt.binding(function(){
-                            if(trueMagneticCourse === 0)
-                                return "KK";
-                            else if(trueMagneticCourse === 1)
-                                return "MK";
-                            else if(trueMagneticCourse === 2)
-                                return "ИК";
-                        })
-                      }
+                    renderType: Text.NativeRendering
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.family: "Helvetica"
+                    font.pointSize: buttonFontSize
+                    color: "black"
+                    text: control.text
+                }
+                background: Rectangle {
+                    implicitWidth: 100
+                    implicitHeight: 25
+                    border.width: control.activeFocus ? 2 : 1
+                    border.color: "#888"
+                    radius: 4
+                    color: buttonNum === 1 ? "#42e73a":"white"
+
+                }
+            }
+            onClicked:
+            {
+                butState = ~butState
+                slideCompBack.start()
+                showSettingsBut.start()
+                buttonNum = 0
+                compass.ledOn()
+            }
+        }
+
+        Button
+        {
+            id: dempfButton
+            x: 14
+            y: 158
+            width: settings.buttonWidth
+            height:settings.buttonHeight
+            text: "Демпфирование"
+            anchors.top: deviDispBut.bottom
+            anchors.topMargin: 10
+            anchors.left: parent.left
+            anchors.leftMargin: 14
+            style: ButtonStyle {
+                label: Text {
+                    renderType: Text.NativeRendering
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.family: "Helvetica"
+                    font.pointSize: buttonFontSize
+                    color: "black"
+                    text: control.text
+                }
+                background: Rectangle {
+                    implicitWidth: 100
+                    implicitHeight: 25
+                    border.width: control.activeFocus ? 2 : 1
+                    border.color: "#888"
+                    radius: 4
+                    color:m_dempf===0 ? "white" : "#42e73a"
+
+                }
             }
             onClicked:{
                 compass.ledOn()
-                compass.changeTrueMagneticCourse()
+                compass.changeDempf();
             }
+
         }
 
         Button {
             id: dayNightButton
+            x: 15
+            y: 195
             width: settings.buttonWidth
             height:settings.buttonHeight
             anchors.left: parent.left
-            anchors.leftMargin: width / 10
-            anchors.top: button7.bottom
-            anchors.topMargin: height / 2
             text: qsTr("ДЕНЬ")
+            anchors.top: dempfButton.bottom
+            anchors.topMargin: 10
+            anchors.leftMargin: 15
             style: ButtonStyle {
-                    label: Text {
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
-                        font.pointSize: buttonFontSize
-                        color: "black"
-                        text: control.text
-                      }
+                label: Text {
+                    renderType: Text.NativeRendering
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.family: "Helvetica"
+                    font.pointSize: buttonFontSize
+                    color: "black"
+                    text: control.text
+                }
             }
             onClicked: {
                 compass.ledOn()
@@ -385,98 +656,19 @@ Rectangle {
             }
         }
 
+    }
 
-
-        Button {
-            id: button6
-            width: settings.buttonWidth
-            height:settings.buttonHeight
-            text: qsTr("Коэффициент A")
-            anchors.left: parent.left
-            anchors.leftMargin: width / 10
-            anchors.top: button5.bottom
-            anchors.topMargin: height / 2
-            style: ButtonStyle {
-                    label: Text {
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
-                        font.pointSize: buttonFontSize
-                        color: "black"
-                        text: control.text
-                      }
-                    background: Rectangle {
-                        implicitWidth: 100
-                        implicitHeight: 25
-                        border.width: control.activeFocus ? 2 : 1
-                        border.color: "#888"
-                        radius: 4
-                        color: buttonNum === 6 ? "#42e73a":"white"
-
-                    }
-                }
-
-            onClicked:
-            {
-                keyboardDisplay.setMod(false)
-                keyboardDisplay.setRes(compass.getA())
-                keyboardDisplay.saved.disconnect(setSKL)
-                keyboardDisplay.saved.connect(setA)
-                slideCompBack.start()
-                slideKeybordForward.start()
-                buttonNum = 6
-                compass.ledOn()
-            }
-        }
-        Button {
-            id: button7
-            width: settings.buttonWidth
-            height:settings.buttonHeight
-            text: qsTr("Девиация")
-            anchors.left: parent.left
-            anchors.leftMargin: width / 10
-            anchors.top: button6.bottom
-            anchors.topMargin: height / 2
-            style: ButtonStyle {
-                    label: Text {
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
-                        font.pointSize: buttonFontSize
-                        color: "black"
-                        text: control.text
-                      }
-                    background: Rectangle {
-                        implicitWidth: 100
-                        implicitHeight: 25
-                        border.width: control.activeFocus ? 2 : 1
-                        border.color: "#888"
-                        radius: 4
-                        color: buttonNum === 7 ? "#42e73a":"white"
-
-                    }
-                }
-            onClicked:
-            {
-                //deviationDisplay.setMod(false)
-                slideCompBack.start()
-                slideDeviationForward.start()
-                buttonNum = 7
-                compass.ledOn()
-            }
-        }
         Rectangle {
             id: rectangle1
             width: 1
             color: "#ffffff"
+            anchors.left: butState === 0 ? mainButtons.right : settingsButtons.right
+            anchors.leftMargin: 100
             anchors.top: parent.top
-            anchors.topMargin: 0
+            anchors.topMargin: 8
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 0
-            anchors.left: button1.right
-            anchors.leftMargin: button1.width / 10
+            anchors.bottomMargin: -8
+
         }
 
         Rectangle {
@@ -488,8 +680,6 @@ Rectangle {
             z: 1
             anchors.right: rectangle1.left
             anchors.rightMargin: 0
-            anchors.left: parent.left
-            anchors.leftMargin: 0
         }
 
     }

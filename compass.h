@@ -15,7 +15,7 @@
 #include "settings.h"
 #include "cubic_spline.h"
 #include "compassangle.h"
-#include "gpiopi.h"
+//#include "gpiopi.h"
 
 class Compass : public QObject
 {
@@ -183,7 +183,7 @@ public slots:
     }
     void startSettingsViewControlTimer(int msec);
     void ledOn(){
-        gpioPi.ledOn();
+        //gpioPi.ledOn();
     }
 
 protected:
@@ -261,7 +261,7 @@ private:
     QThread *portThread;
     DialogComp *dialComp;
     Settings *settingsDialog;
-    GpioPi gpioPi;
+    //GpioPi gpioPi;
 
 
 

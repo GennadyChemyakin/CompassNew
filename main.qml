@@ -256,6 +256,47 @@ Window {
             //source: (m_background === 0 ? "content/steel4.png" :( m_background === 1 ? "content/steel3.png":(m_background === 2 ? "content/steel2.png":(m_background === 3 ? "content/wood.png":(m_background === 4 ? "content/steel.png":"content/steel4.png")))))
             //source: dayNight === true ? "content/day.jpg" : "content/night.jpg"
             color:  dayNight === true ? "#8cb1b9" : "#0c2132"
+            Text{
+                id: tmkStateText
+                width: window1.width/14
+                height: window1.height/10.0
+                anchors.right: parent.right
+                anchors.rightMargin: 32 + menuButton.width/2
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: menuButton.height + 20
+                renderType: Text.NativeRendering
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                font.family: "Helvetica"
+                font.pointSize: height / 3
+                color: dayNight === false ? "#7fff00" : "black"
+                text: "MK"
+                Component.onCompleted: tmkStateText.text = Qt.binding(function(){
+                    if(trueMagneticCourse === 0)
+                        return "KK";
+                    else if(trueMagneticCourse === 1)
+                        return "MK";
+                    else if(trueMagneticCourse === 2)
+                        return "ИК";
+                })
+            }
+                Text{
+                    id: course_state_text
+                    width: window1.width/14
+                    height: window1.height/10.0
+                    anchors.right: parent.right
+                    anchors.rightMargin:  32
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: menuButton.height + 20
+                    renderType: Text.NativeRendering
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.family: "Helvetica"
+                    font.pointSize: height / 3
+                    color: dayNight === false ? "#7fff00" : "black"
+                    text: "D"
+                    opacity: m_dempf === 0 ? 0:1
+                }
         }
 
         Rectangle
@@ -297,6 +338,7 @@ Window {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 20
             z:2
+            //color:
             style: ButtonStyle {
                 label: Text {
                         id:menuText
@@ -312,79 +354,53 @@ Window {
                 compass.ledOn()
                 settingsDisplay.settingsSlided === false ? slideLCDForward.start():slideLCDBack.start();
                 //compass.startSettingsViewControlTimer(300000);
-                settingsDisplay.settingsSlided === true ? tmkState.visible = false : tmkState.visible = true
-                settingsDisplay.settingsSlided === true ? dempfButton.visible = false : dempfButton.visible = true
-            }
-
-        }
-
-        Button
-        {
-            id: dempfButton
-            width: window1.width/7.0
-            height: window1.height/10.0
-            text: "Демпфирование"
-            anchors.top: parent.top
-            anchors.topMargin: 20
-            anchors.left: parent.left
-            anchors.leftMargin: 32
-            style: ButtonStyle {
-                label: Text {
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
-                        font.pointSize: dempfButton.height / 6
-                        text: control.text
-                      }
-                background:
-                    Rectangle {
-                        color:m_dempf===0 ? "white" : "#42e73a"
-                    }
-            }
-            onClicked:{
-                compass.ledOn()
-                compass.changeDempf();
+//                settingsDisplay.settingsSlided === true ? tmkState.visible = false : tmkState.visible = true
+//                settingsDisplay.settingsSlided === true ? dempfButton.visible = false : dempfButton.visible = true
+                settingsDisplay.close()
             }
 
         }
 
 
-        Button{
-            id: tmkState
-            y: 520
-            width: menuButton.width
-            height: menuButton.height
-            anchors.left: parent.left
-            anchors.leftMargin: 32
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 20
-            style: ButtonStyle {
-                label: Text {
-                        id:tmkStateText
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
-                        font.pointSize: tmkState.height / 3
-                        color: "black"
-                        text: "MK"
-                        Component.onCompleted: tmkStateText.text = Qt.binding(function(){
-                            if(trueMagneticCourse === 0)
-                                return "KK";
-                            else if(trueMagneticCourse === 1)
-                                return "MK";
-                            else if(trueMagneticCourse === 2)
-                                return "ИК";
-                        })
-                      }
-            }
-            onClicked:{
-                compass.ledOn()
-                compass.changeTrueMagneticCourse()
-            }
-        }
+
+
+//        Button{
+//            id: tmkState
+//            y: 520
+//            width: menuButton.width
+//            height: menuButton.height
+//            anchors.left: parent.left
+//            anchors.leftMargin: 32
+//            anchors.bottom: parent.bottom
+//            anchors.bottomMargin: 20
+//            style: ButtonStyle {
+//                label: Text {
+//                        id:tmkStateText
+//                        renderType: Text.NativeRendering
+//                        verticalAlignment: Text.AlignVCenter
+//                        horizontalAlignment: Text.AlignHCenter
+//                        font.family: "Helvetica"
+//                        font.pointSize: tmkState.height / 3
+//                        color: "black"
+//                        text: "MK"
+//                        Component.onCompleted: tmkStateText.text = Qt.binding(function(){
+//                            if(trueMagneticCourse === 0)
+//                                return "KK";
+//                            else if(trueMagneticCourse === 1)
+//                                return "MK";
+//                            else if(trueMagneticCourse === 2)
+//                                return "ИК";
+//                        })
+//                      }
+//            }
+//            onClicked:{
+//                compass.ledOn()
+//                compass.changeTrueMagneticCourse()
+//            }
+//        }
     }
+
+
 
 
 }

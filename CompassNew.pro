@@ -2,8 +2,8 @@ TEMPLATE = app
 
 QT += qml quick widgets core gui
 QT += serialport
-INCLUDEPATH += /mnt/rasp-pi-rootfs/usr/local/include
-LIBS += -L/mnt/rasp-pi-rootfs/usr/local/lib -lwiringPi
+#INCLUDEPATH += /mnt/rasp-pi-rootfs/usr/local/include
+#LIBS += -L/mnt/rasp-pi-rootfs/usr/local/lib -lwiringPi
 SOURCES += main.cpp \
     compass.cpp \
     compassport.cpp \
