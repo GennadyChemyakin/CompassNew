@@ -10,6 +10,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     m_complable(""),delta_str("0"),deltaDegaus_str("0")
 {
     spline = new cubic_spline();
+    splineDG = new cubic_spline();
 
     for(int i=0;i<8;i++)
     {
@@ -272,6 +273,11 @@ void Compass::getDevCoef()
     calcPoints();
 }
 
+void Compass::setDegaus(bool deg){
+    m_degaus = deg;
+    qDebug()<<m_degaus;
+}
+
 void Compass::startSettingsViewControlTimer(int msec)
 {
     settingsViewControlTimer->start(msec);
@@ -298,6 +304,17 @@ void Compass::calcPoints()
 
     m_points[24] = m_points[0];
     spline->build_spline(x,m_points,25);
+
+    for(int i = 0; i < 12; i++)
+    {
+        m_points[i] = m_coef_DevDG.D * mass[0][i] + m_coef_DevDG.E * mass[1][i] + m_coef_DevDG.A + m_coef_DevDG.B * mass[2][i] + m_coef_DevDG.C * mass[3][i];
+        m_points[i+12] = m_coef_DevDG.D * mass[0][i] + m_coef_DevDG.E * mass[1][i] + m_coef_DevDG.A - (m_coef_DevDG.B * mass[2][i] + m_coef_DevDG.C * mass[3][i]);
+    }
+    for(int i = 0; i < 25; i++)
+    {
+        x[i] = 15 * i;
+    }
+    m_pointsDG[24] = m_pointsDG[0];
 }
 
 void Compass::setB(double B)

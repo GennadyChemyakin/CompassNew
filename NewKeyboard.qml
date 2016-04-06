@@ -54,7 +54,7 @@ Rectangle {
 
 
         if(keyBoardRes >= 180){
-            keyBoardRes = "+180";
+            keyBoardRes = "180";
         } else if(keyBoardRes <= -180)
             keyBoardRes = "-180";
 

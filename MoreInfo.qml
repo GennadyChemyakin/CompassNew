@@ -26,7 +26,7 @@ Rectangle {
         id:textRoll
         text: qsTr("Крен")
         x: (moreInfoRect.width - 3 * lcdWidth - 3 * textB.width - 5 * lcdHeight / 2 ) / 2
-        y: (moreInfoRect.height - 6 * lcdHeight  - buttonHeight) / 2
+        y: (moreInfoRect.height - 6 * lcdHeight  - buttonHeight)
         font.pixelSize: textHeight / 2
         color: "white"
         font.family: a_LCDNovaObl.name
@@ -76,7 +76,7 @@ Rectangle {
         y: window1.height/3.379310345
         z: 3
         width: lcdWidth
-        height: lcdHeight
+        height: lcdHeight-27
         border.width: 3
         border.color: "white"
         color: "#000000"
@@ -101,8 +101,8 @@ Rectangle {
 
     Label{
         id: textB
-        anchors.top: textPitch.bottom
-        anchors.topMargin: lcdHeight
+        anchors.bottom:  textPitch.top
+        anchors.bottomMargin: lcdHeight*3
         anchors.left: textPitch.left
         anchors.leftMargin: 0
         text: qsTr("X")

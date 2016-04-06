@@ -3,19 +3,26 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 
 Rectangle {
-    id: rectangle1
-    width: settings.width
-    height: settings.height
-    color: dayNight === true ? "#faf0e6" :"black"
+    id: pwdField
+    width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
+    height: window1.height
+    color: "#00000000"
     property int buttonWidthKeyboard: window1.width/9.0
     property int buttonHeightKeyboard: window1.height/9.0
     property int buttonMargin:20
     property string keyBoardRes :"";
     property string password: "12345";
+    property real textHeight: window1.height/6
     function setRes(arg){
         keyBoardRes = arg;
         textField.text = Qt.binding(function(){return keyBoardRes;})
     }
+    function clearText(){
+        textField.text ="";
+        keyBoardRes ="";
+        console.log("clearText()")
+    }
+
     function buttonClick(arg){
         if(textField.text == "Ошибка"){
             textField.text="";
@@ -53,9 +60,8 @@ Rectangle {
     function revert(arg){
         if(arg == password){
             keyBoardRes ="";
-            textField.text ="Сброc";
+            textField.text ="СБРОШЕН";
             compass.revert();
-            passDialAccept.start();
         }
         else{
             keyBoardRes ="";
@@ -78,16 +84,30 @@ Rectangle {
               }
         }
     }
+    Label{
+        id:labelPass
+        text: qsTr("Введите пароль для сброса")
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: textField.top
+        anchors.bottomMargin: buttonMargin
+
+        font.pixelSize: parent.width/ 20
+        color: "white"
+        font.family: a_LCDNovaObl.name
+    }
     TextField {
         id: textField
-        x: window1.width/2 -buttonWidthKeyboard*2
-        y: window1.height/2-buttonHeightKeyboard*2
+
         width: buttonWidthKeyboard*2 + buttonMargin
         height: buttonHeightKeyboard
         z: 1
         placeholderText: qsTr("")
         text: keyBoardRes.toString()
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top
+        anchors.topMargin: parent.height /5.5
+        anchors.left: parent.left
+        anchors.leftMargin: parent.width /7
+//        anchors.horizontalCenter: parent.horizontalCenter
         font.pixelSize: textField.height / 1.5
     }
     Button{
@@ -112,7 +132,7 @@ Rectangle {
         width: buttonWidthKeyboard
         height: buttonHeightKeyboard
         text: qsTr("0")
-        anchors.right: buttonCancel.left
+        //anchors.right: buttonCancel.left
         anchors.rightMargin: buttonMargin
         anchors.leftMargin: buttonMargin
         anchors.topMargin: buttonMargin
@@ -276,24 +296,25 @@ Rectangle {
         onClicked:{
             compass.ledOn()
             revert(keyBoardRes)
+
         }
     }
-    Button{
-        id: buttonCancel
-        anchors.left: button2.right
-        anchors.top: button9.bottom
-        width: buttonWidthKeyboard
-        height: buttonHeightKeyboard
-        text: qsTr("Отмена")
-        anchors.leftMargin: buttonMargin
-        anchors.topMargin: buttonMargin
-        style: keyboardButtonStyle
-        onClicked: {
-            keyBoardRes =""
-            passDialClose.start()
-            textField.text = keyBoardRes
-            compass.ledOn()
-        }
-    }
+//    Button{
+//        id: buttonCancel
+//        anchors.left: button2.right
+//        anchors.top: button9.bottom
+//        width: buttonWidthKeyboard
+//        height: buttonHeightKeyboard
+//        text: qsTr("Отмена")
+//        anchors.leftMargin: buttonMargin
+//        anchors.topMargin: buttonMargin
+//        style: keyboardButtonStyle
+//        onClicked: {
+//            keyBoardRes =""
+//            passDialClose.start()
+//            textField.text = keyBoardRes
+//            compass.ledOn()
+//        }
+//    }
 
 }

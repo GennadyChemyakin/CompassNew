@@ -223,32 +223,7 @@ Rectangle {
             }
         }
 
-        Button {
-            id: button3
-            x: button1.x
-            width: buttonWidthComrect
-            height: buttonHeightComrect
-            text: qsTr("Сбросить датчик")
-            anchors.top: button2.bottom
-            anchors.topMargin: progressBarMargin
-            style: ButtonStyle {
-                    label: Text {
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
-                        font.bold: true
-                        font.pointSize: height / 7
-                        color: "black"
-                        text: control.text
-                      }
-            }
-            onClicked:{
-                compass.ledOn()
-                passDialShow.start()
-            }
-                //compass.revert()
-        }
+
 
         Text {
             id: text1
@@ -379,7 +354,7 @@ Rectangle {
             Component.onCompleted: changeColor()
             height: buttonHeightComrect
             x: button1.x
-            anchors.top: button3.bottom
+            anchors.top: button2.bottom
             anchors.topMargin: progressBarMargin
             text: m_complable
             style:

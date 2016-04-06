@@ -75,6 +75,7 @@ signals:
 
 
 public slots:
+
     void setAngle(double);
     void setB(double);
     void setC(double);
@@ -155,6 +156,7 @@ public slots:
         m_coef_A = a;
     }
 
+    void setDegaus(bool deg);
     void setRoll(double);
     void setPitch(double);
     void changeSkl();
@@ -185,6 +187,9 @@ public slots:
     void ledOn(){
         //gpioPi.ledOn();
     }
+    bool getDegaus(){
+        return m_degaus;
+    }
 
 protected:
     QObject *qml;
@@ -192,6 +197,7 @@ protected:
 
 private:
 
+    bool m_degaus;
     int k;
     bool m_comp_state;
     double m_dempf;
@@ -222,6 +228,7 @@ private:
     double m_B,m_C,m_Z;
     bool m_writeLog;
     double m_points[25];
+    double m_pointsDG[25];
 
 
     double delta[8];
@@ -237,6 +244,7 @@ private:
 
 
     cubic_spline *spline;
+    cubic_spline *splineDG;
 
     int index;
 
@@ -248,6 +256,7 @@ private:
 
     Bins m_bins;
     DevCoef m_coef_Dev;
+    DevCoef m_coef_DevDG;
 
 
     double Round(double,int);

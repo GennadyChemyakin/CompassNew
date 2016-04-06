@@ -5,8 +5,8 @@ import QtQuick.Controls.Styles 1.1
 
 Window {
     id: window1
-    //width: 800
-    //height: 600
+    width: 1980
+    height: 1040
     title: qsTr("Compass")
     //visibility: "Windowed"
     visibility: "FullScreen"
@@ -17,6 +17,8 @@ Window {
     property string sourseCompass10: "content/compass10day.png"
     property string sourceBackground: "content/backgroundDay.png"
     property bool dayNight: true
+    property int statesWidth: lcdDisplay.width / 3
+    property int statesHeight: lcdDisplay.height / 1.5
 
 
     Rectangle
@@ -232,38 +234,10 @@ Window {
                        }
                    }
             }
-        }
-
-        Image {
-            id: border
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: -110
-            clip: false
-            visible: false
-            anchors.centerIn: parent
-            z: 1
-            source: "content/ramka.png"
-        }
-
-        Rectangle {
-            id: background
-            anchors.rightMargin: 0
-            anchors.bottomMargin: 0
-            anchors.leftMargin: 0
-            anchors.topMargin: 0
-            anchors.fill: parent
-            z: 0
-            //source: (m_background === 0 ? "content/steel4.png" :( m_background === 1 ? "content/steel3.png":(m_background === 2 ? "content/steel2.png":(m_background === 3 ? "content/wood.png":(m_background === 4 ? "content/steel.png":"content/steel4.png")))))
-            //source: dayNight === true ? "content/day.jpg" : "content/night.jpg"
-            color:  dayNight === true ? "#8cb1b9" : "#0c2132"
             Text{
                 id: tmkStateText
-                width: window1.width/14
-                height: window1.height/10.0
-                anchors.right: parent.right
-                anchors.rightMargin: 32 + menuButton.width/2
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: menuButton.height + 20
+                width: window1.width/20
+                height: window1.height /9
                 renderType: Text.NativeRendering
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
@@ -271,7 +245,14 @@ Window {
                 font.pointSize: height / 3
                 color: dayNight === false ? "#7fff00" : "black"
                 text: "MK"
-                Component.onCompleted: tmkStateText.text = Qt.binding(function(){
+                anchors.top: parent.verticalCenter
+                anchors.topMargin: lcdDisplay.height /3
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                anchors.horizontalCenterOffset: 0
+                Component.onCompleted: {
+                    tmkStateText.text = Qt.binding(function(){
+
                     if(trueMagneticCourse === 0)
                         return "KK";
                     else if(trueMagneticCourse === 1)
@@ -280,25 +261,68 @@ Window {
                         return "ИК";
                 })
             }
-                Text{
-                    id: course_state_text
-                    width: window1.width/14
-                    height: window1.height/10.0
-                    anchors.right: parent.right
-                    anchors.rightMargin:  32
-                    anchors.bottom: parent.bottom
-                    anchors.bottomMargin: menuButton.height + 20
-                    renderType: Text.NativeRendering
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    font.family: "Helvetica"
-                    font.pointSize: height / 3
-                    color: dayNight === false ? "#7fff00" : "black"
-                    text: "D"
-                    opacity: m_dempf === 0 ? 0:1
-                }
+            }
+
+            Text{
+                id: course_state_text
+                width: tmkStateText.width
+                height: tmkStateText.height
+                anchors.top: parent.verticalCenter
+                anchors.topMargin: lcdDisplay.height /3
+                renderType: Text.NativeRendering
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                font.family: "Helvetica"
+                font.pointSize: height / 3
+                color: dayNight === false ? "#7fff00" : "black"
+                text: "Д"
+                anchors.right: tmkStateText.left
+                anchors.rightMargin: 0
+                opacity: m_dempf === 0 ? 0:1
+            }
+            Text{
+                id: ruStateText
+                width: tmkStateText.width
+                height: tmkStateText.height
+                anchors.top: parent.verticalCenter
+                anchors.topMargin: lcdDisplay.height /3
+                renderType: Text.NativeRendering
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                font.family: "Helvetica"
+                font.pointSize: height / 3
+                color: dayNight === false ? "#7fff00" : "black"
+                text: "РУ"
+                anchors.left: tmkStateText.right
+                anchors.rightMargin: 0
+                opacity: m_dempf === 0 ? 0:1
+            }
         }
 
+        //        Image {
+        //            id: border
+        //            anchors.bottom: parent.bottom
+        //            anchors.bottomMargin: -110
+        //            clip: false
+        //            visible: false
+        //            anchors.centerIn: parent
+        //            z: 1
+        //            source: "content/ramka.png"
+        //        }
+
+        Rectangle {
+            id: background
+            color:  dayNight === true ? "#8cb1b9" : "#0c2132"
+            anchors.rightMargin: 0
+            anchors.bottomMargin: 0
+            anchors.leftMargin: 0
+            anchors.topMargin: 0
+            anchors.fill: parent
+            z: 0
+            //source: (m_background === 0 ? "content/steel4.png" :( m_background === 1 ? "content/steel3.png":(m_background === 2 ? "content/steel2.png":(m_background === 3 ? "content/wood.png":(m_background === 4 ? "content/steel.png":"content/steel4.png")))))
+            //source: dayNight === true ? "content/day.jpg" : "content/night.jpg"
+
+        }
         Rectangle
         {
             id: lcdDisplay
@@ -338,14 +362,19 @@ Window {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 20
             z:2
-            //color:
             style: ButtonStyle {
+                background: Rectangle{
+                    radius: 1
+                    color: dayNight === false ? "black" : "white"
+                }
+
                 label: Text {
                         id:menuText
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
+                        color: dayNight === false ? "#7fff00" : "black"
                         font.pointSize: menuButton.height / 4
                         text: control.text
                       }

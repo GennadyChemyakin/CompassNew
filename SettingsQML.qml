@@ -13,10 +13,21 @@ Rectangle {
     property int buttonFontSize:buttonHeight / 3
     property int buttonNum:0
     property int butState: 0 // 0-main, 1-settings
+    property int degaus: 0
+
+    function allAnimStop(){
+        slideMoreInfoForward.stop();
+        slidePassDialForward.stop();
+        slideBackgroundForward.stop();
+        slideKeybordForward.stop();
+        slideDeviationForward.stop();
+        slideCompForward.stop();
+    }
 
     function close(){
         console.log("here");
         showMainBut.start();
+        allAnimStop()
         slideCompBack.start();
         butState =0;
         buttonNum = 0;
@@ -24,12 +35,11 @@ Rectangle {
 
     PasswordDial{
         id:passDial
-        x: 0
-        y: 0
-        width: settings.width
+        width: settings.width-buttonWidth - calibBut.anchors.leftMargin * 2
         height: settings.height
-        visible: false
-        z:5
+        anchors.rightMargin: -compensationDisplay.width
+        anchors.right: parent.right
+        z:2
     }
 
     Compensation
@@ -138,12 +148,12 @@ Rectangle {
 
     }
     ParallelAnimation{
-        id:passDialShow
+        id:slidePassDialForward
         PropertyAnimation{
             target:passDial
-            properties: "visible"
-            to: true
-            duration:5
+            properties: "anchors.rightMargin"
+            to: 0
+            duration: 300
         }
     }
     ParallelAnimation{
@@ -204,6 +214,12 @@ Rectangle {
     ParallelAnimation {
         id: slideCompBack
         PropertyAnimation {
+            target: passDial
+            properties: "anchors.rightMargin"
+            to: -compensationDisplay.width
+            duration: 0
+        }
+        PropertyAnimation {
             target: compensationDisplay
             properties: "anchors.rightMargin"
             to: -compensationDisplay.width
@@ -249,15 +265,14 @@ Rectangle {
             width:settings.buttonWidth
             Button {
                 id: calibBut
-                x: 20
                 width: settings.buttonWidth
                 height:settings.buttonHeight
                 text: qsTr("Калибровка")
+                anchors.left: parent.left
+                anchors.leftMargin: settingsDisplay.buttonWidth / 10
                 anchors.top: parent.top
                 anchors.topMargin: 0
-                anchors.leftMargin: 10
 
-                anchors.left: parent.left
                 style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
@@ -280,9 +295,50 @@ Rectangle {
                 }
                 onClicked:
                 {
+                    allAnimStop()
                     slideCompBack.start()
                     slideCompForward.start()
                     buttonNum = 1
+                    compass.ledOn()
+                }
+            }
+            Button {
+                id: degausBut
+                width: settings.buttonWidth
+                height:settings.buttonHeight
+                text: qsTr("РУ")
+                anchors.left: parent.left
+                anchors.leftMargin: settingsDisplay.buttonWidth / 10
+                anchors.top: revertBut.bottom
+                anchors.topMargin: 10
+
+                style: ButtonStyle {
+                    label: Text {
+                        renderType: Text.NativeRendering
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        font.family: "Helvetica"
+                        font.pointSize: buttonFontSize
+                        color: "black"
+                        text: control.text
+                    }
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 25
+                        border.width: control.activeFocus ? 2 : 1
+                        border.color: "#888"
+                        radius: 4
+                        color: degaus === 1 ? "#42e73a":"white"
+
+                    }
+                }
+                onClicked:
+                {
+                    allAnimStop()
+                   // slideCompBack.start()
+                    degaus = !degaus
+                    console.log(degaus)
+                    compass.setDegaus(degaus)
                     compass.ledOn()
                 }
             }
@@ -294,7 +350,7 @@ Rectangle {
                 text: qsTr("Коэффициент A")
                 anchors.top: calibBut.bottom
                 anchors.topMargin: 10
-                anchors.leftMargin: 10
+                anchors.leftMargin: settingsDisplay.buttonWidth / 10
                 anchors.left: parent.left
                 style: ButtonStyle {
                     label: Text {
@@ -323,7 +379,9 @@ Rectangle {
                     keyboardDisplay.setRes(compass.getA())
                     keyboardDisplay.saved.disconnect(setSKL)
                     keyboardDisplay.saved.connect(setA)
+                    allAnimStop()
                     slideCompBack.start()
+                    allAnimStop()
                     slideKeybordForward.start()
                     buttonNum = 6
                     compass.ledOn()
@@ -335,10 +393,10 @@ Rectangle {
                 x: 18
                 width: settings.buttonWidth
                 height:settings.buttonHeight
-                text: qsTr("Девиация")
+                text: qsTr("Калькулятор")
                 anchors.top: coefABut.bottom
                 anchors.topMargin: 10
-                anchors.leftMargin: 10
+                anchors.leftMargin: settingsDisplay.buttonWidth / 10
                 anchors.left: parent.left
                 style: ButtonStyle {
                     label: Text {
@@ -363,6 +421,7 @@ Rectangle {
                 onClicked:
                 {
                     //deviationDisplay.setMod(false)
+                    allAnimStop()
                     slideCompBack.start()
                     slideDeviationForward.start()
                     buttonNum = 7
@@ -379,7 +438,7 @@ Rectangle {
                 text: qsTr("Настройки")
                 anchors.top: deviBut.bottom
                 anchors.topMargin: 10
-                anchors.leftMargin: 10
+                anchors.leftMargin: settingsDisplay.buttonWidth / 10
 
                 anchors.left: parent.left
                 style: ButtonStyle {
@@ -404,12 +463,54 @@ Rectangle {
                 }
                 onClicked:
                 {
+                    allAnimStop()
                     slideCompBack.start()
                     butState = ~butState
                     showMainBut.start()
                     buttonNum = 0
                     compass.ledOn()
                 }
+            }
+            Button {
+                id: revertBut
+
+                width: settings.buttonWidth
+                height:settings.buttonHeight
+                text: qsTr("Сбросить датчик")
+                anchors.top: showmainButtonsBut.bottom
+                anchors.topMargin: 10
+                anchors.leftMargin: settingsDisplay.buttonWidth / 10
+
+                anchors.left: parent.left
+                style: ButtonStyle {
+                    label: Text {
+                        renderType: Text.NativeRendering
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        font.family: "Helvetica"
+                        font.pointSize: buttonFontSize
+                        color: "black"
+                        text: control.text
+                    }
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 25
+                        border.width: control.activeFocus ? 2 : 1
+                        border.color: "#888"
+                        radius: 4
+                        color: "white"
+
+                    }
+                }
+                onClicked:{
+                    compass.ledOn()
+                    passDial.clearText()
+                    allAnimStop()
+                    slideCompBack.start()
+                    slidePassDialForward.start()
+
+                }
+                    //compass.revert()
             }
         }
 
@@ -430,7 +531,7 @@ Rectangle {
             height:settings.buttonHeight
             anchors.top: parent.top
             anchors.topMargin: 10
-            anchors.leftMargin: 10
+            anchors.leftMargin: settingsDisplay.buttonWidth / 10
             anchors.left: parent.left
             style: ButtonStyle {
                 label: Text {
@@ -467,7 +568,7 @@ Rectangle {
             text: qsTr("Склонение")
             anchors.top: courseStateBut.bottom
             anchors.topMargin: 10
-            anchors.leftMargin: 10
+            anchors.leftMargin: settingsDisplay.buttonWidth / 10
             anchors.left: parent.left
             style: ButtonStyle {
                 label: Text {
@@ -495,6 +596,7 @@ Rectangle {
                 keyboardDisplay.setRes(compass.getSKL())
                 keyboardDisplay.saved.disconnect(setA)
                 keyboardDisplay.saved.connect(setSKL)
+                allAnimStop()
                 slideCompBack.start()
                 slideKeybordForward.start()
                 buttonNum = 3
@@ -508,10 +610,10 @@ Rectangle {
             y: 84
             width: settings.buttonWidth
             height:settings.buttonHeight
-            text: qsTr("Доп. информация")
+            text: qsTr("ПОЛЕ")
             anchors.top: sklBut.bottom
             anchors.topMargin: 10
-            anchors.leftMargin: 10
+            anchors.leftMargin: settingsDisplay.buttonWidth / 10
             anchors.left: parent.left
             style: ButtonStyle {
                 label: Text {
@@ -535,6 +637,7 @@ Rectangle {
             }
             onClicked:
             {
+                allAnimStop()
                 slideCompBack.start()
                 slideMoreInfoForward.start()
                 buttonNum = 4
@@ -551,7 +654,7 @@ Rectangle {
             text: qsTr("Девиация")
             anchors.top: dInfoBut.bottom
             anchors.topMargin: 10
-            anchors.leftMargin: 14
+            anchors.leftMargin: settingsDisplay.buttonWidth / 10
 
             anchors.left: parent.left
             style: ButtonStyle {
@@ -577,6 +680,7 @@ Rectangle {
             onClicked:
             {
                 butState = ~butState
+                allAnimStop()
                 slideCompBack.start()
                 showSettingsBut.start()
                 buttonNum = 0
@@ -595,7 +699,7 @@ Rectangle {
             anchors.top: deviDispBut.bottom
             anchors.topMargin: 10
             anchors.left: parent.left
-            anchors.leftMargin: 14
+            anchors.leftMargin: settingsDisplay.buttonWidth / 10
             style: ButtonStyle {
                 label: Text {
                     renderType: Text.NativeRendering
@@ -633,7 +737,7 @@ Rectangle {
             text: qsTr("ДЕНЬ")
             anchors.top: dempfButton.bottom
             anchors.topMargin: 10
-            anchors.leftMargin: 15
+            anchors.leftMargin: settingsDisplay.buttonWidth / 10
             style: ButtonStyle {
                 label: Text {
                     renderType: Text.NativeRendering

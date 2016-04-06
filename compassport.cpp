@@ -274,42 +274,42 @@ void CompassPort::initComp()
                         if(toDecInt(one_byte)==1)
                         {
                             //dial->setLabel("Success");
-                            emit dialCompStatusChanged("Успех");
+                            emit dialCompStatusChanged("НОРМА");
                         }
                         else if(toDecInt(one_byte)==0)
                         {
                             //dial->setLabel("No error");
-                            emit dialCompStatusChanged("Ошибок нет");
+                            emit dialCompStatusChanged("");
                         }
                         else if(toDecInt(one_byte)==2)
                         {
                             //dial->setLabel("Compensation Already Started");
-                            emit dialCompStatusChanged("Компенсация уже начата");
+                            emit dialCompStatusChanged("");
                         }
                         else if(toDecInt(one_byte)==3)
                         {
                             //dial->setLabel("Compensation Not Started");
-                            emit dialCompStatusChanged("Компенсация не начата");
+                            emit dialCompStatusChanged("ОТКАЗ");
                         }
                         else if(toDecInt(one_byte)==4)
                         {
                             //dial->setLabel("Compensation Timeout");
-                            emit dialCompStatusChanged("Время вышло");
+                            emit dialCompStatusChanged("ВРЕМЯ");
                         }
                         else if(toDecInt(one_byte)==5)
                         {
                             //dial->setLabel("Compensation Computation Failure");
-                            emit dialCompStatusChanged("Провал");
+                            emit dialCompStatusChanged("ОШИБКА");
                         }
                         else if(toDecInt(one_byte)==6)
                         {
                             //dial->setLabel("New Computed Parameters No Better");
-                            emit dialCompStatusChanged("Новые параметры не лучше");
+                            emit dialCompStatusChanged("УСПЕХ");
                         }
                         else if(toDecInt(one_byte)==7)
                         {
                             //dial->setLabel("Flash Write Fail");
-                            emit dialCompStatusChanged("Flash Write Fail");
+                            emit dialCompStatusChanged("ОТКАЗ");
                         }
 
                         qApp->processEvents();
