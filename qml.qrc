@@ -12,5 +12,6 @@
         <file>content/backgroundDay.png</file>
         <file>NewKeyboard.qml</file>
         <file>PasswordDial.qml</file>
+        <file>DeviTable.qml</file>
     </qresource>
 </RCC>

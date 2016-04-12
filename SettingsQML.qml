@@ -124,6 +124,23 @@ Rectangle {
            anchors.right: parent.right
            z:2
        }
+    DeviTable{
+        id:deviTable
+        width: settings.width-buttonWidth - calibBut.anchors.leftMargin * 2
+        height: settings.height
+        anchors.rightMargin: -compensationDisplay.width
+        anchors.right: parent.right
+        z:2
+    }
+    ParallelAnimation {
+        id: slideDeviTableForward
+        PropertyAnimation {
+            target: deviTable
+            properties: "anchors.rightMargin"
+            to: 0
+            duration: 300
+        }
+    }
        ParallelAnimation {
            id: slideMoreInfoForward
            PropertyAnimation {
@@ -221,6 +238,12 @@ Rectangle {
         }
         PropertyAnimation {
             target: compensationDisplay
+            properties: "anchors.rightMargin"
+            to: -compensationDisplay.width
+            duration: 0
+        }
+        PropertyAnimation {
+            target: deviTable
             properties: "anchors.rightMargin"
             to: -compensationDisplay.width
             duration: 0
@@ -334,10 +357,7 @@ Rectangle {
                 }
                 onClicked:
                 {
-                    allAnimStop()
-                   // slideCompBack.start()
                     degaus = !degaus
-                    console.log(degaus)
                     compass.setDegaus(degaus)
                     compass.ledOn()
                 }
@@ -498,11 +518,12 @@ Rectangle {
                         border.width: control.activeFocus ? 2 : 1
                         border.color: "#888"
                         radius: 4
-                        color: "white"
+                        color: buttonNum === 9 ? "#42e73a":"white"
 
                     }
                 }
                 onClicked:{
+                    buttonNum = 9
                     compass.ledOn()
                     passDial.clearText()
                     allAnimStop()
@@ -512,7 +533,50 @@ Rectangle {
                 }
                     //compass.revert()
             }
+            Button {
+                id: deviTableBut
+
+                width: settings.buttonWidth
+                height:settings.buttonHeight
+                text: qsTr("deviTable")
+                anchors.top: degausBut.bottom
+                anchors.topMargin: 10
+                anchors.leftMargin: settingsDisplay.buttonWidth / 10
+
+                anchors.left: parent.left
+                style: ButtonStyle {
+                    label: Text {
+                        renderType: Text.NativeRendering
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        font.family: "Helvetica"
+                        font.pointSize: buttonFontSize
+                        color: "black"
+                        text: control.text
+                    }
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 25
+                        border.width: control.activeFocus ? 2 : 1
+                        border.color: "#888"
+                        radius: 4
+                        color: buttonNum === 10 ? "#42e73a":"white"
+
+                    }
+                }
+                onClicked:{
+                    buttonNum = 10
+                    compass.ledOn()
+                    passDial.clearText()
+                    allAnimStop()
+                    slideCompBack.start()
+                    slideDeviTableForward.start()
+
+                }
+                    //compass.revert()
+            }
         }
+
 
         Rectangle{
         id:mainButtons

@@ -103,10 +103,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
 
     portThread = new QThread;
     compport->moveToThread(portThread);
-    //compport->getPort()->moveToThread(portThread);
-    //connect(portThread,SIGNAL(started()),compport,SLOT(on()));
     connect(compport,SIGNAL(finished()),portThread,SLOT(quit()));
-    //connect(compport,SIGNAL(finished()),compport,SLOT(deleteLater()));
     connect(portThread,SIGNAL(finished()),portThread,SLOT(deleteLater()));
 
     portThread->start();
@@ -142,7 +139,6 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
 
 
 
-
     file = new QFile("Log, time:"+QTime::currentTime().toString());
     //file->open(QFile::ReadWrite);
     out = new QTextStream(file);
@@ -169,6 +165,13 @@ Compass::~Compass()
 void Compass::writeTolog()
 {
     *out<<m_fullangle<<"  '"<<m_roll<<"  '"<<m_pitch<<"  '"<<m_B<<"  '"<<m_C<<"  '"<<m_Z<<"  '"<<QTime::currentTime().toString()<<"\n";
+}
+double Compass::getFSpline(double d,int degaus){
+    if(degaus)
+        return splineDG->f(d);
+    else if(!degaus)
+        return spline->f(d);
+    return -1;
 }
 
 void Compass::updateCompensationInfo(int binNum, int progress)
@@ -315,6 +318,7 @@ void Compass::calcPoints()
         x[i] = 15 * i;
     }
     m_pointsDG[24] = m_pointsDG[0];
+    splineDG->build_spline(x,m_pointsDG,25);
 }
 
 void Compass::setB(double B)

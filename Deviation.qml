@@ -4,10 +4,10 @@ import QtQuick.Controls.Styles 1.1
 
 Rectangle {
     id: deviationRect
-    //width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
-    //height: window1.height
-    width: 800
-    height: 600
+    width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
+    height: window1.height
+//    width: 800
+//    height: 600
     color: "#00000000"
     property int devFontSize: window1.width/53.333333333
     property bool modeSKL : true

@@ -75,7 +75,7 @@ signals:
 
 
 public slots:
-
+    double getFSpline(double d,int degaus);
     void setAngle(double);
     void setB(double);
     void setC(double);
