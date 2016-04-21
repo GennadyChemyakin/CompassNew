@@ -20,8 +20,6 @@ Compassangle::~Compassangle()
 
 void Compassangle::setM_fullangle(double a)
 {
-
-    qDebug()<<"a(-1)"<<a;
     if(curr_angle_count++ == m_dempf)
     {
         if(m_dempf != 0)
@@ -33,21 +31,18 @@ void Compassangle::setM_fullangle(double a)
     curr_angle_count = 0;
     if(index == 0)
         m_last = a;
-    qDebug()<<"a0"<<a;
     if(m_last - a > 180)
         a = m_last + ((a+360) - m_last)*0.5;
     else if(m_last - a < -180)
         a = (m_last-360) + (a - m_last + 360)*0.5;
     else
         a = m_last + (a - m_last)*0.5;
-    //qDebug()<<"a1"<<a;
     if(a<0)
         a+=360;
      if(a>360)
         a-=360;
     a = Round(a,1);
     m_last=a;
-    //qDebug()<<"aR"<<a;
 
 
     //------------------------------------------
@@ -116,7 +111,6 @@ void Compassangle::setM_fullangle(double a)
        m_fullangleStr="0"+m_fullangleStr;
     if(m_fullangle / 100 < 1)
         m_fullangleStr="0"+m_fullangleStr;
-     //qDebug()<<"fullangle"<<m_fullangleStr;
     }
     else
     {

@@ -5,11 +5,11 @@ import QtQuick.Controls.Styles 1.1
 
 Window {
     id: window1
-    width: 1980
-    height: 1040
+    width: 800
+    height: 600
     title: qsTr("Compass")
-    //visibility: "Windowed"
-    visibility: "FullScreen"
+    visibility: "Windowed"
+    //visibility: "FullScreen"
 
     property string gradientcolor0: "#FF7C7C7C"
     property string gradientcolor1: "#FF4E4E4E"
@@ -295,7 +295,7 @@ Window {
                 text: "РУ"
                 anchors.left: tmkStateText.right
                 anchors.rightMargin: 0
-                opacity: m_dempf === 0 ? 0:1
+                opacity: m_degaus === 0 ? 0:1
             }
         }
 

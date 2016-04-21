@@ -76,7 +76,7 @@ Rectangle {
         y: window1.height/3.379310345
         z: 3
         width: lcdWidth
-        height: lcdHeight-27
+        height: lcdHeight
         border.width: 3
         border.color: "white"
         color: "#000000"

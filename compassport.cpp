@@ -29,31 +29,20 @@ void CompassPort::on()
 {
 
     emit timerStop();
-    //qDebug()<<QThread::currentThreadId();
     if(!port->isOpen())
     {       
         if (port->open(QIODevice::ReadWrite))
         {
 
             QSerialPortInfo *info = new QSerialPortInfo(*port);
-            qDebug() << "Name        : " << info->portName();
-            qDebug() << "Description : " << info->description();
-            qDebug() << "Manufacturer: " << info->manufacturer();
-            qDebug() << "BaudRate: " << port->baudRate();
-            qDebug() << "Parity: " << port->parity();
-            qDebug() << "Data bits: " << port->dataBits();
-            qDebug() << "Stop Bits: " << port->stopBits();
 
             m_state=1;
-            qDebug()<<"state = 1 ON";
-            qDebug()<<info->portName()<<"opened";
             delete info;
         }
         else
         {
             if(port->isOpen())
                 port->close();
-            //qDebug()<<"Error while opening";
         }
     }
     if(port->isOpen() && port->waitForReadyRead(100))
@@ -104,17 +93,16 @@ void CompassPort::on()
 
                         for(int i=136,j=15;i<152&&j>=0;i++,j--){two_bytes[j]=bitdata[i];} //coef B
                         m_B = Round(toDec(two_bytes,0)*1.41,1);
-                        qDebug()<<"B: "<<m_B;
+
                         emit BChanged(m_B);
 
                         for(int i=152,j=15;i<168&&j>=0;i++,j--){two_bytes[j]=bitdata[i];} //coef C
                         m_C = Round(toDec(two_bytes,0)*1.41,1);
-                        qDebug()<<"C: "<<m_C;
+
                         emit CChanged(m_C);
 
                         for(int i=168,j=15;i<184&&j>=0;i++,j--){two_bytes[j]=bitdata[i];} //coef Z
                         m_Z = Round(toDec(two_bytes,0)*1.41,1);
-                        qDebug()<<"Z: "<<m_Z;
                         emit ZChanged(m_Z);
 
                         //*out << m_angle <<" "<< m_roll<<" "<<m_pitch<<" "<<"1"<<"\n";
@@ -188,8 +176,7 @@ void CompassPort::on()
     }
     else
     {
-        //qDebug()<<"WaitForReadyRead failed";
-        //qDebug()<<port->error();
+
     }
     emit timerStart(10);
 }
@@ -207,19 +194,15 @@ void CompassPort::initComp()
     dataForWrite.insert(4,0x01);
     dataForWrite.insert(5,0x01);
     dataForWrite.insert(6,0x09);
-    qDebug()<<dataForWrite;
     if(port->isOpen())
     {
         port->write(dataForWrite,7);
         if(!port->waitForBytesWritten(1000))
         {
-            qDebug()<<"Error while writing data";
         }
         while(m_compInProgress)
         {
 
-            //qDebug()<<"here";
-            //qDebug()<<QThread::currentThreadId();
             qApp->processEvents();
             if(port->isOpen() && port->waitForReadyRead(1000))
             {
@@ -244,33 +227,33 @@ void CompassPort::initComp()
                                 break;
                         }
 
-                        for(int i=56,j=7;i<64 && j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<toDecInt(one_byte)<<" "<<one_byte;
+                        for(int i=56,j=7;i<64 && j>=0;i++,j--){one_byte[j]=bitdata[i];}
                         //dial->setBar(7,toDecInt(one_byte));
                         emit dialCompProgressChanged(7,toDecInt(one_byte));
-                        for(int i=64,j=7;i<72 && j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<toDecInt(one_byte)<<" "<<one_byte;
+                        for(int i=64,j=7;i<72 && j>=0;i++,j--){one_byte[j]=bitdata[i];}
                         //dial->setBar(6,toDecInt(one_byte));
                         emit dialCompProgressChanged(6,toDecInt(one_byte));
-                        for(int i=72,j=7;i<80 && j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<toDecInt(one_byte)<<" "<<one_byte;
+                        for(int i=72,j=7;i<80 && j>=0;i++,j--){one_byte[j]=bitdata[i];}
                         //dial->setBar(5,toDecInt(one_byte));
                         emit dialCompProgressChanged(5,toDecInt(one_byte));
-                        for(int i=80,j=7;i<88 && j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<toDecInt(one_byte)<<" "<<one_byte;
+                        for(int i=80,j=7;i<88 && j>=0;i++,j--){one_byte[j]=bitdata[i];}
                         //dial->setBar(4,toDecInt(one_byte));
                         emit dialCompProgressChanged(4,toDecInt(one_byte));
-                        for(int i=88,j=7;i<96 && j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<toDecInt(one_byte)<<" "<<one_byte;
+                        for(int i=88,j=7;i<96 && j>=0;i++,j--){one_byte[j]=bitdata[i];}
                         //dial->setBar(3,toDecInt(one_byte));
                         emit dialCompProgressChanged(3,toDecInt(one_byte));
-                        for(int i=96,j=7;i<104 && j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<toDecInt(one_byte)<<" "<<one_byte;
+                        for(int i=96,j=7;i<104 && j>=0;i++,j--){one_byte[j]=bitdata[i];}
                         //dial->setBar(2,toDecInt(one_byte));
                         emit dialCompProgressChanged(2,toDecInt(one_byte));
-                        for(int i=104,j=7;i<112 && j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<toDecInt(one_byte)<<" "<<one_byte;
+                        for(int i=104,j=7;i<112 && j>=0;i++,j--){one_byte[j]=bitdata[i];}
                         //dial->setBar(1,toDecInt(one_byte));
                         emit dialCompProgressChanged(1,toDecInt(one_byte));
-                        for(int i=112,j=7;i<120 && j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<toDecInt(one_byte)<<" "<<one_byte;
+                        for(int i=112,j=7;i<120 && j>=0;i++,j--){one_byte[j]=bitdata[i];}
                         //dial->setBar(0,toDecInt(one_byte));
                         emit dialCompProgressChanged(0,toDecInt(one_byte));
 
 
-                        for(int i=48,j=7;i<56 && j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<"Status"<<toDecInt(one_byte)<<" "<<one_byte;
+                        for(int i=48,j=7;i<56 && j>=0;i++,j--){one_byte[j]=bitdata[i];}
                         if(toDecInt(one_byte)==1)
                         {
                             //dial->setLabel("Success");
@@ -321,13 +304,11 @@ void CompassPort::initComp()
                 port->write(dataForWrite,7);
                 if(!port->waitForBytesWritten(1000))
                 {
-                    qDebug()<<"Error while writing data during compensation";
                 }
             }
         }
     }
     emit compFinished();
-    qDebug()<<"finished";
     emit timerStart(10);
 }
 
@@ -335,13 +316,11 @@ void CompassPort::initComp()
 void CompassPort::stopCompensation()
 {
     m_compInProgress = false;
-    qDebug()<<"stoped";
 }
 
 void CompassPort::revert()
 {
     emit timerStop();
-    qDebug()<<"revert";
     QByteArray dataForWrite;
     dataForWrite.insert(0,0x0d);
     dataForWrite.insert(1,0x0a);
@@ -350,7 +329,6 @@ void CompassPort::revert()
     dataForWrite.insert(4,0x01);
     dataForWrite.insert(5,0x04);
     dataForWrite.insert(6,0x0c);
-    qDebug()<<"Here 1";
     bool receivedMsg = false;
 
     if(port->isOpen())
@@ -358,7 +336,6 @@ void CompassPort::revert()
         port->write(dataForWrite,7);
         if(!port->waitForBytesWritten(1000))
         {
-            qDebug()<<"Error while writing data";
         }
         while(!receivedMsg)
         {
@@ -385,7 +362,7 @@ void CompassPort::revert()
                             else
                                 break;
                         }
-                        for(int i=40,j=7;i<48 && j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<"Status"<<toDecInt(one_byte)<<" "<<one_byte;
+                        for(int i=40,j=7;i<48 && j>=0;i++,j--){one_byte[j]=bitdata[i];}
                         if(toDecInt(one_byte)==0)
                         {
                             //settings->setLabel("Compass Compensation Off");
@@ -406,7 +383,7 @@ void CompassPort::revert()
                             //settings->setLabel("Compass Compensation Procedure Abort");
                             emit revertStatusChanged("Процедура прервана");
                         }
-                        for(int i=48,j=7;i<56 && j>=0;i++,j--){one_byte[j]=bitdata[i];} qDebug()<<"Status"<<toDecInt(one_byte)<<" "<<one_byte;
+                        for(int i=48,j=7;i<56 && j>=0;i++,j--){one_byte[j]=bitdata[i];}
 //                        if(toDecInt(one_byte)==1)
 //                        {
 //                            settings->setLabel("Success");
@@ -450,7 +427,6 @@ void CompassPort::revert()
                 port->write(dataForWrite,7);
                 if(!port->waitForBytesWritten(1000))
                 {
-                    qDebug()<<"Error while writing data";
                 }
             }
         }

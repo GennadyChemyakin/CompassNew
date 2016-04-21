@@ -21,7 +21,7 @@ Rectangle {
 
     function changeColor()
     {
-        compensationStatusBackgroundcolor = Qt.binding(function(){console.log("here");
+        compensationStatusBackgroundcolor = Qt.binding(function(){
         if(m_complable === "Успех")
             return "#42e73a";
         else if(m_complable === "Время вышло" || m_complable === "Провал" || m_complable === "Flash Write Fail")

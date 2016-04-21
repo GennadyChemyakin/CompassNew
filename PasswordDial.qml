@@ -20,7 +20,6 @@ Rectangle {
     function clearText(){
         textField.text ="";
         keyBoardRes ="";
-        console.log("clearText()")
     }
 
     function buttonClick(arg){

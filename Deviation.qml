@@ -63,7 +63,10 @@ Rectangle {
         if(degaus == false)
             compass.addDelta(num, value);
         else
+        {
+            console.log("add delta degaus")
             compass.addDeltaDegaus(num, value);
+        }
     }
 
 
@@ -446,7 +449,7 @@ Rectangle {
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
-                        font.pointSize: buttonFontSize / 2
+                        font.pointSize: buttonFontSize/2
                         color: "black"
                         text: control.text
                       }

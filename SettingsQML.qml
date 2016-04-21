@@ -6,10 +6,10 @@ Rectangle {
     id: settings
     //width: window1.width
     //height: window1.height
-    width: 1440
-    height: 980
+    width: 800
+    height: 600
     property int buttonWidth:window1.width / 4
-    property int buttonHeight:window1.height / 10
+    property int buttonHeight:window1.height / 12
     property int buttonFontSize:buttonHeight / 3
     property int buttonNum:0
     property int butState: 0 // 0-main, 1-settings
@@ -25,7 +25,6 @@ Rectangle {
     }
 
     function close(){
-        console.log("here");
         showMainBut.start();
         allAnimStop()
         slideCompBack.start();
@@ -70,10 +69,6 @@ Rectangle {
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.topMargin: (settings.height - keyboardDisplay.height)/2
-        Component.onCompleted: {
-            console.log(keyboardDisplay.height)
-        }
-
         z:2
     }
 
@@ -358,6 +353,7 @@ Rectangle {
                 onClicked:
                 {
                     degaus = !degaus
+                    deviTable.degaus = degaus
                     compass.setDegaus(degaus)
                     compass.ledOn()
                 }
@@ -538,7 +534,7 @@ Rectangle {
 
                 width: settings.buttonWidth
                 height:settings.buttonHeight
-                text: qsTr("deviTable")
+                text: qsTr("Таблица девиации")
                 anchors.top: degausBut.bottom
                 anchors.topMargin: 10
                 anchors.leftMargin: settingsDisplay.buttonWidth / 10
@@ -674,7 +670,7 @@ Rectangle {
             y: 84
             width: settings.buttonWidth
             height:settings.buttonHeight
-            text: qsTr("ПОЛЕ")
+            text: qsTr("Поле")
             anchors.top: sklBut.bottom
             anchors.topMargin: 10
             anchors.leftMargin: settingsDisplay.buttonWidth / 10
@@ -831,7 +827,7 @@ Rectangle {
             width: 1
             color: "#ffffff"
             anchors.left: butState === 0 ? mainButtons.right : settingsButtons.right
-            anchors.leftMargin: 100
+            anchors.leftMargin: buttonWidth/5
             anchors.top: parent.top
             anchors.topMargin: 8
             anchors.bottom: parent.bottom
@@ -847,7 +843,7 @@ Rectangle {
             anchors.topMargin: lcdDisplay.height * 1.5
             z: 1
             anchors.right: rectangle1.left
-            anchors.rightMargin: 0
+            anchors.rightMargin: -lcdDisplay.width*10
         }
 
     }

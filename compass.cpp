@@ -11,7 +11,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
 {
     spline = new cubic_spline();
     splineDG = new cubic_spline();
-
+    m_degaus = false;
     for(int i=0;i<8;i++)
     {
         delta[i]=0;
@@ -21,14 +21,15 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
         m_points[i+16] = 0;
 
     }
-    qDebug()<<QApplication::applicationDirPath();
     fileDev = new QFile(QApplication::applicationDirPath()+"/devCoef");
     fileDev ->open(QFile::ReadOnly);
 
-//    QTextStream* inDev = new QTextStream(fileDev);
-//    for (int i=0;i<8;i++)
-//        *inDev>>delta[i];
-//    fileDev->close();
+    QTextStream* inDev = new QTextStream(fileDev);
+    for (int i=0;i<8;i++){
+        *inDev>>delta[i];
+        *inDev>>deltaDegaus[i];
+    }
+    fileDev->close();
 
     delta_str = QString::number(delta[0]);
     //delete inDev;
@@ -109,9 +110,8 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     portThread->start();
     settingsDialog->initSettigs();
     timer->start(10);
-    //qDebug()<<QThread::currentThreadId();
     context_m->setContextProperty("logMsg","Start write to log");
-
+    getDevCoef();
     context_m->setContextProperty("compass",this);
     //context_m->setContextProperty("compassangle",compangle);
 
@@ -122,6 +122,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     context_m->setContextProperty("trueMagneticCourse",compangle->getM_tmCourse());
     context_m->setContextProperty("m_background",m_background);
     context_m->setContextProperty("infoVisibility",m_infoVisibility);
+    context_m->setContextProperty("m_degaus",(int)m_degaus);
 
     context_m->setContextProperty("angle_value",compangle->getM_angle());
     context_m->setContextProperty("fract_part",compangle->getM_fractPart());
@@ -145,11 +146,11 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     *out<<"angle  '"<<"roll  '"<<"pitch  '"<<"B  '"<<"C  '"<<"Z  '"<<"Time '\n";
     index = 0;
 
-    addSKL("save");
-    addA("save");
+//    addSKL("save");
+//    addA("save");
     getDevCoef();
-    m_skl = 10;
-    m_coef_A = 15;
+//    m_skl = 10;
+//    m_coef_A = 15;
 }
 
 Compass::~Compass()
@@ -162,16 +163,22 @@ Compass::~Compass()
     delete compangle;
 
 }
+void Compass::updateSklA(){
+    fileSklA->open(QFile::WriteOnly);
+    QTextStream* inSklA = new QTextStream(fileSklA);
+    *inSklA << m_skl;
+    *inSklA << " ";
+    *inSklA << m_coef_A;
+    fileSklA->close();
+    skl_str = QString::number(m_skl);
+    a_str = QString::number(m_coef_A);
+
+    delete inSklA;
+}
+
 void Compass::writeTolog()
 {
     *out<<m_fullangle<<"  '"<<m_roll<<"  '"<<m_pitch<<"  '"<<m_B<<"  '"<<m_C<<"  '"<<m_Z<<"  '"<<QTime::currentTime().toString()<<"\n";
-}
-double Compass::getFSpline(double d,int degaus){
-    if(degaus)
-        return splineDG->f(d);
-    else if(!degaus)
-        return spline->f(d);
-    return -1;
 }
 
 void Compass::updateCompensationInfo(int binNum, int progress)
@@ -245,7 +252,10 @@ void Compass::setAngle(double a)
 {
 
     if(compangle->getM_tmCourse() > 0)
-        a = a + spline->f(a);
+        if(m_degaus)
+            a = a + splineDG->f(a);
+        else
+            a = a + spline->f(a);
     compangle->setM_fullangle(a);
 
     context_m->setContextProperty("fract_part",compangle->getM_fractPart());
@@ -263,7 +273,10 @@ void Compass::getDevCoef()
     for(int i = 0; i < 8; i++)
     {
         m_coef_Dev.A+=delta[i];
+        m_coef_DevDG.A+=deltaDegaus[i];
         *outDelta<<delta[i];
+        *outDelta<<" ";
+        *outDelta<<deltaDegaus[i];
         *outDelta<<" ";
     }
     fileDev->close();
@@ -273,12 +286,23 @@ void Compass::getDevCoef()
     m_coef_Dev.C = ((delta[0]-delta[4])/2 + (delta[1]-delta[5])/2 * sqrt(2)/2 + (delta[3]-delta[7]) * (-sqrt(2)/2)/2)/2;
     m_coef_Dev.D = ((delta[1]+delta[5])/2 - (delta[3]+delta[7])/2)/2;
     m_coef_Dev.E = ((delta[0]+delta[4])/2 - (delta[2]+delta[6])/2)/2;
+    m_coef_DevDG.A /= 8;
+    m_coef_DevDG.B = ((deltaDegaus[2]-deltaDegaus[6])/2 + (deltaDegaus[1]-deltaDegaus[5])/2 * sqrt(2)/2 + ((deltaDegaus[3]-deltaDegaus[7]) * sqrt(2)/2)/2)/2;
+    m_coef_DevDG.C = ((deltaDegaus[0]-deltaDegaus[4])/2 + (deltaDegaus[1]-deltaDegaus[5])/2 * sqrt(2)/2 + (deltaDegaus[3]-deltaDegaus[7]) * (-sqrt(2)/2)/2)/2;
+    m_coef_DevDG.D = ((deltaDegaus[1]+deltaDegaus[5])/2 - (deltaDegaus[3]+deltaDegaus[7])/2)/2;
+    m_coef_DevDG.E = ((deltaDegaus[0]+deltaDegaus[4])/2 - (deltaDegaus[2]+deltaDegaus[6])/2)/2;
+    QList<int> listDevCoef;
+    QList<int> listDevCoefDG;
+    listDevCoef<<m_coef_Dev.A<<m_coef_Dev.B<<m_coef_Dev.C<<m_coef_Dev.D<<m_coef_Dev.E;
+    listDevCoefDG<<m_coef_DevDG.A<<m_coef_DevDG.B<<m_coef_DevDG.C<<m_coef_DevDG.D<<m_coef_DevDG.E;
+    context_m->setContextProperty("devCoef",QVariant::fromValue(listDevCoef));
+    context_m->setContextProperty("devCoefDG",QVariant::fromValue(listDevCoefDG));
     calcPoints();
 }
 
 void Compass::setDegaus(bool deg){
     m_degaus = deg;
-    qDebug()<<m_degaus;
+    context_m->setContextProperty("m_degaus",(int)m_degaus);
 }
 
 void Compass::startSettingsViewControlTimer(int msec)
@@ -306,12 +330,14 @@ void Compass::calcPoints()
     }
 
     m_points[24] = m_points[0];
+
     spline->build_spline(x,m_points,25);
 
     for(int i = 0; i < 12; i++)
     {
-        m_points[i] = m_coef_DevDG.D * mass[0][i] + m_coef_DevDG.E * mass[1][i] + m_coef_DevDG.A + m_coef_DevDG.B * mass[2][i] + m_coef_DevDG.C * mass[3][i];
-        m_points[i+12] = m_coef_DevDG.D * mass[0][i] + m_coef_DevDG.E * mass[1][i] + m_coef_DevDG.A - (m_coef_DevDG.B * mass[2][i] + m_coef_DevDG.C * mass[3][i]);
+        m_pointsDG[i] = m_coef_DevDG.D * mass[0][i] + m_coef_DevDG.E * mass[1][i] + m_coef_DevDG.A + m_coef_DevDG.B * mass[2][i] + m_coef_DevDG.C * mass[3][i];
+        m_pointsDG[i+12] = m_coef_DevDG.D * mass[0][i] + m_coef_DevDG.E * mass[1][i] + m_coef_DevDG.A - (m_coef_DevDG.B * mass[2][i] + m_coef_DevDG.C * mass[3][i]);
+
     }
     for(int i = 0; i < 25; i++)
     {
@@ -319,6 +345,28 @@ void Compass::calcPoints()
     }
     m_pointsDG[24] = m_pointsDG[0];
     splineDG->build_spline(x,m_pointsDG,25);
+    //clear lists
+    resDev10.clear();
+    resDev15.clear();
+    resDevDG10.clear();
+    resDevDG15.clear();
+    //--------
+    //add points to list
+    for(int i=0;i<24;i++)
+        resDev15<<QString::number(spline->f(i*15),10,1);
+    context_m->setContextProperty("deviation15",QVariant::fromValue(resDev15));
+    for(int i=0;i<36;i++)
+        resDev10<<QString::number(spline->f(i*10),10,1);
+    context_m->setContextProperty("deviation10",QVariant::fromValue(resDev10));
+    //points with degaus
+    for(int i=0;i<24;i++)
+        resDevDG15<<QString::number(splineDG->f(i*15.0),10,1);
+    context_m->setContextProperty("deviationDG15",QVariant::fromValue(resDevDG15));
+    for(int i=0;i<36;i++)
+        resDevDG10<<QString::number(splineDG->f(i*10.0),10,1);
+
+    context_m->setContextProperty("deviationDG10",QVariant::fromValue(resDevDG10));
+
 }
 
 void Compass::setB(double B)
@@ -439,7 +487,6 @@ void Compass::addSKL(QString str)
 
 void Compass::addDelta(int course, double value)
 {
-    qDebug()<< "adding delta";
     delta[course-1] = value;
     context_m->setContextProperty("delta_str",delta_str);
 

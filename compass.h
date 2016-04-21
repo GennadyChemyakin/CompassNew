@@ -41,7 +41,7 @@ public:
     };
 
     Compassangle *compangle;
-
+    void updateSklA();
 
 signals:
     void angleChanged();
@@ -75,7 +75,6 @@ signals:
 
 
 public slots:
-    double getFSpline(double d,int degaus);
     void setAngle(double);
     void setB(double);
     void setC(double);
@@ -92,7 +91,6 @@ public slots:
     void closeSettingsView()
     {
         emit closeSettingsViewSignal();
-        qDebug()<<"timeout";
     }
 
     int getTMKCourse()
@@ -150,10 +148,13 @@ public slots:
 
     void setSKL(double skl){
         m_skl = skl;
+        updateSklA();
+
     }
 
     void setA(double a){
         m_coef_A = a;
+        updateSklA();
     }
 
     void setDegaus(bool deg);
@@ -262,7 +263,10 @@ private:
     double Round(double,int);
     void calcPoints();
 
-
+    QList<QString> resDev10;
+    QList<QString> resDevDG10;
+    QList<QString> resDev15;
+    QList<QString> resDevDG15;
     CoefDial* dial;
     QTimer *timer;
     QTimer *settingsViewControlTimer;
