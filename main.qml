@@ -130,7 +130,7 @@ Window {
             PropertyAnimation {
                 target: lcdDisplay
                 properties: "anchors.horizontalCenterOffset"
-                to: -window1.width / 2 + lcdDisplay.width / 2 + settingsDisplay.buttonWidth / 10
+                to: window1.width / 2 - lcdDisplay.width / 2 - settingsDisplay.buttonWidth / 10
                 duration: 300
             }
             PropertyAnimation {
@@ -149,6 +149,36 @@ Window {
                 target: settingsDisplay
                 properties: "anchors.rightMargin"
                 to: 0
+                duration: 300
+            }
+        }
+        ParallelAnimation{
+            id:butSettings
+            PropertyAnimation{
+                target:menuButton
+                properties:"width"
+                to:settingsDisplay.buttonWidth
+                duration: 300
+            }
+            PropertyAnimation{
+                target:menuButton
+                properties:"height"
+                to:settingsDisplay.buttonHeight
+                duration: 300
+            }
+        }
+        ParallelAnimation{
+            id:butMain
+            PropertyAnimation{
+                target:menuButton
+                properties:"width"
+                to:window1.width/7.0
+                duration: 300
+            }
+            PropertyAnimation{
+                target:menuButton
+                properties:"height"
+                to:window1.height/10.0
                 duration: 300
             }
         }
@@ -292,7 +322,7 @@ Window {
                 font.family: "Helvetica"
                 font.pointSize: height / 3
                 color: dayNight === false ? "#7fff00" : "black"
-                text: "РУ"
+                text: " РУ"
                 anchors.left: tmkStateText.right
                 anchors.rightMargin: 0
                 opacity: m_degaus === 0 ? 0:1
@@ -358,7 +388,7 @@ Window {
             height: window1.height/10.0
             text: settingsDisplay.settingsSlided === false ? "Настройки":"Компас"
             anchors.right: parent.right
-            anchors.rightMargin: 32
+            anchors.rightMargin: settingsDisplay.buttonWidth / 10
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 20
             z:2
@@ -382,6 +412,7 @@ Window {
             onClicked:{
                 compass.ledOn()
                 settingsDisplay.settingsSlided === false ? slideLCDForward.start():slideLCDBack.start();
+                settingsDisplay.settingsSlided === false ? butMain.start():butSettings.start();
                 //compass.startSettingsViewControlTimer(300000);
 //                settingsDisplay.settingsSlided === true ? tmkState.visible = false : tmkState.visible = true
 //                settingsDisplay.settingsSlided === true ? dempfButton.visible = false : dempfButton.visible = true

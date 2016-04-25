@@ -14,6 +14,9 @@ Rectangle {
     property int buttonNum:0
     property int butState: 0 // 0-main, 1-settings
     property int degaus: 0
+    property int pageLeftMargin:mainButtons.width
+    property int butLeftMargin:window1.width - settingsButtons.width//for left
+    property int butTopMargin:2
 
     function allAnimStop(){
         slideMoreInfoForward.stop();
@@ -32,45 +35,7 @@ Rectangle {
         buttonNum = 0;
     }
 
-    PasswordDial{
-        id:passDial
-        width: settings.width-buttonWidth - calibBut.anchors.leftMargin * 2
-        height: settings.height
-        anchors.rightMargin: -compensationDisplay.width
-        anchors.right: parent.right
-        z:2
-    }
 
-    Compensation
-    {
-        id:compensationDisplay
-        width: settings.width-buttonWidth - calibBut.anchors.leftMargin * 2
-        height: settings.height
-        anchors.rightMargin: -compensationDisplay.width
-        anchors.right: parent.right
-        z:2
-    }
-    Deviation
-    {
-        id:deviationDisplay
-        width: settings.width-buttonWidth - calibBut.anchors.leftMargin * 2
-        height: settings.height
-        anchors.rightMargin: -deviationDisplay.width
-        anchors.right: parent.right
-        z:2
-    }
-
-    NewKeyboard
-    {
-        id:keyboardDisplay
-        //width: settings.width-buttonWidth - calibBut.anchors.leftMargin * 2
-        //height: settings.height
-        anchors.rightMargin: -keyboardDisplay.width
-        anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.topMargin: (settings.height - keyboardDisplay.height)/2
-        z:2
-    }
 
     function setA(){
         compass.setA(keyboardDisplay.getValue());
@@ -90,7 +55,7 @@ Rectangle {
         PropertyAnimation{
             target:settingsButtons
             properties: "anchors.leftMargin"
-            to:0
+            to:butLeftMargin
             duration:0
         }
     }
@@ -105,34 +70,18 @@ Rectangle {
         PropertyAnimation{
             target:mainButtons
             properties: "anchors.leftMargin"
-            to:0
+            to:butLeftMargin
             duration:0
         }
     }
 
-    MoreInfo
-       {
-           id:moreInfoDisp
-           width: settings.width-buttonWidth - calibBut.anchors.leftMargin * 2
-           height: settings.height
-           anchors.rightMargin: -compensationDisplay.width
-           anchors.right: parent.right
-           z:2
-       }
-    DeviTable{
-        id:deviTable
-        width: settings.width-buttonWidth - calibBut.anchors.leftMargin * 2
-        height: settings.height
-        anchors.rightMargin: -compensationDisplay.width
-        anchors.right: parent.right
-        z:2
-    }
+
     ParallelAnimation {
         id: slideDeviTableForward
         PropertyAnimation {
             target: deviTable
             properties: "anchors.rightMargin"
-            to: 0
+            to: pageLeftMargin
             duration: 300
         }
     }
@@ -141,7 +90,7 @@ Rectangle {
            PropertyAnimation {
                target: moreInfoDisp
                properties: "anchors.rightMargin"
-               to: 0
+               to: pageLeftMargin
                duration: 300
            }
        }
@@ -164,7 +113,7 @@ Rectangle {
         PropertyAnimation{
             target:passDial
             properties: "anchors.rightMargin"
-            to: 0
+            to: pageLeftMargin
             duration: 300
         }
     }
@@ -192,7 +141,7 @@ Rectangle {
         PropertyAnimation {
             target: backgroundviewer
             properties: "anchors.rightMargin"
-            to: 0
+            to: pageLeftMargin
             duration: 300
         }
     }
@@ -201,7 +150,7 @@ Rectangle {
         PropertyAnimation {
             target: keyboardDisplay
             properties: "anchors.rightMargin"
-            to: 0
+            to: pageLeftMargin
             duration: 300
         }
     }
@@ -210,7 +159,7 @@ Rectangle {
         PropertyAnimation {
             target: deviationDisplay
             properties: "anchors.rightMargin"
-            to: 0
+            to: pageLeftMargin
             duration: 300
         }
     }
@@ -219,7 +168,7 @@ Rectangle {
         PropertyAnimation {
             target: compensationDisplay
             properties: "anchors.rightMargin"
-            to: 0
+            to: pageLeftMargin
             duration: 300
         }
     }
@@ -274,13 +223,70 @@ Rectangle {
         anchors.fill: parent
         //source: (m_background === 0 ? "content/steel4.png" :( m_background === 1 ? "content/steel3.png":(m_background === 2 ? "content/steel2.png":(m_background === 3 ? "content/wood.png":(m_background === 4 ? "content/steel.png":"content/steel4.png")))))
         color: "#072269"
+        MoreInfo
+           {
+               id:moreInfoDisp
+               width: settings.width-buttonWidth - calibBut.anchors.leftMargin * 2
+               height: settings.height
+               anchors.rightMargin: -compensationDisplay.width
+               anchors.right: parent.right
+               z:2
+           }
+        DeviTable{
+            id:deviTable
+            width: settings.width-buttonWidth - calibBut.anchors.leftMargin * 2
+            height: settings.height
+            anchors.rightMargin: -compensationDisplay.width
+            anchors.right: parent.right
+            z:2
+        }
+        PasswordDial{
+            id:passDial
+            width: settings.width-buttonWidth - calibBut.anchors.leftMargin * 2
+            height: settings.height
+            anchors.rightMargin: -compensationDisplay.width
+            anchors.right: parent.right
+            z:2
+        }
+
+        Compensation
+        {
+            id:compensationDisplay
+            width: settings.width-buttonWidth - calibBut.anchors.leftMargin * 2
+            height: settings.height
+            anchors.rightMargin: -compensationDisplay.width
+            anchors.right: parent.right
+            z:2
+        }
+        Deviation
+        {
+            id:deviationDisplay
+            width: settings.width-buttonWidth - calibBut.anchors.leftMargin * 2
+            height: settings.height
+            anchors.rightMargin: -deviationDisplay.width
+            anchors.right: parent.right
+            z:2
+        }
+
+        NewKeyboard
+        {
+            id:keyboardDisplay
+            //width: settings.width-buttonWidth - calibBut.anchors.leftMargin * 2
+            //height: settings.height
+            anchors.rightMargin: -keyboardDisplay.width
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.topMargin: (settings.height - keyboardDisplay.height)/2
+            z:2
+        }
         Rectangle{
             id:settingsButtons
             anchors.left: parent.left
             anchors.leftMargin: window1.width
             anchors.top: rectangle2.bottom
-            anchors.topMargin: 0
-            width:settings.buttonWidth
+            anchors.topMargin: butTopMargin
+            width:settings.buttonWidth+settingsDisplay.buttonWidth / 5
+            z:15
             Button {
                 id: calibBut
                 width: settings.buttonWidth
@@ -289,7 +295,7 @@ Rectangle {
                 anchors.left: parent.left
                 anchors.leftMargin: settingsDisplay.buttonWidth / 10
                 anchors.top: parent.top
-                anchors.topMargin: 0
+                anchors.topMargin: butTopMargin
 
                 style: ButtonStyle {
                     label: Text {
@@ -328,7 +334,7 @@ Rectangle {
                 anchors.left: parent.left
                 anchors.leftMargin: settingsDisplay.buttonWidth / 10
                 anchors.top: revertBut.bottom
-                anchors.topMargin: 10
+                anchors.topMargin: butTopMargin
 
                 style: ButtonStyle {
                     label: Text {
@@ -365,7 +371,7 @@ Rectangle {
                 height:settings.buttonHeight
                 text: qsTr("Коэффициент A")
                 anchors.top: calibBut.bottom
-                anchors.topMargin: 10
+                anchors.topMargin: butTopMargin
                 anchors.leftMargin: settingsDisplay.buttonWidth / 10
                 anchors.left: parent.left
                 style: ButtonStyle {
@@ -411,7 +417,7 @@ Rectangle {
                 height:settings.buttonHeight
                 text: qsTr("Калькулятор")
                 anchors.top: coefABut.bottom
-                anchors.topMargin: 10
+                anchors.topMargin: butTopMargin
                 anchors.leftMargin: settingsDisplay.buttonWidth / 10
                 anchors.left: parent.left
                 style: ButtonStyle {
@@ -447,13 +453,12 @@ Rectangle {
 
             Button {
                 id: showmainButtonsBut
-                x: 10
-                y: -1
+
                 width: settings.buttonWidth
                 height:settings.buttonHeight
                 text: qsTr("Настройки")
                 anchors.top: deviBut.bottom
-                anchors.topMargin: 10
+                anchors.topMargin: butTopMargin
                 anchors.leftMargin: settingsDisplay.buttonWidth / 10
 
                 anchors.left: parent.left
@@ -494,7 +499,7 @@ Rectangle {
                 height:settings.buttonHeight
                 text: qsTr("Сбросить датчик")
                 anchors.top: showmainButtonsBut.bottom
-                anchors.topMargin: 10
+                anchors.topMargin: butTopMargin
                 anchors.leftMargin: settingsDisplay.buttonWidth / 10
 
                 anchors.left: parent.left
@@ -536,7 +541,7 @@ Rectangle {
                 height:settings.buttonHeight
                 text: qsTr("Таблица девиации")
                 anchors.top: degausBut.bottom
-                anchors.topMargin: 10
+                anchors.topMargin: butTopMargin
                 anchors.leftMargin: settingsDisplay.buttonWidth / 10
 
                 anchors.left: parent.left
@@ -578,15 +583,14 @@ Rectangle {
         id:mainButtons
 
         anchors.top: rectangle2.bottom
-        anchors.topMargin: 0
-        width:settings.buttonWidth
+        anchors.topMargin: butTopMargin
+        width:settings.buttonWidth+settingsDisplay.buttonWidth / 10
         anchors.left: parent.left
-        anchors.leftMargin: 0
+        anchors.leftMargin:0
+        z:15
         Button
         {
             id: courseStateBut
-            x: 15
-            y: 10
             width: settings.buttonWidth
             height:settings.buttonHeight
             anchors.top: parent.top
@@ -621,13 +625,11 @@ Rectangle {
 
         Button {
             id: sklBut
-            x: 10
-            y: 47
             width: settings.buttonWidth
             height:settings.buttonHeight
             text: qsTr("Склонение")
             anchors.top: courseStateBut.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: butTopMargin
             anchors.leftMargin: settingsDisplay.buttonWidth / 10
             anchors.left: parent.left
             style: ButtonStyle {
@@ -666,13 +668,11 @@ Rectangle {
 
         Button {
             id: dInfoBut
-            x: 10
-            y: 84
             width: settings.buttonWidth
             height:settings.buttonHeight
             text: qsTr("Поле")
             anchors.top: sklBut.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: butTopMargin
             anchors.leftMargin: settingsDisplay.buttonWidth / 10
             anchors.left: parent.left
             style: ButtonStyle {
@@ -707,13 +707,11 @@ Rectangle {
 
         Button {
             id: deviDispBut
-            x: 14
-            y: 121
             width: settings.buttonWidth
             height:settings.buttonHeight
             text: qsTr("Девиация")
             anchors.top: dInfoBut.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: butTopMargin
             anchors.leftMargin: settingsDisplay.buttonWidth / 10
 
             anchors.left: parent.left
@@ -757,7 +755,7 @@ Rectangle {
             height:settings.buttonHeight
             text: "Демпфирование"
             anchors.top: deviDispBut.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: butTopMargin
             anchors.left: parent.left
             anchors.leftMargin: settingsDisplay.buttonWidth / 10
             style: ButtonStyle {
@@ -789,14 +787,12 @@ Rectangle {
 
         Button {
             id: dayNightButton
-            x: 15
-            y: 195
             width: settings.buttonWidth
             height:settings.buttonHeight
             anchors.left: parent.left
             text: qsTr("ДЕНЬ")
             anchors.top: dempfButton.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: butTopMargin
             anchors.leftMargin: settingsDisplay.buttonWidth / 10
             style: ButtonStyle {
                 label: Text {
@@ -826,12 +822,12 @@ Rectangle {
             id: rectangle1
             width: 1
             color: "#ffffff"
-            anchors.left: butState === 0 ? mainButtons.right : settingsButtons.right
-            anchors.leftMargin: buttonWidth/5
+            anchors.left: parent.right
+            anchors.leftMargin: -settings.buttonWidth-settingsDisplay.buttonWidth / 5
             anchors.top: parent.top
-            anchors.topMargin: 8
+            anchors.topMargin: 0
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: -8
+            anchors.bottomMargin: 0
 
         }
 
@@ -839,11 +835,11 @@ Rectangle {
             id: rectangle2
             height: 1
             color: "#ffffff"
+            anchors.left: parent.left
+            anchors.leftMargin: 0
             anchors.top: parent.top
             anchors.topMargin: lcdDisplay.height * 1.5
             z: 1
-            anchors.right: rectangle1.left
-            anchors.rightMargin: -lcdDisplay.width*10
         }
 
     }

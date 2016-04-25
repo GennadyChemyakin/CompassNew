@@ -64,7 +64,6 @@ Rectangle {
             compass.addDelta(num, value);
         else
         {
-            console.log("add delta degaus")
             compass.addDeltaDegaus(num, value);
         }
     }
@@ -96,6 +95,7 @@ Rectangle {
                     changeDeviationButtonState(deviationCourse);
                 }
             }
+            Component.onCompleted: keyboardDisplay.setRes(compass.getDelta(1))
         }
 
         Button {

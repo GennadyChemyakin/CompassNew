@@ -32,7 +32,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     fileDev->close();
 
     delta_str = QString::number(delta[0]);
-    //delete inDev;
+    delete inDev;
 
     fileSklA = new QFile(QApplication::applicationDirPath()+"/SklA");
     fileSklA->open(QFile::ReadOnly);
@@ -251,11 +251,12 @@ void Compass::setCompensationLabeltoDeafault()
 void Compass::setAngle(double a)
 {
 
-    if(compangle->getM_tmCourse() > 0)
+    if(compangle->getM_tmCourse() > 0){
         if(m_degaus)
             a = a + splineDG->f(a);
         else
             a = a + spline->f(a);
+    }
     compangle->setM_fullangle(a);
 
     context_m->setContextProperty("fract_part",compangle->getM_fractPart());
